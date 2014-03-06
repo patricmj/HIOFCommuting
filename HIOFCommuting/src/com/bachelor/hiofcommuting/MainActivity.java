@@ -14,7 +14,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 
 public class MainActivity extends FragmentActivity { //public class MainActivity extends <del>Activity</del> FragmentActivity {
-	
+	//This is madness
 	private static final int SPLASH = 0;
 	private static final int SELECTION = 1;
 	private static final int SETTINGS = 2;
