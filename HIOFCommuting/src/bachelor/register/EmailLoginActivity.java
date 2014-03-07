@@ -25,7 +25,7 @@ import android.widget.Toast;
 import bachelor.database.HandleLogin;
 import bachelor.tab.TabListener;
 
-public class LoginActivity extends Activity {
+public class EmailLoginActivity extends Activity {
 	protected int forsok = 5;
 
 	@Override
@@ -122,7 +122,7 @@ public class LoginActivity extends Activity {
 	private class ValiderBruker extends
 			AsyncTask<ArrayList<String>, Void, String> {
 		
-		private ProgressDialog Dialog = new ProgressDialog(LoginActivity.this);
+		private ProgressDialog Dialog = new ProgressDialog(EmailLoginActivity.this);
 		@Override
 	    protected void onPreExecute(){
 	        Dialog.setMessage("Logger inn...");
@@ -150,7 +150,7 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			LoginActivity.this.ValiderBrukerFerdig(result);
+			EmailLoginActivity.this.ValiderBrukerFerdig(result);
 			Dialog.dismiss();
 		}
 

@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import bachelor.register.EmailLoginActivity;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -137,6 +139,11 @@ public class MainActivity extends FragmentActivity {
                 showFragment(SPLASH, false);
             }
         }
+    }
+    
+    public void loggInnMedEpost(View view) {
+    	Intent intent = new Intent(this, EmailLoginActivity.class);
+    	startActivity(intent);
     }
     
     @Override
