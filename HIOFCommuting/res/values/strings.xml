@@ -8,5 +8,19 @@
 	<string name="get_started">To get started, log in using Facebook</string>
 	<string name="settings">Settings</string>
 	<string name="fblogin">Facebook test</string>
-	
+	<string name="login">Logg inn</string>
+    <string name="epost">Epost</string>
+    <string name="passord">Passord</string>
+    <string name="nybruker">Ny bruker?</string>
+    <string name="glemtpassord">Glemt passord?</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_tab_map">TabMap</string>
+    <string name="title_activity_tab_list">TabList</string>
+    <string name="title_activity_tab_inbox">TabInbox</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_tab_listener">TabListener</string>
+    <string name="tab_kart">Kart</string>
+    <string name="tab_liste">Liste</string>
+    <string name="tab_inbox">Inbox</string>
+    <string name="button_alternativLogin">Logg inn med epost</string>
 </resources>
