@@ -225,7 +225,8 @@ containing a value of this type.
         public static final int icon=0x7f020026;
     }
     public static final class id {
-        public static final int action_settings=0x7f04001f;
+        public static final int action_settings=0x7f040020;
+        public static final int button1=0x7f04001f;
         public static final int com_facebook_login_activity_progress_bar=0x7f040008;
         public static final int com_facebook_picker_activity_circle=0x7f040007;
         public static final int com_facebook_picker_checkbox=0x7f04000a;
@@ -283,6 +284,7 @@ containing a value of this type.
     public static final class string {
         public static final int action_settings=0x7f07001a;
         public static final int app_name=0x7f070019;
+        public static final int button_alternativLogin=0x7f07002e;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -308,11 +310,25 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
+        public static final int epost=0x7f070021;
         public static final int fbid=0x7f07001c;
         public static final int fblogin=0x7f07001f;
         public static final int get_started=0x7f07001d;
+        public static final int glemtpassord=0x7f070024;
         public static final int hello_world=0x7f07001b;
+        public static final int login=0x7f070020;
+        public static final int nybruker=0x7f070023;
+        public static final int passord=0x7f070022;
         public static final int settings=0x7f07001e;
+        public static final int tab_inbox=0x7f07002d;
+        public static final int tab_kart=0x7f07002b;
+        public static final int tab_liste=0x7f07002c;
+        public static final int title_activity_main=0x7f070029;
+        public static final int title_activity_map=0x7f070025;
+        public static final int title_activity_tab_inbox=0x7f070028;
+        public static final int title_activity_tab_list=0x7f070027;
+        public static final int title_activity_tab_listener=0x7f07002a;
+        public static final int title_activity_tab_map=0x7f070026;
     }
     public static final class style {
         /** 
