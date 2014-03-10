@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.register.EmailLoginActivity;
+import bachelor.tab.TabListener;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -19,8 +20,9 @@ public class MainActivity extends FragmentActivity {
 	// PLIX
 	private static final int SPLASH = 0;
 	private static final int SELECTION = 1;
-	private static final int SETTINGS = 2;
+	private static final int SETTINGS = 1;
 	private static final int FRAGMENT_COUNT = SETTINGS + 1;
+	//private static final int FRAGMENT_COUNT = 2;
 	private boolean isResumed = false;
 	private MenuItem settings;
 
@@ -37,7 +39,7 @@ public class MainActivity extends FragmentActivity {
 
 		FragmentManager fm = getSupportFragmentManager();
 		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
-		fragments[SELECTION] = fm.findFragmentById(R.id.selectionFragment);
+		//fragments[SELECTION] = fm.findFragmentById(R.id.selectionFragment);
 		fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
 
 		FragmentTransaction transaction = fm.beginTransaction();
@@ -46,22 +48,42 @@ public class MainActivity extends FragmentActivity {
 		}
 		transaction.commit();
 	}
-
+	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// only add the menu when the selection fragment is showing
-		if (fragments[SELECTION].isVisible()) {
+		//only add the menu when the selection fragment is showing
+		//if (fragments[SELECTION].isVisible()) {
 			if (menu.size() == 0) {
 				settings = menu.add(R.string.settings);
 			}
 			return true;
-		} else {
-			menu.clear();
-			settings = null;
-		}
-		return false;
+		//} else {
+		//menu.clear();
+		//	settings = null;
+		//}
+		//return false;
 	}
-
+	
+	/*@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.newActivity:
+			Intent intent = new Intent(this, EmailLoginActivity.class);
+			startActivity(intent);
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
+	}*/
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.equals(settings)) {
@@ -133,7 +155,10 @@ public class MainActivity extends FragmentActivity {
 			if (state.isOpened()) {
 				// If the session state is open:
 				// Show the authenticated fragment
-				showFragment(SELECTION, false);
+				//showFragment(SELECTION, false);
+				
+				Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+				startActivity(intent);
 			} else if (state.isClosed()) {
 				// If the session state is closed:
 				// Show the login fragment
@@ -155,7 +180,9 @@ public class MainActivity extends FragmentActivity {
 		if (session != null && session.isOpened()) {
 			// if the session is already open,
 			// try to show the selection fragment
-			showFragment(SELECTION, false);
+			//showFragment(SELECTION, false);
+			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+			startActivity(intent);
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.

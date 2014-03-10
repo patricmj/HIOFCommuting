@@ -166,6 +166,7 @@ int id login_editText_email 0x7f040021
 int id login_editText_passord 0x7f040023
 int id map 0x7f040026
 int id map2 0x7f040028
+int id newActivity 0x7f04002d
 int id none 0x7f040003
 int id normal 0x7f040001
 int id picker_subtitle 0x7f04001b

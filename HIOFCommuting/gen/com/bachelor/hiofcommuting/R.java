@@ -451,6 +451,7 @@ containing a value of this type.
         public static final int login_editText_passord=0x7f040023;
         public static final int map=0x7f040026;
         public static final int map2=0x7f040028;
+        public static final int newActivity=0x7f04002d;
         public static final int none=0x7f040003;
         public static final int normal=0x7f040001;
         public static final int picker_subtitle=0x7f04001b;

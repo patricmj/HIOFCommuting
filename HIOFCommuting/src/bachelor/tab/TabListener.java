@@ -42,14 +42,6 @@ public class TabListener extends FragmentActivity implements
 				.setTabListener(this));
 	}
 
-	/*
-	 * @Override protected void onDestroy() { super.onDestroy();
-	 * 
-	 * SupportMapFragment f = (SupportMapFragment)
-	 * getFragmentManager().findFragmentById(R.id.map); if (f != null)
-	 * getFragmentManager().beginTransaction().remove(f).commit(); }
-	 */
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
