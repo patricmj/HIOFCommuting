@@ -80,10 +80,10 @@ public class SelectionFragment extends Fragment {
 
             //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             // check if map is created successfully or not
-          /*  if (googleMap == null) {
-                Toast.makeText(getApplicationContext(),
+            if (googleMap == null) {
+                Toast.makeText(getActivity().getApplicationContext(),
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-            }*/
+            }
         } 
 	
 	
