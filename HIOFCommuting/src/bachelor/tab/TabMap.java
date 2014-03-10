@@ -35,7 +35,7 @@ public class TabMap extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getChildFragmentManager();
 	    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
 	    if (fragment == null) {
 	        fragment = SupportMapFragment.newInstance();
@@ -58,7 +58,7 @@ public class TabMap extends Fragment {
 		if (googleMap == null){
 			googleMap = fragment.getMap();
 			googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)));
-			//initilizeMap();
+			initilizeMap();
 		}
 	}
 
@@ -78,7 +78,7 @@ public class TabMap extends Fragment {
 		LatLng HiØ = new LatLng(59.129443, 11.352908);
 		LatLng greaker = new LatLng(59.26789, 11.03205);
 
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 10));
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 8));
 
 		googleMap.addMarker(new MarkerOptions().title("Greåker")
 				.snippet("Et høl").position(greaker));
