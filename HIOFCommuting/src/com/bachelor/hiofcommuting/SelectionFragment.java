@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.testgooglemap.R;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -19,6 +18,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -60,7 +60,7 @@ public class SelectionFragment extends Fragment {
 	
 	private void initilizeMap() {
         if (googleMap == null) {
-            googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+            googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         }
             LatLng Hiÿ = new LatLng(59.129443,11.352908);
             LatLng greaker = new LatLng(59.26789, 11.03205);
@@ -79,10 +79,10 @@ public class SelectionFragment extends Fragment {
 
             //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             // check if map is created successfully or not
-            if (googleMap == null) {
+          /*  if (googleMap == null) {
                 Toast.makeText(getApplicationContext(),
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         } 
 	
 	
