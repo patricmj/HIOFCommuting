@@ -2,18 +2,14 @@ package bachelor.register;
 
 import java.util.ArrayList;
 
-import com.bachelor.hiofcommuting.R;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.Fragment;
+import android.app.ActionBar.TabListener;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import bachelor.database.HandleLogin;
-import bachelor.tab.TabListener;
+import bachelor.tab.TabList;
 
-public class EmailLoginActivity extends Activity {
+import com.bachelor.hiofcommuting.R;
+
+public class EmailLoginActivity extends FragmentActivity {
 	protected int forsok = 5;
 
 	@Override
@@ -33,7 +30,7 @@ public class EmailLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
@@ -71,7 +68,8 @@ public class EmailLoginActivity extends Activity {
 
 		// Sjekker om brukeren har fyllt inn data
 		if (!epost.isEmpty() && !passord.isEmpty()) {
-			// Sjekker om brukeren har prøvd å logge inn med feil passord for mange ganger
+			// Sjekker om brukeren har prøvd å logge inn med feil passord for
+			// mange ganger
 			if (forsok > 0) {
 				ArrayList<String> brukerInput = new ArrayList<String>();
 				brukerInput.add(epost);
@@ -92,19 +90,19 @@ public class EmailLoginActivity extends Activity {
 		}
 	}
 
-	//Når ValiderBruker-tråden er ferdig, blir denne metoden trigget
+	// Når ValiderBruker-tråden er ferdig, blir denne metoden trigget
 	private void ValiderBrukerFerdig(String results) {
 		// Hvis brukernavn og passord stemte, logges brukeren inn
 		if (results == null) {
-			Intent intent = new Intent(this, TabListener.class);
+			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
 			startActivity(intent);
 			// avslutter denne aktiviteten, så den ikke ligger på stack
-			finish(); 
+			finish();
 		} else {
-			Toast.makeText(getApplicationContext(), results, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), results, Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
-	
 
 	public void nybruker(View view) {
 		System.out.println("test nybruker text-click");
@@ -116,18 +114,20 @@ public class EmailLoginActivity extends Activity {
 
 	/**
 	 * 
-	 * @author Martin Validerer brukerinput opp mot database. 
-	 * Kjøres i AsyncTask da dette er en tyngre oppgave.
+	 * @author Martin Validerer brukerinput opp mot database. Kjøres i AsyncTask
+	 *         da dette er en tyngre oppgave.
 	 */
 	private class ValiderBruker extends
 			AsyncTask<ArrayList<String>, Void, String> {
-		
-		private ProgressDialog Dialog = new ProgressDialog(EmailLoginActivity.this);
+
+		private ProgressDialog Dialog = new ProgressDialog(
+				EmailLoginActivity.this);
+
 		@Override
-	    protected void onPreExecute(){
-	        Dialog.setMessage("Logger inn...");
-	        Dialog.show();
-	    }
+		protected void onPreExecute() {
+			Dialog.setMessage("Logger inn...");
+			Dialog.show();
+		}
 
 		@Override
 		protected String doInBackground(ArrayList<String>... params) {
@@ -141,7 +141,8 @@ public class EmailLoginActivity extends Activity {
 					// Brukeren logget inn
 					return null;
 				} else {
-					return "Feil brukernavn/passord. "+(--forsok)+" forsøk igjen.";
+					return "Feil brukernavn/passord. " + (--forsok)
+							+ " forsøk igjen.";
 				}
 			} else {
 				return "Fant ingen bruker med angitt epost i systemet";

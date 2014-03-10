@@ -1,19 +1,20 @@
 package bachelor.tab;
 
-import com.bachelor.hiofcommuting.R;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bachelor.hiofcommuting.R;
+import com.bachelor.hiofcommuting.SelectionFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class TabListener extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -24,7 +25,7 @@ public class TabListener extends FragmentActivity implements
 		setContentView(R.layout.activity_tab_listener);
 
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 
@@ -40,6 +41,14 @@ public class TabListener extends FragmentActivity implements
 		actionBar.addTab(actionBar.newTab().setText(R.string.tab_inbox)
 				.setTabListener(this));
 	}
+
+	/*
+	 * @Override protected void onDestroy() { super.onDestroy();
+	 * 
+	 * SupportMapFragment f = (SupportMapFragment)
+	 * getFragmentManager().findFragmentById(R.id.map); if (f != null)
+	 * getFragmentManager().beginTransaction().remove(f).commit(); }
+	 */
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,36 +88,36 @@ public class TabListener extends FragmentActivity implements
 	}
 
 	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 
-		if (tab.getPosition() == 0) {
+		if (tab.getPosition() == 0){
 			Fragment tm = new TabMap();
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tm).commit();
 			System.out.println("Map");
 		}
 		if (tab.getPosition() == 1) {
 			Fragment tl = new TabList();
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tl).commit();
 			System.out.println("Liste");
 		}
 		if (tab.getPosition() == 2) {
 			Fragment ti = new TabInbox();
-			getFragmentManager().beginTransaction()
+			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, ti).commit();
 			System.out.println("Inbox");
 		}
 	}
 
 	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 
 	}
