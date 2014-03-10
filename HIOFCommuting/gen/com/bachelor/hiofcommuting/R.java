@@ -420,7 +420,7 @@ containing a value of this type.
         public static final int icon=0x7f020042;
     }
     public static final class id {
-        public static final int action_settings=0x7f05002b;
+        public static final int action_settings=0x7f05002c;
         public static final int button1=0x7f050022;
         public static final int com_facebook_login_activity_progress_bar=0x7f05000e;
         public static final int com_facebook_picker_activity_circle=0x7f05000d;
@@ -446,20 +446,21 @@ containing a value of this type.
         public static final int fragment_tab_container=0x7f05000b;
         public static final int hybrid=0x7f050004;
         public static final int large=0x7f050006;
-        public static final int login_button=0x7f05002a;
+        public static final int login_button=0x7f05002b;
         public static final int login_editText_email=0x7f050021;
         public static final int login_editText_passord=0x7f050023;
-        public static final int map=0x7f050027;
+        public static final int map=0x7f050026;
+        public static final int map2=0x7f050028;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int picker_subtitle=0x7f05001b;
-        public static final int profile_name=0x7f050029;
+        public static final int profile_name=0x7f05002a;
         public static final int satellite=0x7f050002;
         public static final int selectionFragment=0x7f050008;
-        public static final int selection_profile_pic=0x7f050026;
+        public static final int selection_profile_pic=0x7f050027;
         public static final int small=0x7f050005;
         public static final int splashFragment=0x7f050009;
-        public static final int splash_icon=0x7f050028;
+        public static final int splash_icon=0x7f050029;
         public static final int terrain=0x7f050003;
         public static final int textView1=0x7f050024;
         public static final int textView2=0x7f050025;
