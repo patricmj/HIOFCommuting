@@ -16,6 +16,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -65,7 +66,7 @@ public class SelectionFragment extends Fragment {
             LatLng HiØ = new LatLng(59.129443,11.352908);
             LatLng greaker = new LatLng(59.26789, 11.03205);
             
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 10));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 10));
             
             googleMap.addMarker(new MarkerOptions()
             .title("Greåker")
@@ -79,10 +80,10 @@ public class SelectionFragment extends Fragment {
 
             //googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             // check if map is created successfully or not
-          /*  if (googleMap == null) {
-                Toast.makeText(getApplicationContext(),
+            if (googleMap == null) {
+                Toast.makeText(getActivity().getApplicationContext(),
                         "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-            }*/
+            }
         } 
 	
 	
