@@ -15,8 +15,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-
 public class TabMap extends Fragment {
 
 	private GoogleMap googleMap;
@@ -35,7 +33,7 @@ public class TabMap extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getChildFragmentManager();
 	    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
 	    if (fragment == null) {
 	        fragment = SupportMapFragment.newInstance();
