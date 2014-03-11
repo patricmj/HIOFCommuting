@@ -5,7 +5,6 @@ import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bachelor.hiofcommuting.R;
-import com.bachelor.hiofcommuting.SelectionFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 
 public class TabListener extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -44,7 +41,6 @@ public class TabListener extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
