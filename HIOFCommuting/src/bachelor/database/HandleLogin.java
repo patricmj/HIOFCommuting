@@ -13,7 +13,7 @@ public class HandleLogin {
 	}
 
 	// SJEKK AT PASSORD STEMMER OVERENS MED EPOST (tabell for alternative
-	// brukere)
+	// brukere)test commment
 	public static boolean checkPassord(String epost, String passord) {
 		String un = "martino@hiof.no";
 		String pw = "passord";
