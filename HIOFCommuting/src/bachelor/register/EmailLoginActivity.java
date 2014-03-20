@@ -2,6 +2,8 @@ package bachelor.register;
 
 import java.util.ArrayList;
 
+import com.bachelor.hiofcommuting.R;
+
 import android.app.ActionBar.TabListener;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,21 +24,25 @@ import android.widget.Toast;
 import bachelor.database.HandleLogin;
 import bachelor.tab.TabList;
 
-import com.bachelor.hiofcommuting.R;
 
 public class EmailLoginActivity extends FragmentActivity {
+	
 	protected int forsok = 5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_login);
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			FragmentManager fm = getSupportFragmentManager();
+			FragmentTransaction transaction = fm.beginTransaction();
+			transaction.add(R.id.container, new PlaceholderFragment());
+			transaction.commit();
 		}
+		
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -105,6 +113,11 @@ public class EmailLoginActivity extends FragmentActivity {
 
 	public void nybruker(View view) {
 		System.out.println("test nybruker text-click");
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction transaction = fm.beginTransaction();
+		Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
+		transaction.show(registerFragment);
+		transaction.commit();
 	}
 
 	public void glemtpassord(View view) {
@@ -169,6 +182,12 @@ public class EmailLoginActivity extends FragmentActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_login,
 					container, false);
+			FragmentManager fm = getFragmentManager();
+			
+			FragmentTransaction transaction = fm.beginTransaction();
+			Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
+			transaction.hide(registerFragment);
+			transaction.commit();
 			return rootView;
 		}
 	}
