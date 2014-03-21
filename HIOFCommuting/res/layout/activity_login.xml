@@ -6,8 +6,13 @@
     tools:context="bachelor.register.EmailLoginActivity"
     tools:ignore="MergeRootFrame" >
 
-      <fragment android:name="bachelor.register.registerFragment" 
+      <fragment android:name="bachelor.register.RegisterFragment" 
           android:id="@+id/registerFragment"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+      
+      <fragment android:name="bachelor.register.ForgotPwFragment" 
+          android:id="@+id/forgotPwFragment"
           android:layout_width="match_parent"
           android:layout_height="match_parent" />
 

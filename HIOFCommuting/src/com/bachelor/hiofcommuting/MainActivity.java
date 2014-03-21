@@ -167,6 +167,7 @@ public class MainActivity extends FragmentActivity {
 			// try to show the selection fragment
 			//showFragment(SELECTION, false);
 			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+			intent.putExtra("FACEBOOK_SESSION", session);
 			startActivity(intent);
 		} else {
 			// otherwise present the splash screen
