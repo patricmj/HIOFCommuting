@@ -4,5 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="bachelor.register.EmailLoginActivity"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+
+      <fragment android:name="bachelor.register.registerFragment" 
+          android:id="@+id/registerFragment"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+
+</FrameLayout>
 

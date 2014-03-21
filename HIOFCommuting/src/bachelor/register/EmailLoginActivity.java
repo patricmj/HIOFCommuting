@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,8 @@ import bachelor.tab.TabList;
 public class EmailLoginActivity extends FragmentActivity {
 	
 	protected int forsok = 5;
+	FragmentManager fm = getSupportFragmentManager();
+	FragmentTransaction transaction = fm.beginTransaction();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,12 @@ public class EmailLoginActivity extends FragmentActivity {
 		
 		setContentView(R.layout.activity_login);
 		if (savedInstanceState == null) {
-			FragmentManager fm = getSupportFragmentManager();
-			FragmentTransaction transaction = fm.beginTransaction();
+			fm = getSupportFragmentManager();
+			transaction = fm.beginTransaction();
 			transaction.add(R.id.container, new PlaceholderFragment());
+			
+			Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
+			transaction.hide(registerFragment);
 			transaction.commit();
 		}
 		
@@ -57,9 +63,20 @@ public class EmailLoginActivity extends FragmentActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			System.out.print("Settings");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onBackPressed() {
+	    FragmentManager fm = getSupportFragmentManager();
+	    if (fm.getBackStackEntryCount() > 0) {
+	        fm.popBackStack();
+	    } else {
+	        super.onBackPressed();
+	    }
 	}
 
 	// BRUKEREN TRYKKER PÅ KNAPPEN: LOGG INN
@@ -113,10 +130,13 @@ public class EmailLoginActivity extends FragmentActivity {
 
 	public void nybruker(View view) {
 		System.out.println("test nybruker text-click");
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
+		fm = getSupportFragmentManager();
+		transaction = fm.beginTransaction();
+		Fragment container = fm.findFragmentById(R.id.container);
+		transaction.hide(container);
 		Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
 		transaction.show(registerFragment);
+		transaction.addToBackStack(null);
 		transaction.commit();
 	}
 
@@ -174,20 +194,13 @@ public class EmailLoginActivity extends FragmentActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
+
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_login,
 					container, false);
-			FragmentManager fm = getFragmentManager();
-			
-			FragmentTransaction transaction = fm.beginTransaction();
-			Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
-			transaction.hide(registerFragment);
-			transaction.commit();
 			return rootView;
 		}
 	}
