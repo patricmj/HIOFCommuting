@@ -31,7 +31,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	protected int forsok = 5;
 	FragmentManager fm = getSupportFragmentManager();
 	FragmentTransaction transaction = fm.beginTransaction();
-	//private static final int CONTAINER = 2;
 	private static final int REGISTER = 0;
 	private static final int FORGOTPW = 1;
 	private Fragment[] fragments = new Fragment[2];
@@ -45,21 +44,13 @@ public class EmailLoginActivity extends FragmentActivity {
 			fm = getSupportFragmentManager();
 			transaction = fm.beginTransaction();
 			transaction.add(R.id.container, new PlaceholderFragment());
-			
-			//fragments[CONTAINER] = fm.findFragmentById(R.id.container);
+
 			fragments[REGISTER] = fm.findFragmentById(R.id.registerFragment);
 			fragments[FORGOTPW] = fm.findFragmentById(R.id.forgotPwFragment);
 			for (int i = 0; i < fragments.length; i++) {
 				transaction.hide(fragments[i]);
 			}
 			transaction.commit();
-			/*
-			Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
-			transaction.hide(registerFragment);
-			Fragment forgotPwFragment = fm.findFragmentById(R.id.forgotPwFragment);
-			transaction.hide(forgotPwFragment);
-			transaction.commit();
-			*/
 		}
 		
 	}
@@ -88,6 +79,8 @@ public class EmailLoginActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	//Overrider backbutton slik at forrige fragment synes.
+	//fungerer akkurat som en vanlig stack
 	@Override
 	public void onBackPressed() {
 	    FragmentManager fm = getSupportFragmentManager();
@@ -148,43 +141,21 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 
 	public void nybruker(View view) {
-		System.out.println("test nybruker text-click");
-		fm = getSupportFragmentManager();
-		transaction = fm.beginTransaction();
-		Fragment container = fm.findFragmentById(R.id.container);
-		transaction.hide(container);
-		Fragment registerFragment = fm.findFragmentById(R.id.registerFragment);
-		transaction.show(registerFragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-		//showFragment(REGISTER, true);
+		showFragment(R.id.registerFragment);
 	}
 
 	public void glemtpassord(View view) {
-		System.out.println("test glemtpassord text-click");
+		showFragment(R.id.forgotPwFragment);
+	}
+	
+	private void showFragment(int fragmentId) {
 		fm = getSupportFragmentManager();
 		transaction = fm.beginTransaction();
 		Fragment container = fm.findFragmentById(R.id.container);
 		transaction.hide(container);
-		Fragment forgotPwFragment = fm.findFragmentById(R.id.forgotPwFragment);
-		transaction.show(forgotPwFragment);
+		Fragment fragment = fm.findFragmentById(fragmentId);
+		transaction.show(fragment);
 		transaction.addToBackStack(null);
-		transaction.commit();
-	}
-	
-	private void showFragment(int fragmentIndex, boolean addToBackStack) {
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
-		for (int i = 0; i < fragments.length; i++) {
-			if (i == fragmentIndex) {
-				transaction.show(fragments[i]);
-			} else {
-				transaction.hide(fragments[i]);
-			}
-		}
-		if (addToBackStack) {
-			transaction.addToBackStack(null);
-		}
 		transaction.commit();
 	}
 
