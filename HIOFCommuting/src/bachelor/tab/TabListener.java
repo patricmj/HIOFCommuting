@@ -2,6 +2,7 @@ package bachelor.tab;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -53,8 +54,12 @@ public class TabListener extends FragmentActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			System.out.print("settings clicked");
+			System.out.print("Settings clicked");
 			return true;
+		}
+		if (id == R.id.newActivity){
+			Intent intent = new Intent(this, com.bachelor.hiofcommuting.MainActivity.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}

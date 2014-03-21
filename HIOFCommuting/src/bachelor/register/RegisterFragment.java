@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.bachelor.hiofcommuting.R;
 
-public class registerFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
