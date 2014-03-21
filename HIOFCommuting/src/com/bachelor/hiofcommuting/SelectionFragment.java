@@ -52,7 +52,7 @@ public class SelectionFragment extends Fragment {
 
 		try {
 			// Loading map
-			initilizeMap();
+			//initilizeMap();
 
 		} catch (Exception e) {
 			e.printStackTrace();
