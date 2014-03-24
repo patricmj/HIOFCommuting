@@ -2,6 +2,7 @@ package bachelor.register;
 
 import java.util.ArrayList;
 
+import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
 
 import android.app.ActionBar.TabListener;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
 import bachelor.tab.TabList;
@@ -31,9 +33,12 @@ public class EmailLoginActivity extends FragmentActivity {
 	protected int forsok = 5;
 	FragmentManager fm = getSupportFragmentManager();
 	FragmentTransaction transaction = fm.beginTransaction();
-	private static final int REGISTER = 0;
-	private static final int FORGOTPW = 1;
-	private Fragment[] fragments = new Fragment[2];
+	private static final int LOGIN = 0;
+	private static final int REGISTER = 1;
+	private static final int FORGOTPW = 2;
+	private static final int FINISH = 3;
+	private Fragment[] fragments = new Fragment[4];
+	TextView response;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +48,18 @@ public class EmailLoginActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			fm = getSupportFragmentManager();
 			transaction = fm.beginTransaction();
-			transaction.add(R.id.container, new PlaceholderFragment());
+			//transaction.add(R.id.container, new PlaceholderFragment());
 
+			fragments[LOGIN] = fm.findFragmentById(R.id.loginFragment);
 			fragments[REGISTER] = fm.findFragmentById(R.id.registerFragment);
 			fragments[FORGOTPW] = fm.findFragmentById(R.id.forgotPwFragment);
+			fragments[FINISH] = fm.findFragmentById(R.id.finishProfileFragment);
 			for (int i = 0; i < fragments.length; i++) {
 				transaction.hide(fragments[i]);
 			}
 			transaction.commit();
+			showFragment2(LOGIN, false);
+			response = (TextView)findViewById(R.id.resetPasswordResponse);
 		}
 		
 	}
@@ -87,6 +96,11 @@ public class EmailLoginActivity extends FragmentActivity {
 	    if (fm.getBackStackEntryCount() > 0) {
 	        fm.popBackStack();
 	    } else {
+	    	
+	    /*if(fragments[LOGIN].isVisible()) {
+	    	Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);*/
+	    
 	        super.onBackPressed();
 	    }
 	}
@@ -141,11 +155,43 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 
 	public void nybruker(View view) {
-		showFragment(R.id.registerFragment);
+		//showFragment(R.id.registerFragment);
+		showFragment2(REGISTER, true);
 	}
 
 	public void glemtpassord(View view) {
-		showFragment(R.id.forgotPwFragment);
+		response.setText("");
+		showFragment2(FORGOTPW, false);
+		//showFragment(R.id.forgotPwFragment);
+	}
+	
+	public void resetPasswordClicked(View view) {
+		//todo : send mail til hiof bruker med tilbakestilling...
+		response.setText("Du har fått en mail for tilbakestilling av passord");
+	}
+	
+	public void chooseProfilePic(View view) {
+		//todo : velg profilbilde fra album
+	}
+	
+	public void finishProfile(View view) {
+		showFragment2(FINISH,true);
+	}
+	
+	private void showFragment2(int fragmentIndex, boolean addToBackStack) {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction transaction = fm.beginTransaction();
+		for (int i = 0; i < fragments.length; i++) {
+			if (i == fragmentIndex) {
+				transaction.show(fragments[i]);
+			} else {
+				transaction.hide(fragments[i]);
+			}
+		}
+		if (addToBackStack) {
+			transaction.addToBackStack(null);
+		}
+		transaction.commit();
 	}
 	
 	private void showFragment(int fragmentId) {
@@ -207,6 +253,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
+	/*
 	public static class PlaceholderFragment extends Fragment {
 
 
@@ -218,5 +265,5 @@ public class EmailLoginActivity extends FragmentActivity {
 					container, false);
 			return rootView;
 		}
-	}
+	}*/
 }
