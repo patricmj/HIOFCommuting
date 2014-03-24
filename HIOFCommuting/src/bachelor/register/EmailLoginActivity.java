@@ -88,21 +88,20 @@ public class EmailLoginActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//Overrider backbutton slik at forrige fragment synes.
-	//fungerer akkurat som en vanlig stack
+	//Overrider backbutton
 	@Override
 	public void onBackPressed() {
-	    FragmentManager fm = getSupportFragmentManager();
-	    if (fm.getBackStackEntryCount() > 0) {
-	        fm.popBackStack();
-	    } else {
-	    	
-	    /*if(fragments[LOGIN].isVisible()) {
-	    	Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);*/
-	    
-	        super.onBackPressed();
-	    }
+	    fm = getSupportFragmentManager();
+	        
+	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
+	    	showFragment2(LOGIN, false);
+	    } 
+	    if(fragments[FINISH].isVisible()) {
+	    	showFragment2(REGISTER, false);
+	    } 
+	    if(fragments[LOGIN].isVisible()) {
+	    	super.onBackPressed(); //Oppf¿rer seg som normalt
+	    } 
 	}
 
 	// BRUKEREN TRYKKER PÅ KNAPPEN: LOGG INN
@@ -156,7 +155,7 @@ public class EmailLoginActivity extends FragmentActivity {
 
 	public void nybruker(View view) {
 		//showFragment(R.id.registerFragment);
-		showFragment2(REGISTER, true);
+		showFragment2(REGISTER, false);
 	}
 
 	public void glemtpassord(View view) {
@@ -175,12 +174,12 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 	
 	public void finishProfile(View view) {
-		showFragment2(FINISH,true);
+		showFragment2(FINISH, false);
 	}
 	
 	private void showFragment2(int fragmentIndex, boolean addToBackStack) {
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
+		fm = getSupportFragmentManager();
+		transaction = fm.beginTransaction();
 		for (int i = 0; i < fragments.length; i++) {
 			if (i == fragmentIndex) {
 				transaction.show(fragments[i]);
