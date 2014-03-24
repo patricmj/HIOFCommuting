@@ -1,13 +1,23 @@
 package bachelor.tab;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
+import bachelor.database.HandleUsersInMapAndList;
+import bachelor.user.User;
 
 import com.bachelor.hiofcommuting.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -78,21 +88,50 @@ public class TabMap extends Fragment {
 		googleMap = fragment.getMap();
 		
 		LatLng Hiÿ = new LatLng(59.129443, 11.352908);
-		LatLng greaker = new LatLng(59.26789, 11.03205);
-
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 8));
-
-		googleMap.addMarker(new MarkerOptions().title("GreÂker")
-				.snippet("Et h¯l").position(greaker));
-
-		googleMap.addMarker(new MarkerOptions().title("Hiÿ")
-				.snippet("Hiÿ Halden").position(Hiÿ));
-
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Hiÿ, 8));
+		new HentBrukere().execute();
+		
+		
 		// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 		// check if map is created successfully or not
 		if (googleMap == null) {
 			Toast.makeText(getActivity().getApplicationContext(),
 					"Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private class HentBrukere extends AsyncTask<Void, Void, List<User>> {
+		private ProgressDialog Dialog = new ProgressDialog(getActivity());
+		@Override
+	    protected void onPreExecute(){
+			Dialog.setMessage("Laster..");
+	       Dialog.show();
+	    }
+		
+		@Override
+		protected List<User> doInBackground(Void... params) {
+			try {
+				List<User> userList = new ArrayList<User>();
+				userList = HandleUsersInMapAndList.getAllUsers(getActivity());
+				return userList;
+			} catch (Exception e) {
+				Log.e("ITCRssReader", e.getMessage());
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<User> result) {
+			for(int i=0; i<result.size();i++){
+				String fornavn = result.get(i).getFornavn();
+				double lat = result.get(i).getLat();
+				double lon = result.get(i).getLon();
+				double avstand = result.get(i).getAvstand();
+				LatLng pos = new LatLng(lat, lon);
+				googleMap.addMarker(new MarkerOptions().title(fornavn)
+					.snippet(avstand+"km unna").position(pos));
+			}
+			Dialog.dismiss();
 		}
 	}
 

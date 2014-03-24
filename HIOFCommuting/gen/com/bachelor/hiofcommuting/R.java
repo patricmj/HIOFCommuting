@@ -421,7 +421,7 @@ containing a value of this type.
         public static final int icon=0x7f020043;
     }
     public static final class id {
-        public static final int action_settings=0x7f050041;
+        public static final int action_settings=0x7f050042;
         public static final int button1=0x7f050029;
         public static final int chooseProfilePicLayout=0x7f050037;
         public static final int com_facebook_login_activity_progress_bar=0x7f050012;
@@ -455,17 +455,18 @@ containing a value of this type.
         public static final int large=0x7f050006;
         public static final int lastName=0x7f050030;
         public static final int lastNametxt=0x7f05002f;
+        public static final int listview_list_users=0x7f05003b;
         public static final int loginFragment=0x7f050008;
-        public static final int login_button=0x7f050040;
+        public static final int login_button=0x7f050041;
         public static final int login_editText_email=0x7f050028;
         public static final int login_editText_passord=0x7f05002a;
-        public static final int map=0x7f05003b;
-        public static final int map2=0x7f05003d;
-        public static final int newActivity=0x7f050042;
+        public static final int map=0x7f05003c;
+        public static final int map2=0x7f05003e;
+        public static final int newActivity=0x7f050043;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int picker_subtitle=0x7f05001f;
-        public static final int profile_name=0x7f05003f;
+        public static final int profile_name=0x7f050040;
         public static final int registerFragment=0x7f050009;
         public static final int register_cameraLogo=0x7f050039;
         public static final int register_chooseProfilePic=0x7f050038;
@@ -480,10 +481,10 @@ containing a value of this type.
         public static final int resetPasswordbtn=0x7f050026;
         public static final int satellite=0x7f050002;
         public static final int selectionFragment=0x7f05000c;
-        public static final int selection_profile_pic=0x7f05003c;
+        public static final int selection_profile_pic=0x7f05003d;
         public static final int small=0x7f050005;
         public static final int splashFragment=0x7f05000d;
-        public static final int splash_icon=0x7f05003e;
+        public static final int splash_icon=0x7f05003f;
         public static final int terrain=0x7f050003;
         public static final int textView1=0x7f05002b;
         public static final int textView2=0x7f05002c;
