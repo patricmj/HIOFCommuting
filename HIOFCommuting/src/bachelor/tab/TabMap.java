@@ -93,7 +93,7 @@ public class TabMap extends Fragment {
 		
 		
 		// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		// check if map is created successfully or not
+		// check if map is created successfully or not hehe
 		if (googleMap == null) {
 			Toast.makeText(getActivity().getApplicationContext(),
 					"Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
