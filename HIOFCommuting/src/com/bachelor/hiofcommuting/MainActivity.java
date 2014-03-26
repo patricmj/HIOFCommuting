@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.register.EmailLoginActivity;
-import bachelor.tab.TabListener;
+import bachelor.tab.TabListenerActivity;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -142,7 +142,7 @@ public class MainActivity extends FragmentActivity {
 				// If the session state is open:
 				// Show the authenticated fragment
 				//showFragment(SELECTION, false);
-				Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+				Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 				startActivity(intent);
 			} else if (state.isClosed()) {
 				// If the session state is closed:
@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity {
 			// if the session is already open,
 			// try to show the selection fragment
 			//showFragment(SELECTION, false);
-			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			intent.putExtra("FACEBOOK_SESSION", session);
 			startActivity(intent);
 		} else {

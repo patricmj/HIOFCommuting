@@ -1,11 +1,16 @@
 package bachelor.tab;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -13,24 +18,25 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
-import bachelor.database.HandleUsersInMapAndList;
+import bachelor.database.HandleUsers;
 import bachelor.user.User;
 
 import com.bachelor.hiofcommuting.R;
+import com.bachelor.hiofcommuting.UserInformationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class TabMap extends Fragment {
+public class TabMapFragment extends Fragment implements OnInfoWindowClickListener{
 
 	private GoogleMap googleMap;
 	private SupportMapFragment fragment;
-	
+	private HashMap <String, User> hashMap = new HashMap <String, User>();
 	private MenuItem settings;
 
 	@Override
@@ -86,6 +92,7 @@ public class TabMap extends Fragment {
 			System.out.println("fragment er ikke null");
 		}
 		googleMap = fragment.getMap();
+		googleMap.setOnInfoWindowClickListener(this);
 		
 		LatLng Hiÿ = new LatLng(59.129443, 11.352908);
 		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Hiÿ, 8));
@@ -100,8 +107,18 @@ public class TabMap extends Fragment {
 		}
 	}
 	
+	@Override
+	public void onInfoWindowClick(Marker arg0) {
+		User valgtBruker = hashMap.get(arg0.getId());
+		
+		Intent intent = new Intent(getActivity(), UserInformationActivity.class);
+		intent.putExtra("bruker", valgtBruker);
+		startActivity(intent);
+	}
+	
 	private class HentBrukere extends AsyncTask<Void, Void, List<User>> {
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
+		
 		@Override
 	    protected void onPreExecute(){
 			Dialog.setMessage("Laster..");
@@ -112,7 +129,7 @@ public class TabMap extends Fragment {
 		protected List<User> doInBackground(Void... params) {
 			try {
 				List<User> userList = new ArrayList<User>();
-				userList = HandleUsersInMapAndList.getAllUsers(getActivity());
+				userList = HandleUsers.getAllUsers(getActivity());
 				return userList;
 			} catch (Exception e) {
 				Log.e("ITCRssReader", e.getMessage());
@@ -128,11 +145,11 @@ public class TabMap extends Fragment {
 				double lon = result.get(i).getLon();
 				double avstand = result.get(i).getAvstand();
 				LatLng pos = new LatLng(lat, lon);
-				googleMap.addMarker(new MarkerOptions().title(fornavn)
-					.snippet(avstand+"km unna").position(pos));
+				Marker marker = googleMap.addMarker(new MarkerOptions().title(fornavn)
+						.snippet(avstand+"km unna").position(pos));
+				hashMap.put(marker.getId(), result.get(i));
 			}
 			Dialog.dismiss();
 		}
 	}
-
 }

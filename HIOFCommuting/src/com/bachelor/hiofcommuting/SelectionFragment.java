@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import bachelor.tab.TabListener.PlaceholderFragment;
+import bachelor.tab.TabListenerActivity.PlaceholderFragment;
 
 import com.facebook.Request;
 import com.facebook.Response;

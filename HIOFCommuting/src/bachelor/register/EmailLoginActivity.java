@@ -25,7 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
-import bachelor.tab.TabList;
+import bachelor.tab.TabListFragment;
 
 
 public class EmailLoginActivity extends FragmentActivity {
@@ -82,7 +82,7 @@ public class EmailLoginActivity extends FragmentActivity {
 			return true;
 		}
 		if (id == R.id.newActivity){
-			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
@@ -143,7 +143,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	private void ValiderBrukerFerdig(String results) {
 		// Hvis brukernavn og passord stemte, logges brukeren inn
 		if (results == null) {
-			Intent intent = new Intent(this, bachelor.tab.TabListener.class);
+			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			startActivity(intent);
 			// avslutter denne aktiviteten, så den ikke ligger på stack
 			finish();

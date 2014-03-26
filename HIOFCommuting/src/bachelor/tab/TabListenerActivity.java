@@ -18,7 +18,7 @@ import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
 import com.facebook.Session;
 
-public class TabListener extends FragmentActivity implements
+public class TabListenerActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	@Override
@@ -111,19 +111,19 @@ public class TabListener extends FragmentActivity implements
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 
 		if (tab.getPosition() == 0){
-			Fragment tm = new TabMap();
+			Fragment tm = new TabMapFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tm).commit();
 			System.out.println("Map");
 		}
 		if (tab.getPosition() == 1) {
-			Fragment tl = new TabList();
+			Fragment tl = new TabListFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tl).commit();
 			System.out.println("Liste");
 		}
 		if (tab.getPosition() == 2) {
-			Fragment ti = new TabInbox();
+			Fragment ti = new TabInboxFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, ti).commit();
 			System.out.println("Inbox");

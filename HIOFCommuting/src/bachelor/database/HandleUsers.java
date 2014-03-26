@@ -11,11 +11,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import bachelor.user.User;
 
-public class HandleUsersInMapAndList {
+public class HandleUsers {
 
 	public static List<User> getAllUsers(Context context){
 		List<User> userList = new ArrayList<User>();
-		
 		String[] fornavn = {"Martin", "Patrick", "Arthur", "Chris", "Lars"};
 		//double[] lat = {};
 		//double[] lon = {};

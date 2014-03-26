@@ -1,6 +1,8 @@
 package bachelor.user;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 	private String fornavn;
 	private double lat;
 	private double lon;
@@ -102,5 +104,4 @@ public class User {
 	public void setBil(boolean bil) {
 		this.bil = bil;
 	}
-	
 }
