@@ -48,12 +48,64 @@
         android:gravity="center"
         android:inputType="number" />
     
-	<Spinner
-        android:id="@+id/institutionSpinner"
+    <LinearLayout
+        android:id="@+id/institutionWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp" 
         android:layout_below="@+id/postal"
-        android:entries="@array/institution_array"
-        android:prompt="@string/institution" />
+        android:weightSum="2">
+    
+	    <TextView
+	        android:id="@+id/institution"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:text="@string/institution"
+	        android:textSize="20sp" />
+	    
+		<Spinner
+		    android:id="@+id/institutionSpinner"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" />
+	
+	</LinearLayout>
+	
+    <LinearLayout
+        android:id="@+id/campusWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp" 
+        android:layout_below="@+id/institutionWrapper"
+        android:weightSum="2">
+    
+	    <TextView
+	        android:id="@+id/campus"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:text="@string/campus"
+	        android:textSize="20sp" />
+	    
+		<Spinner
+		    android:id="@+id/campusSpinner"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" />
+	
+	</LinearLayout>    
+	
+	<Button
+        android:id="@+id/finishbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:onClick="finishButtonClicked"
+        android:text="@string/finish" />
 
 </RelativeLayout>
