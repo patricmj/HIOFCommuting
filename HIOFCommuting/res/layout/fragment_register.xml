@@ -5,144 +5,133 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <TextView 
+    <TextView
         android:id="@+id/firstNametxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
         android:text="@string/firstname"
-        />
-    
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		android:layout_below="@+id/firstNametxt"
+        android:layout_below="@+id/firstNametxt"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPersonName"
-         />
-    
-    <TextView 
+        android:inputType="textPersonName" />
+
+    <TextView
         android:id="@+id/lastNametxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
-        android:text="@string/lastname"
         android:layout_below="@+id/firstName"
-        />    
-        
+        android:text="@string/lastname"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		android:layout_below="@+id/lastNametxt"
+        android:layout_below="@+id/lastNametxt"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPersonName"
-         />    
-         
-    <TextView 
+        android:inputType="textPersonName" />
+
+    <TextView
         android:id="@+id/register_emailtxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
-        android:text="@string/email"
         android:layout_below="@+id/lastName"
-        />    
-        
+        android:text="@string/email"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/register_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		android:layout_below="@+id/register_emailtxt"
+        android:layout_below="@+id/register_emailtxt"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textEmailAddress"
-         />        
-         
-    <TextView 
+        android:inputType="textEmailAddress" />
+
+    <TextView
         android:id="@+id/register_passwordtxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
-        android:text="@string/choosepassword"
         android:layout_below="@+id/register_email"
-        />    
-        
+        android:text="@string/choosepassword"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/register_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		android:layout_below="@+id/register_passwordtxt"
+        android:layout_below="@+id/register_passwordtxt"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPassword"
-         />           
-         
-    <TextView 
+        android:inputType="textPassword" />
+
+    <TextView
         android:id="@+id/register_repeatPasswordtxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
-        android:text="@string/repeatpassword"
         android:layout_below="@+id/register_password"
-        />    
-        
+        android:text="@string/repeatpassword"
+        android:textSize="20sp" />
+
     <EditText
         android:id="@+id/register_repeatPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		android:layout_below="@+id/register_repeatPasswordtxt"
+        android:layout_below="@+id/register_repeatPasswordtxt"
         android:ems="10"
         android:gravity="center"
-        android:inputType="textPassword"
-         />      
-         
-    <LinearLayout 
+        android:inputType="textPassword" />
+
+    <LinearLayout
         android:id="@+id/chooseProfilePicLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_repeatPassword">
-    
-	    <TextView 
-	        android:id="@+id/register_chooseProfilePic"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20sp"
-	        android:onClick="chooseProfilePic"
-	        android:text="@string/choosepicture"/>    
-	        
-	    <ImageView
-	        android:id="@+id/register_cameraLogo"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:src="@drawable/camera_logo"
-	        android:onClick="chooseProfilePic"
-	        android:contentDescription="@string/cameraimage" />
-      
+        android:layout_below="@+id/register_repeatPassword" >
+
+        <TextView
+            android:id="@+id/register_chooseProfilePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="chooseProfilePic"
+            android:text="@string/choosepicture"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/register_cameraLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/cameraimage"
+            android:onClick="chooseProfilePic"
+            android:src="@drawable/camera_logo" />
     </LinearLayout>
 
     <Button

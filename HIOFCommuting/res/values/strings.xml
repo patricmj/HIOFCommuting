@@ -33,4 +33,18 @@
     <string name="choosepicture">Velg profilbilde</string>
     <string name="cameraimage">Picture of a camera</string>
     <string name="next">Neste</string>
+    <string name="address">Min adresse</string>
+    <string name="postal">Postnummer</string>
+    <string name="institution">Institusjon</string>
+    <string name="campus">Studiested</string>
+    <string name="department">Avdeling</string>
+    <string name="study">Studie</string>
+    <string name="startingyear">Kull</string>
+    <string name="carquestion">Har du bil?</string>
+    <string name="readconditions">Jeg har lest og forstått betingelser</string>
+    <string name="finish">Fullfør</string>
+    <string-array name="institution_array">
+        <item>HiØ</item>
+        <item>HiB</item>
+    </string-array>
 </resources>

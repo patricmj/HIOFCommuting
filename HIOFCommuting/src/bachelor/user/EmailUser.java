@@ -13,8 +13,6 @@ public class EmailUser extends User{
 		this.epost = epost;
 		this.passord = passord;
 	}
-
-	
 	
 	public String getEpost() {
 		return epost;
