@@ -1,6 +1,7 @@
 package bachelor.register;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -21,14 +22,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
 import bachelor.tab.TabList;
 
 
-public class EmailLoginActivity extends FragmentActivity {
+public class EmailLoginActivity extends FragmentActivity implements OnItemSelectedListener {
 	
 	protected int forsok = 5;
 	FragmentManager fm = getSupportFragmentManager();
@@ -39,6 +44,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int FINISH = 3;
 	private Fragment[] fragments = new Fragment[4];
 	TextView response;
+	private Spinner institutionSpinner, campusSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,8 @@ public class EmailLoginActivity extends FragmentActivity {
 			transaction.commit();
 			showFragment2(LOGIN, false);
 			response = (TextView)findViewById(R.id.resetPasswordResponse);
+			getInstitutionData();
+			getCampusData();
 		}
 		
 	}
@@ -166,7 +174,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	
 	public void resetPasswordClicked(View view) {
 		//todo : send mail til hiof bruker med tilbakestilling...
-		response.setText("Du har fått en mail for tilbakestilling av passord");
+		response.setText("Du har faatt en mail for tilbakestilling av passord");
 	}
 	
 	public void chooseProfilePic(View view) {
@@ -175,6 +183,43 @@ public class EmailLoginActivity extends FragmentActivity {
 	
 	public void finishProfile(View view) {
 		showFragment2(FINISH, false);
+	}
+	
+	public void getInstitutionData() {
+		List<String> institutionList = new ArrayList<String>();
+		institutionList.add("Hiÿ");
+		institutionList.add("HiB");
+		institutionList.add("HiT");
+		addItemsOnSpinners(institutionList); 
+	}
+	
+	public void getCampusData() {
+		List<String> campusList = new ArrayList<String>();
+		campusList.add("R");
+		campusList.add("T");
+		campusSpinner = (Spinner) findViewById(R.id.campusSpinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, campusList);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		campusSpinner.setAdapter(adapter);
+	}
+	
+	public void addItemsOnSpinners(List institutionList) {
+		institutionSpinner = (Spinner) findViewById(R.id.institutionSpinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, institutionList);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		institutionSpinner.setAdapter(adapter);
+		//
+		addListener();
+	}
+	
+	public void addListener() {
+		institutionSpinner.setOnItemSelectedListener(this);
+	}
+	
+	public void finishButtonClicked(View view) {
+		Toast.makeText(EmailLoginActivity.this, 
+				"OnClickListener : " + 
+				"\n Spinner1 : " + String.valueOf(institutionSpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
 	}
 	
 	private void showFragment2(int fragmentIndex, boolean addToBackStack) {
@@ -247,6 +292,51 @@ public class EmailLoginActivity extends FragmentActivity {
 			Dialog.dismiss();
 		}
 
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+		String item = parent.getItemAtPosition(pos).toString();
+		int itemId = (int) parent.getItemIdAtPosition(pos);
+		
+		/*Toast.makeText(this, 
+				"OnItemSelectedListener : " + itemId,
+				Toast.LENGTH_SHORT).show();*/
+		
+		if(itemId == 0) {
+			List<String> campusList = new ArrayList<String>();
+			campusList.add("Remmen");
+			campusList.add("Kraakeroy");
+			
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_item, campusList);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			campusSpinner.setAdapter(adapter);
+		}
+		if(itemId == 1) {
+			List<String> campusList = new ArrayList<String>();
+			campusList.add("1 - H");
+			campusList.add("2 - H");
+			
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_item, campusList);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			campusSpinner.setAdapter(adapter);
+		}
+		if(itemId == 2) {
+			List<String> campusList = new ArrayList<String>();
+			campusList.add("1 - T");
+			campusList.add("2 - T");
+			
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(parent.getContext(), android.R.layout.simple_spinner_item, campusList);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			campusSpinner.setAdapter(adapter);
+		}
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
