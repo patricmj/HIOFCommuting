@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.bachelor.hiofcommuting.MainActivity;
-import com.bachelor.hiofcommuting.R;
-import com.google.android.gms.internal.ad;
-
-import android.app.ActionBar.TabListener;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +13,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -33,7 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
-//import bachelor.tab.TabList;
+
+import com.bachelor.hiofcommuting.R;
 
 
 public class EmailLoginActivity extends FragmentActivity {
@@ -156,9 +149,9 @@ public class EmailLoginActivity extends FragmentActivity {
 	private void ValiderBrukerFerdig(String results) {
 		// Hvis brukernavn og passord stemte, logges brukeren inn
 		if (results == null) {
-			//Intent intent = new Intent(this, bachelor.tab.TabListener.class);
-			//startActivity(intent);
-			// avslutter denne aktiviteten, så den ikke ligger på stack
+			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
+			startActivity(intent);
+			//avslutter denne aktiviteten, så den ikke ligger på stack
 			finish();
 		} else {
 			Toast.makeText(getApplicationContext(), results, Toast.LENGTH_SHORT)
