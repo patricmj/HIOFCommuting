@@ -12,8 +12,12 @@ import android.app.ActionBar.TabListener;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +33,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +50,10 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int REGISTER = 1;
 	private static final int FORGOTPW = 2;
 	private static final int FINISH = 3;
+	private static final int LOAD_IMAGE_RESULTS = 1;
 	private Fragment[] fragments = new Fragment[4];
 	TextView response;
+	ImageView choosenPic;
 	private Spinner institutionSpinner, campusSpinner, departmentSpinner, studySpinner, startingyearSpinner;
 	boolean userHaveCar = false;
 	boolean readConditions = false;
@@ -75,6 +82,7 @@ public class EmailLoginActivity extends FragmentActivity {
 			departmentSpinner = (Spinner) findViewById(R.id.departmentSpinner);
 			studySpinner = (Spinner) findViewById(R.id.studySpinner);
 			startingyearSpinner = (Spinner) findViewById(R.id.startingyearSpinner);
+			choosenPic = (ImageView) findViewById(R.id.choosenPictureView);
 			getInstitutionData();
 			addDataToStartingYearSpinner();
 		}
@@ -183,8 +191,30 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 	
 	public void chooseProfilePic(View view) {
-		//todo : velg profilbilde fra album
+		//Starter imagegalleriet
+		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		
+		startActivityForResult(intent, LOAD_IMAGE_RESULTS);
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode,
+            Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+        if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
+        	Uri pickedPicture = data.getData();
+        	String[] filePath = { MediaStore.Images.Media.DATA };
+        	
+        	Cursor cursor = getContentResolver().query(pickedPicture, filePath, null, null ,null);
+        	cursor.moveToFirst();
+        	
+        	String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+        	//choosenPic.setImageBitmap(BitmapFactory.decodeFile(imagePath));works
+        	
+        	
+        	cursor.close();
+        }
+    }
 	
 	public void finishProfile(View view) {
 		showFragment2(FINISH, false);
