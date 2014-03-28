@@ -5,10 +5,10 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="fbid">1397782713810671</string>
-	<string name="get_started">To get started, log in using Facebook</string>
-	<string name="settings">Settings</string>
-	<string name="fblogin">Facebook test</string>
-	<string name="login">Logg inn</string>
+    <string name="get_started">To get started, log in using Facebook</string>
+    <string name="settings">Settings</string>
+    <string name="fblogin">Facebook test</string>
+    <string name="login">Logg inn</string>
     <string name="epost">Epost</string>
     <string name="passord">Passord</string>
     <string name="nybruker">Ny bruker?</string>
@@ -43,8 +43,12 @@
     <string name="carquestion">Har du bil?</string>
     <string name="readconditions">Jeg har lest og forstått betingelser</string>
     <string name="finish">Fullfør</string>
+
     <string-array name="institution_array">
         <item>HiØ</item>
         <item>HiB</item>
     </string-array>
+
+    <string name="title_activity_user_information">UserInformationActivity</string>
+
 </resources>

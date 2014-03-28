@@ -29,20 +29,6 @@ public class User implements Serializable{
 		this.kull = kull;
 		this.bil = bil;
 	}
-	
-	
-	
-	
-	@Override
-	public String toString() {
-		return fornavn + ", lat=" + lat + ", lon=" + lon
-				+ ", avstand=" + avstand + ", institusjon=" + institusjon
-				+ ", studiested=" + studiested + ", avdeling=" + avdeling
-				+ ", studie=" + studie + ", kull=" + kull + ", bil=" + bil;
-	}
-
-
-
 
 	public String getFornavn() {
 		return fornavn;

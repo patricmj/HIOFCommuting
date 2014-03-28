@@ -1,5 +1,7 @@
 package com.bachelor.hiofcommuting;
 
+import java.text.DecimalFormat;
+
 import bachelor.user.User;
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,7 +27,9 @@ public class UserInformationActivity extends Activity {
 		
 		//Setter avstand til brukeren
 		lv = (TextView)findViewById(R.id.textView_avstand);
-		lv.setText("Avstand: "+valgtBruker.getAvstand()+"");
+		DecimalFormat df = new DecimalFormat("0.0");
+		String avstand = df.format(valgtBruker.getAvstand());
+		lv.setText("Avstand: "+avstand+"km");
 		
 		//Setter avdeling til brukeren
 		lv = (TextView)findViewById(R.id.textView_avdeling);

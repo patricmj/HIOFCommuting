@@ -3,12 +3,6 @@ package bachelor.tab;
 import java.util.ArrayList;
 import java.util.List;
 
-import bachelor.database.HandleUsers;
-import bachelor.user.User;
-
-import com.bachelor.hiofcommuting.R;
-import com.bachelor.hiofcommuting.UserInformationActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import bachelor.database.HandleUsers;
+import bachelor.user.User;
+
+import com.bachelor.hiofcommuting.R;
+import com.bachelor.hiofcommuting.UserInformationActivity;
 
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
@@ -80,10 +78,10 @@ public class TabListFragment extends Fragment {
 			if(result!=null){
 				// Get a ListView from main view
 				itcItems = (ListView) getView().findViewById(R.id.listview_list_users);
-	
+				
 				// Create a list adapter
-				ArrayAdapter<User> adapter = new ArrayAdapter<User>(getActivity(),
-						android.R.layout.simple_list_item_1, result);
+				CustomListView adapter = new CustomListView(getActivity(), result);
+				
 				// Set list adapter for the ListView
 				itcItems.setAdapter(adapter);
 				asyncTaskIsDone(result);
