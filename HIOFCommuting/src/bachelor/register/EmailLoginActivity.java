@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -71,13 +72,7 @@ public class EmailLoginActivity extends FragmentActivity {
 			transaction.commit();
 			showFragment2(LOGIN, false);
 			response = (TextView)findViewById(R.id.resetPasswordResponse);
-			campusSpinner = (Spinner) findViewById(R.id.campusSpinner);
-			departmentSpinner = (Spinner) findViewById(R.id.departmentSpinner);
-			studySpinner = (Spinner) findViewById(R.id.studySpinner);
-			startingyearSpinner = (Spinner) findViewById(R.id.startingyearSpinner);
-			choosenPic = (ImageView) findViewById(R.id.choosenPictureView);
-			getInstitutionData();
-			addDataToStartingYearSpinner();
+			choosenPic = (ImageView)findViewById(R.id.choosenPictureView);
 		}
 		
 	}
@@ -194,7 +189,7 @@ public class EmailLoginActivity extends FragmentActivity {
             Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-        if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
+		if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
         	Uri pickedPicture = data.getData();
         	String[] filePath = { MediaStore.Images.Media.DATA };
         	
@@ -202,8 +197,21 @@ public class EmailLoginActivity extends FragmentActivity {
         	cursor.moveToFirst();
         	
         	String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-        	//choosenPic.setImageBitmap(BitmapFactory.decodeFile(imagePath));works
+        	choosenPic.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+        	//Bitmap bm = BitmapFactory.decodeFile(imagePath);
+        	//int width = bm.getWidth();
+        	//int height = bm.getHeight();
+        	////System.out.println("width : " + width + " height : " + height);
+        	//if(width < 4096 && height < 4096){
+        		//choosenPic.setImageBitmap(bm);
+        	//}
+        	//else {
+        	//	Toast.makeText(this, "For stort bilde", Toast.LENGTH_SHORT).show();
+        	//}
         	
+        	//Bitmap src = BitmapFactory.decodeFile(imagePath);
+        	//Bitmap rezised = Bitmap.createBitmap(src, 0,0,1000,1000);
+        	//choosenPic.setImageBitmap(src);
         	
         	cursor.close();
         }
@@ -214,262 +222,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 	
 	//Finishprofilefragment start
-	
-	public void addDataToStartingYearSpinner() {
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		List<Integer> startingYearList = new ArrayList<Integer>();
-		for(int i = 0; i < 6; i++) {
-			startingYearList.add(year-i);
-		}
-		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, startingYearList);
-		startingyearSpinner.setAdapter(adapter);
-	}
-	
-	public void getInstitutionData() {
-		List<String> institutionList = new ArrayList<String>();
-		institutionList.add("HiØ");
-		institutionList.add("HiSF");
-		addItemsOnSpinner(institutionList); 
-	}
-	
-	public void addItemsOnSpinner(List institutionList) {
-		institutionSpinner = (Spinner) findViewById(R.id.institutionSpinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, institutionList);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		institutionSpinner.setAdapter(adapter);
-		addInstitutionSpinnerListener();
-		addCampusSpinnerListener();
-		addDepartmentSpinnerListener();
-	}
-	
-	public void addInstitutionSpinnerListener() {
-		institutionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView,
-					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> campusList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item,campusList);
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-				switch (itemId) {
-				case 0:// HiØ
-					campusList.add("Halden");
-					campusList.add("Fredrikstad");
-
-					campusSpinner.setAdapter(adapter);
-					break;
-
-				case 1:// HiSF
-					campusList.add("Sogndal");
-					campusList.add("Førde");
-
-					campusSpinner.setAdapter(adapter);
-					break;
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-	}
-	
-	public void addCampusSpinnerListener() {
-		campusSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parentView,
-					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> departmentList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item, departmentList);
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				
-				if(institutionSpinner.getSelectedItem().equals("HiØ")){
-					switch (itemId) {
-					case 0://Remmen
-						departmentList.add("IT");
-						departmentList.add("Lærerutdanning");
-						departmentList.add("Økonomi");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Kraakeroy
-						departmentList.add("Ingeniør");
-						departmentList.add("Helse- og sosialfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(institutionSpinner.getSelectedItem().equals("HiSF")) {
-					switch (itemId) {
-					case 0://Songdal
-						departmentList.add("Naturfag");
-						departmentList.add("Lærerutdanning");
-						departmentList.add("Samfunnsfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Førde
-						departmentList.add("Helse- og sosialfag");
-						departmentList.add("Ingeniørfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-					}
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-	}
-	
-	public void addDepartmentSpinnerListener() {
-		departmentSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parentView,
-					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> studyList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item, studyList);
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				
-				if(campusSpinner.getSelectedItem().equals("Halden")){
-					switch (itemId) {
-					case 0://IT
-						studyList.add("Informatikk");
-						studyList.add("Digital medieproduksjon");
-						studyList.add("Dataingeniør");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://LU
-						studyList.add("Grunnskolelærer 1-7");
-						studyList.add("Grunnskolelærer 5-10");
-						studyList.add("Barnehagelærer");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-						
-					case 2://ØSS
-						studyList.add("Revisjon og regnskap");
-						studyList.add("Økonomi og administrasjon");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(campusSpinner.getSelectedItem().equals("Fredrikstad")) {
-					switch (itemId) {
-					case 0://Ingeniør
-						studyList.add("Byggingeniør");
-						studyList.add("Bioingeniør");
-						studyList.add("Innovasjon og prosjektledelse");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://HS
-						studyList.add("Barnevern");
-						studyList.add("Vernepleie");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(campusSpinner.getSelectedItem().equals("Sogndal")){
-					switch (itemId) {
-					case 0://Naturfag
-						studyList.add("Fornybar energi");
-						studyList.add("Geologi og geofare");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Lærerutdanning
-						studyList.add("Grunnskolelærer 1-7");
-						studyList.add("Grunnskolelærer 5-10");
-						studyList.add("Barnehagelærer");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-						
-					case 2://Samfunnsfag
-						studyList.add("Historie");
-						studyList.add("Sosiologi");
-						studyList.add("Samfunnsfag");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(campusSpinner.getSelectedItem().equals("Førde")) {
-					switch (itemId) {
-					case 0://HS
-						studyList.add("Barnevern");
-						studyList.add("Sykepleie");
-						studyList.add("Vernepleie");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Ingeniør
-						studyList.add("Ingeniør elektro - energi, elkraft og miljø");
-						studyList.add("Ingeniør elektro - automatiseringsteknikk");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-	}
-	
-	public void carQuestionChecked(View view) {
-	    boolean checked = ((CheckBox) view).isChecked();
-
-	    switch(view.getId()) {
-	        case R.id.carqstCheckBox:
-	            if (checked){
-	            	userHaveCar = true;
-	            }
-	            else{
-	            	userHaveCar = false;
-	            }
-	            break;
-	    }
-	}
-	
-	public void readConditionsCheckBox(View view) {
-		boolean checked = ((CheckBox) view).isChecked();
-		
-		switch(view.getId()) {
-        case R.id.readConditionsCheckBox:
-            if (checked){
-            	readConditions = true;
-            }
-            else{
-            	readConditions = false;
-            }
-            break;
-    }
-	}
 	
 	public void finishButtonClicked(View view) {
 		String car;

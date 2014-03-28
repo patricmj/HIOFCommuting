@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
 	private static final int FRAGMENT_COUNT = SETTINGS + 1;
 	private boolean isResumed = false;
 	private MenuItem settings;
-
+//
 	private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
 	@Override
