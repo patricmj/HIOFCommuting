@@ -1,14 +1,11 @@
 package bachelor.register;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,13 +18,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
@@ -58,7 +50,6 @@ public class EmailLoginActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			fm = getSupportFragmentManager();
 			transaction = fm.beginTransaction();
-			//transaction.add(R.id.container, new PlaceholderFragment());
 
 			fragments[LOGIN] = fm.findFragmentById(R.id.loginFragment);
 			fragments[REGISTER] = fm.findFragmentById(R.id.registerFragment);
@@ -262,21 +253,4 @@ public class EmailLoginActivity extends FragmentActivity {
 		}
 
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	/*
-	public static class PlaceholderFragment extends Fragment {
-
-
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_login,
-					container, false);
-			return rootView;
-		}
-	}*/
 }

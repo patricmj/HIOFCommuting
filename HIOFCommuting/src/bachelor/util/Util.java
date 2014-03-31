@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 
 public class Util {
 	
-
 	public static void showFragment(int fragmentIndex, FragmentManager fm, Fragment[] fragments) {
 		FragmentTransaction transaction = fm.beginTransaction();
 		for (int i = 0; i < fragments.length; i++) {
