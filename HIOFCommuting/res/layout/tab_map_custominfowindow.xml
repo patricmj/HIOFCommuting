@@ -5,7 +5,7 @@
     android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/imageView_tabMap_profilbilde"
+        android:id="@+id/imageView_tabMap_profilePic"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:contentDescription="TODO"
@@ -18,7 +18,7 @@
         android:layout_marginLeft="5dp" >
 
         <TextView
-            android:id="@+id/textView_tabMap_navn"
+            android:id="@+id/textView_tabMap_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -27,7 +27,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView_tabMap_avdeling"
+            android:id="@+id/textView_tabMap_department"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -36,7 +36,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textView_tabMap_avstand"
+            android:id="@+id/textView_tabMap_distance"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"

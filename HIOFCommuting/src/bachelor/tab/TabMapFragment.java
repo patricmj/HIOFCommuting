@@ -66,8 +66,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	    }
 	    else{
 	    	initilizeMap();
-	    	System.out.println("What");
-	    	}
+	    }
 		/*try {
 			initilizeMap();
 		} catch (Exception e) {
@@ -106,31 +105,31 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 			
 			@Override
 			public View getInfoContents(Marker arg0){
-				View v = inflater.inflate(R.layout.tab_map_custominfowindow, null);
-				String fornavn = hashMap.get(arg0.getId()).getFornavn();
+				View view = inflater.inflate(R.layout.tab_map_custominfowindow, null);
+				String firstName = hashMap.get(arg0.getId()).getFirstName();
 				DecimalFormat df = new DecimalFormat("0.0");
-				String avstand = df.format(hashMap.get(arg0.getId()).getAvstand());
-				String avdeling = hashMap.get(arg0.getId()).getAvdeling();
-				String institusjon = hashMap.get(arg0.getId()).getInstitusjon();
+				String distance = df.format(hashMap.get(arg0.getId()).getDistance());
+				String department = hashMap.get(arg0.getId()).getDepartment();
+				String institution = hashMap.get(arg0.getId()).getInstitution();
 				
-				ImageView profilbilde = (ImageView) v.findViewById(R.id.imageView_tabMap_profilbilde);
-				TextView view1 = (TextView)v.findViewById(R.id.textView_tabMap_navn);
-				TextView view2 = (TextView)v.findViewById(R.id.textView_tabMap_avstand);
-				TextView view3 = (TextView)v.findViewById(R.id.textView_tabMap_avdeling);
+				ImageView profilePic = (ImageView) view.findViewById(R.id.imageView_tabMap_profilePic);
+				TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
+				TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
+				TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
 				
-				profilbilde.setImageResource(R.drawable.com_facebook_profile_default_icon);
-				view1.setText(fornavn);
+				profilePic.setImageResource(R.drawable.com_facebook_profile_default_icon);
+				nameTxt.setText(firstName);
 				
-				view2.setText("Bor "+avstand+"km vekk fra din adresse");
-				view3.setText("Studerer på "+avdeling+" ved "+institusjon);
-				return v;
+				distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
+				departmentTxt.setText("Studerer på "+department+" ved "+institution);
+				return view;
 			
 			}
 		});
 		
-		LatLng HiØ = new LatLng(59.129443, 11.352908);
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HiØ, 8));
-		new HentBrukere().execute();
+		LatLng hiof = new LatLng(59.129443, 11.352908);
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hiof, 8));
+		new GetUsers().execute();
 		
 		
 		
@@ -144,14 +143,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	
 	@Override
 	public void onInfoWindowClick(Marker arg0) {
-		User valgtBruker = hashMap.get(arg0.getId());
+		User selectedUser = hashMap.get(arg0.getId());
 		
 		Intent intent = new Intent(getActivity(), UserInformationActivity.class);
-		intent.putExtra("bruker", valgtBruker);
+		intent.putExtra("bruker", selectedUser);
 		startActivity(intent);
 	}
 	
-	private class HentBrukere extends AsyncTask<Void, Void, List<User>> {
+	private class GetUsers extends AsyncTask<Void, Void, List<User>> {
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		
 		@Override
@@ -175,14 +174,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		@Override
 		protected void onPostExecute(List<User> result) {
 			for(int i=0; i<result.size();i++){
-				String fornavn = result.get(i).getFornavn();
+				String firstName = result.get(i).getFirstName();
 				double lat = result.get(i).getLat();
 				double lon = result.get(i).getLon();
 				DecimalFormat df = new DecimalFormat("0.0");
-				String avstand = df.format(result.get(i).getAvstand());
+				String distance = df.format(result.get(i).getDistance());
 				LatLng pos = new LatLng(lat, lon);
-				Marker marker = googleMap.addMarker(new MarkerOptions().title(fornavn)
-						.snippet("Bor "+avstand+"km fra din adresse").position(pos));
+				Marker marker = googleMap.addMarker(new MarkerOptions().title(firstName)
+						.snippet("Bor "+distance+"km fra din adresse").position(pos));
 				hashMap.put(marker.getId(), result.get(i));
 			}
 			Dialog.dismiss();

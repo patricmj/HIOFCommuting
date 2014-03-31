@@ -36,9 +36,9 @@ public class TabListenerActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// for each of the sections in the app, add a tab to the action bar.
-		actionBar.addTab(actionBar.newTab().setText(R.string.tab_kart)
+		actionBar.addTab(actionBar.newTab().setText(R.string.tab_map)
 				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText(R.string.tab_liste)
+		actionBar.addTab(actionBar.newTab().setText(R.string.tab_list)
 				.setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText(R.string.tab_inbox)
 				.setTabListener(this));

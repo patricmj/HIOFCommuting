@@ -16,12 +16,12 @@
         android:layout_marginTop="63dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/epost"
+        android:hint="@string/email"
         android:text="martino@hiof.no"
         android:inputType="textEmailAddress" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_editText_passord"
@@ -40,33 +40,33 @@
         android:ems="10"
         android:gravity="center"
         android:text="passord"
-        android:hint="@string/passord"
+        android:hint="@string/password"
         android:inputType="textPassword" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/newUserTxtBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
         android:clickable="true"
-        android:onClick="nybruker"
-        android:text="@string/nybruker"
+        android:onClick="newUserClicked"
+        android:text="@string/newuser"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold|italic" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/forgotPasswordTxtBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/newUserTxtBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:clickable="true"
-        android:onClick="glemtpassord"
-        android:text="@string/glemtpassord"
+        android:onClick="forgotPasswordClicked"
+        android:text="@string/forgotpassword"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/holo_blue_light"
         android:textStyle="bold|italic" />

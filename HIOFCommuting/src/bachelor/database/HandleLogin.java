@@ -6,18 +6,18 @@ public class HandleLogin {
 
 	// SJEKK OM EPOST FINNES I BRUKERDATABASEN (tabell for alternative brukere) test
 	public static boolean checkEmail(String str) {
-		String epost = "martino@hiof.no";
-		if (epost.equals(str))
+		String email = "martino@hiof.no";
+		if (email.equals(str))
 			return true;
 		return false;
 	}
 
 	// SJEKK AT PASSORD STEMMER OVERENS MED EPOST (tabell for alternative
 	// brukere)test commment
-	public static boolean checkPassord(String epost, String passord) {
+	public static boolean checkPassord(String email, String password) {
 		String un = "martino@hiof.no";
 		String pw = "passord";
-		if (passord.equals(pw) && epost.equals(un))
+		if (password.equals(pw) && email.equals(un))
 			return true;
 		return false;
 	}
@@ -27,12 +27,12 @@ public class HandleLogin {
 		// Random tall 0 eller 1 for å illustrere random feilmelding. Byttes ut
 		// med fail/false for sending av epost
 		Random r = new Random();
-		int feilmelding;
-		feilmelding = r.nextInt(1);
+		int error;
+		error = r.nextInt(1);
 
-		if (feilmelding == 0) {
+		if (error == 0) {
 			return true;
-		} else if (feilmelding == 1) {
+		} else if (error == 1) {
 			return false;
 		}
 		return false;

@@ -16,12 +16,12 @@ import android.widget.TextView;
 
 public class CustomListView extends ArrayAdapter<User>{
 	private final Context context;
-	private final List<User> objects;
+	private final List<User> userObjects;
 
-	public CustomListView(Context context, List<User> objects) {
-		super(context, R.layout.tab_list_customrow, objects);
+	public CustomListView(Context context, List<User> userObjects) {
+		super(context, R.layout.tab_list_customrow, userObjects);
 		this.context = context;
-		this.objects = objects;
+		this.userObjects = userObjects;
 	}
 
 	@Override
@@ -29,17 +29,17 @@ public class CustomListView extends ArrayAdapter<User>{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.tab_list_customrow, parent, false);
 		
-		ImageView profilbilde = (ImageView) rowView.findViewById(R.id.imageView_tabList_profilbilde);
-		TextView navn = (TextView) rowView.findViewById(R.id.textView_tabList_navn);
-		TextView avstand = (TextView) rowView.findViewById(R.id.textView_tabList_avstand);
-		TextView avdeling = (TextView) rowView.findViewById(R.id.textView_tabList_avdeling);
+		ImageView profilePic = (ImageView) rowView.findViewById(R.id.imageView_tabList_profilePic);
+		TextView nameTxt = (TextView) rowView.findViewById(R.id.textView_tabList_name);
+		TextView distanceTxt = (TextView) rowView.findViewById(R.id.textView_tabList_distance);
+		TextView departmentTxt = (TextView) rowView.findViewById(R.id.textView_tabList_department);
 		
-		profilbilde.setImageResource(R.drawable.com_facebook_profile_default_icon);
-		navn.setText(objects.get(position).getFornavn());
+		profilePic.setImageResource(R.drawable.com_facebook_profile_default_icon);
+		nameTxt.setText(userObjects.get(position).getFirstName());
 		DecimalFormat df = new DecimalFormat("0.0");
-		String avstandFormatert = df.format(objects.get(position).getAvstand());
-		avstand.setText("Bor "+avstandFormatert+"km fra din adresse");
-		avdeling.setText("Studerer "+objects.get(position).getAvdeling()+" på "+objects.get(position).getInstitusjon());
+		String formattedDistance = df.format(userObjects.get(position).getDistance());
+		distanceTxt.setText("Bor "+formattedDistance+"km fra din adresse");
+		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" på "+userObjects.get(position).getInstitution());
 	
 		return rowView;
 	}

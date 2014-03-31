@@ -3,38 +3,38 @@ package bachelor.user;
 import java.io.Serializable;
 
 public class User implements Serializable{
-	private String fornavn;
+	private String firstName;
 	private double lat;
 	private double lon;
-	private double avstand;
-	private String institusjon;
-	private String studiested;
-	private String avdeling;
-	private String studie;
-	private int kull;
-	private boolean bil;
+	private double distance;
+	private String institution;
+	private String campus;
+	private String department;
+	private String study;
+	private int startingYear;
+	private boolean car;
 	
-	public User(String fornavn, double lat, double lon, double avstand,
-			String institusjon, String studiested, String avdeling,
-			String studie, int kull, boolean bil) {
+	public User(String firstName, double lat, double lon, double distance,
+			String institution, String campus, String department,
+			String study, int startingYear, boolean car) {
 		super();
-		this.fornavn = fornavn;
+		this.firstName = firstName;
 		this.lat = lat;
 		this.lon = lon;
-		this.avstand = avstand;
-		this.institusjon = institusjon;
-		this.studiested = studiested;
-		this.avdeling = avdeling;
-		this.studie = studie;
-		this.kull = kull;
-		this.bil = bil;
+		this.distance = distance;
+		this.institution = institution;
+		this.campus = campus;
+		this.department = department;
+		this.study = study;
+		this.startingYear = startingYear;
+		this.car = car;
 	}
 
-	public String getFornavn() {
-		return fornavn;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setFornavn(String fornavn) {
-		this.fornavn = fornavn;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 	public double getLat() {
 		return lat;
@@ -48,46 +48,46 @@ public class User implements Serializable{
 	public void setLon(double lon) {
 		this.lon = lon;
 	}
-	public double getAvstand() {
-		return avstand;
+	public double getDistance() {
+		return distance;
 	}
-	public void setAvstand(double avstand) {
-		this.avstand = avstand;
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
-	public String getInstitusjon() {
-		return institusjon;
+	public String getInstitution() {
+		return institution;
 	}
-	public void setInstitusjon(String institusjon) {
-		this.institusjon = institusjon;
+	public void setInstitution(String institusjon) {
+		this.institution = institusjon;
 	}
-	public String getStudiested() {
-		return studiested;
+	public String getCampus() {
+		return campus;
 	}
-	public void setStudiested(String studiested) {
-		this.studiested = studiested;
+	public void setCampus(String campus) {
+		this.campus = campus;
 	}
-	public String getAvdeling() {
-		return avdeling;
+	public String getDepartment() {
+		return department;
 	}
-	public void setAvdeling(String avdeling) {
-		this.avdeling = avdeling;
+	public void setDepartment(String department) {
+		this.department = department;
 	}
-	public String getStudie() {
-		return studie;
+	public String getStudy() {
+		return study;
 	}
-	public void setStudie(String studie) {
-		this.studie = studie;
+	public void setStudy(String study) {
+		this.study = study;
 	}
-	public int getKull() {
-		return kull;
+	public int getStartingYear() {
+		return startingYear;
 	}
-	public void setKull(int kull) {
-		this.kull = kull;
+	public void setStartingYear(int startingYear) {
+		this.startingYear = startingYear;
 	}
-	public boolean isBil() {
-		return bil;
+	public boolean userHasCar() {
+		return car;
 	}
-	public void setBil(boolean bil) {
-		this.bil = bil;
+	public void setCar(boolean car) {
+		this.car = car;
 	}
 }

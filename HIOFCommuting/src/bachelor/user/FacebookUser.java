@@ -4,11 +4,11 @@ public class FacebookUser extends User {
 
 	private String facebookid;
 
-	public FacebookUser(String fornavn, double lat, double lon, double avstand,
-			String institusjon, String studiested, String avdeling,
-			String studie, int kull, boolean bil, String facebookid) {
-		super(fornavn, lat, lon, avstand, institusjon, studiested, avdeling, studie,
-				kull, bil);
+	public FacebookUser(String firstName, double lat, double lon, double distance,
+			String institution, String campus, String department,
+			String study, int startingYear, boolean car, String facebookid) {
+		super(firstName, lat, lon, distance, institution, campus, department, study,
+				startingYear, car);
 		this.facebookid = facebookid;
 	}
 

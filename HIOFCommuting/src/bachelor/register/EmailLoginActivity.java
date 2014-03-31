@@ -37,7 +37,7 @@ import com.bachelor.hiofcommuting.R;
 
 public class EmailLoginActivity extends FragmentActivity {
 	
-	protected int forsok = 5;
+	protected int attempts = 5;
 	FragmentManager fm = getSupportFragmentManager();
 	FragmentTransaction transaction = fm.beginTransaction();
 	private static final int LOGIN = 0;
@@ -116,23 +116,23 @@ public class EmailLoginActivity extends FragmentActivity {
 	// BRUKEREN TRYKKER PÅ KNAPPEN: LOGG INN
 	public void buttonLogin(View view) {
 		// Henter brukerinput
-		String epost = ((EditText) findViewById(R.id.login_editText_email))
+		String email = ((EditText) findViewById(R.id.login_editText_email))
 				.getText().toString();
-		String passord = ((EditText) findViewById(R.id.login_editText_passord))
+		String password = ((EditText) findViewById(R.id.login_editText_passord))
 				.getText().toString();
 
 		// Forbereder toast-melding
 		CharSequence toastMessage = null;
 
 		// Sjekker om brukeren har fyllt inn data
-		if (!epost.isEmpty() && !passord.isEmpty()) {
+		if (!email.isEmpty() && !password.isEmpty()) {
 			// Sjekker om brukeren har prøvd å logge inn med feil passord for
 			// mange ganger
-			if (forsok > 0) {
-				ArrayList<String> brukerInput = new ArrayList<String>();
-				brukerInput.add(epost);
-				brukerInput.add(passord);
-				new ValiderBruker().execute(brukerInput);
+			if (attempts > 0) {
+				ArrayList<String> userInput = new ArrayList<String>();
+				userInput.add(email);
+				userInput.add(password);
+				new ValidateUser().execute(userInput);
 			} else {
 				toastMessage = "Glemt passord?";
 			}
@@ -162,12 +162,12 @@ public class EmailLoginActivity extends FragmentActivity {
 		}
 	}
 
-	public void nybruker(View view) {
+	public void newUserClicked(View view) {
 		//showFragment(R.id.registerFragment);
 		showFragment2(REGISTER, false);
 	}
 
-	public void glemtpassord(View view) {
+	public void forgotPasswordClicked(View view) {
 		response.setText("");
 		showFragment2(FORGOTPW, false);
 		//showFragment(R.id.forgotPwFragment);
@@ -178,7 +178,7 @@ public class EmailLoginActivity extends FragmentActivity {
 		response.setText("Du har faatt en mail for tilbakestilling av passord");
 	}
 	
-	public void chooseProfilePic(View view) {
+	public void chooseProfilePicClicked(View view) {
 		//Starter imagegalleriet
 		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		
@@ -217,7 +217,7 @@ public class EmailLoginActivity extends FragmentActivity {
         }
     }
 	
-	public void finishProfile(View view) {
+	public void finishProfileClicked(View view) {
 		showFragment2(FINISH, false);
 	}
 	
@@ -283,7 +283,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	 * @author Martin Validerer brukerinput opp mot database. Kjøres i AsyncTask
 	 *         da dette er en tyngre oppgave.
 	 */
-	private class ValiderBruker extends
+	private class ValidateUser extends
 			AsyncTask<ArrayList<String>, Void, String> {
 
 		private ProgressDialog Dialog = new ProgressDialog(
@@ -307,7 +307,7 @@ public class EmailLoginActivity extends FragmentActivity {
 					// Brukeren logget inn
 					return null;
 				} else {
-					return "Feil brukernavn/passord. " + (--forsok)
+					return "Feil brukernavn/passord. " + (--attempts)
 							+ " forsøk igjen.";
 				}
 			} else {

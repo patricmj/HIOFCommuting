@@ -14,38 +14,38 @@
         android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
 
     <TextView
-        android:id="@+id/textView_avstand"
+        android:id="@+id/textView_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageView_profilePicture"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
-        android:id="@+id/textView_avdeling"
+        android:id="@+id/textView_department"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_avstand"
+        android:layout_below="@id/textView_distance"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
-        android:id="@+id/textView_studie"
+        android:id="@+id/textView_study"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_avdeling"
+        android:layout_below="@id/textView_department"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
-        android:id="@+id/textView_kull"
+        android:id="@+id/textView_startingYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_studie"
+        android:layout_below="@id/textView_study"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
-        android:id="@+id/textView_bil"
+        android:id="@+id/textView_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_kull"
+        android:layout_below="@id/textView_startingYear"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

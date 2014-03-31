@@ -16,44 +16,44 @@ public class HandleUsers {
 
 	public static List<User> getAllUsers(Context context) {
 		if (userList.isEmpty()) {
-			String[] fornavn = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
+			String[] firstName = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
 			// double[] lat = {};
 			// double[] lon = {};
 			// double[] avstand = {};
-			String institusjon = "Hiÿ";
-			String studiested = "Remmen";
-			String avdeling = "IT";
-			String studie = "Informatikk";
-			int kull = 2011;
-			boolean bil = true;
+			String institution = "Hiÿ";
+			String campus = "Remmen";
+			String department = "IT";
+			String study = "Informatikk";
+			int startingYear = 2011;
+			boolean car = true;
 
 			Geocoder coder = new Geocoder(context);
-			List<Address> address;
-			String adresse[] = { "Bodalsvei 1", "Nye tindlundvei 24b",
+			List<Address> addressList;
+			String address[] = { "Bodalsvei 1", "Nye tindlundvei 24b",
 					"Likollveien 56", "Skjebergveien 122", "Nedre langgate 89" };
-			int postnr[] = { 1743, 1718, 1781, 1743, 1743 };
+			int postalCode[] = { 1743, 1718, 1781, 1743, 1743 };
 			double myLat = 59.129443;
 			double myLon = 11.352908;
-			for (int i = 0; i < adresse.length; i++) {
+			for (int i = 0; i < address.length; i++) {
 				double lat = 0;
 				double lon = 0;
 				try {
-					address = coder.getFromLocationName(adresse[i] + ","
-							+ postnr[i], 1);
-					Address location = address.get(0);
+					addressList = coder.getFromLocationName(address[i] + ","
+							+ postalCode[i], 1);
+					Address location = addressList.get(0);
 					lat = location.getLatitude();
 					lon = location.getLongitude();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				double avstand = distFrom(myLat, myLon, lat, lon);
-				userList.add(new User(fornavn[i], lat, lon, avstand,
-						institusjon, studiested, avdeling, studie, kull, bil));
+				double distance = distFrom(myLat, myLon, lat, lon);
+				userList.add(new User(firstName[i], lat, lon, distance,
+						institution, campus, department, study, startingYear, car));
 			}
 
 			Collections.sort(userList, new Comparator<User>() {
 				public int compare(User s1, User s2) {
-					return Double.compare(s1.getAvstand(), s2.getAvstand());
+					return Double.compare(s1.getDistance(), s2.getDistance());
 				}
 			});
 		} else {

@@ -23,29 +23,29 @@ public class UserInformationActivity extends Activity {
 		User valgtBruker = (User)getIntent().getSerializableExtra("bruker");
 		
 		//Setter tittel på activity til navnet på user-objekt
-		setTitle(valgtBruker.getFornavn());
+		setTitle(valgtBruker.getFirstName());
 		
 		//Setter avstand til brukeren
-		lv = (TextView)findViewById(R.id.textView_avstand);
+		lv = (TextView)findViewById(R.id.textView_distance);
 		DecimalFormat df = new DecimalFormat("0.0");
-		String avstand = df.format(valgtBruker.getAvstand());
+		String avstand = df.format(valgtBruker.getDistance());
 		lv.setText("Avstand: "+avstand+"km");
 		
 		//Setter avdeling til brukeren
-		lv = (TextView)findViewById(R.id.textView_avdeling);
-		lv.setText("Avdeling: "+valgtBruker.getAvdeling());
+		lv = (TextView)findViewById(R.id.textView_department);
+		lv.setText("Avdeling: "+valgtBruker.getDepartment());
 	
 		//Setter studie til brukeren
-		lv = (TextView)findViewById(R.id.textView_studie);
-		lv.setText("Studie: "+valgtBruker.getStudie());
+		lv = (TextView)findViewById(R.id.textView_study);
+		lv.setText("Studie: "+valgtBruker.getStudy());
 		
 		//Setter kull til brukeren
-		lv = (TextView)findViewById(R.id.textView_kull);
-		lv.setText("Kull: "+valgtBruker.getKull());
+		lv = (TextView)findViewById(R.id.textView_startingYear);
+		lv.setText("Kull: "+valgtBruker.getStartingYear());
 		
 		//Setter om brukeren har bil
-		lv = (TextView)findViewById(R.id.textView_bil);
-		if(valgtBruker.isBil()){
+		lv = (TextView)findViewById(R.id.textView_car);
+		if(valgtBruker.userHasCar()){
 			lv.setText("Bil: Ja");
 		}else{
 			lv.setText("Bil: Nei");

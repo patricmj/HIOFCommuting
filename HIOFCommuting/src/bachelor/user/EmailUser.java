@@ -1,30 +1,30 @@
 package bachelor.user;
 
 public class EmailUser extends User{
-	private String epost;
-	private String passord;
+	private String email;
+	private String password;
 	
 	
-	public EmailUser(String fornavn, double lat, double lon, double avstand,
-			String institusjon, String studiested, String avdeling,
-			String studie, int kull, boolean bil, String epost, String passord) {
-		super(fornavn, lat, lon, avstand, institusjon, studiested, avdeling, studie,
-				kull, bil);
-		this.epost = epost;
-		this.passord = passord;
+	public EmailUser(String firstName, double lat, double lon, double distance,
+			String institution, String campus, String department,
+			String study, int startingYear, boolean car, String email, String password) {
+		super(firstName, lat, lon, distance, institution, campus, department, study,
+				startingYear, car);
+		this.email = email;
+		this.password = password;
 	}
 	
-	public String getEpost() {
-		return epost;
+	public String getEmail() {
+		return email;
 	}
-	public void setEpost(String epost) {
-		this.epost = epost;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getPassord() {
-		return passord;
+	public String getPassword() {
+		return password;
 	}
-	public void setPassord(String passord) {
-		this.passord = passord;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

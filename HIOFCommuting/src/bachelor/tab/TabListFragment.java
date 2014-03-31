@@ -45,9 +45,9 @@ public class TabListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				User valgtBruker = result.get(position);
+				User selectedUser = result.get(position);
 				Intent intent = new Intent(getActivity(), UserInformationActivity.class);
-				intent.putExtra("bruker", valgtBruker);
+				intent.putExtra("bruker", selectedUser);
 				startActivity(intent);
 			}
 		});
