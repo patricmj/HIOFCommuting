@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class HandleLogin {
 
-	// SJEKK OM EPOST FINNES I BRUKERDATABASEN (tabell for alternative brukere)
+	// SJEKK OM EPOST FINNES I BRUKERDATABASEN (tabell for alternative brukere) test
 	public static boolean checkEmail(String str) {
 		String epost = "martino@hiof.no";
 		if (epost.equals(str))
