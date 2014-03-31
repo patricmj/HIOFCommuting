@@ -14,13 +14,16 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bachelor.hiofcommuting.R;
@@ -29,6 +32,8 @@ public class FinishProfileFragment extends Fragment {
 	
 	ImageView choosenPic;
 	private Spinner institutionSpinner, campusSpinner, departmentSpinner, studySpinner, startingyearSpinner;
+	private CheckBox carQstCheckBox, readConditionsCheckBox;
+	private Button finishButton;
 	boolean userHaveCar = false;
 	boolean readConditions = false;
 	private static final int LOAD_IMAGE_RESULTS = 1;
@@ -49,6 +54,10 @@ public class FinishProfileFragment extends Fragment {
 		studySpinner = (Spinner) getView().findViewById(R.id.studySpinner);
 		startingyearSpinner = (Spinner) getView().findViewById(R.id.startingyearSpinner);
 		choosenPic = (ImageView) getView().findViewById(R.id.choosenPictureView);
+		carQstCheckBox = (CheckBox) getView().findViewById(R.id.carqstCheckBox);
+		readConditionsCheckBox = (CheckBox) getView().findViewById(R.id.readConditionsCheckBox);
+		finishButton = (Button) getView().findViewById(R.id.finishbtn);
+		addOnClickListeners();
 		getInstitutionData();
 		addDataToStartingYearSpinner();
 	}
@@ -81,6 +90,77 @@ public class FinishProfileFragment extends Fragment {
 		addInstitutionSpinnerListener();
 		addCampusSpinnerListener();
 		addDepartmentSpinnerListener();
+	}
+	
+	public void addOnClickListeners() {
+		//CarQuestion
+		carQstCheckBox.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View view) {
+				boolean checked = ((CheckBox) view).isChecked();
+
+			    switch(view.getId()) {
+			        case R.id.carqstCheckBox:
+			            if (checked){
+			            	userHaveCar = true;
+			            }
+			            else{
+			            	userHaveCar = false;
+			            }
+			            break;
+			    }
+			}
+		});
+		//ReadConditions
+		readConditionsCheckBox.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+					boolean checked = ((CheckBox) view).isChecked();
+					
+					switch(view.getId()) {
+			        case R.id.readConditionsCheckBox:
+			            if (checked){
+			            	readConditions = true;
+			            }
+			            else{
+			            	readConditions = false;
+			            }
+			            break;
+					}
+			}
+		});
+		//FinishButton
+		finishButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+					String car;
+					String conditions;
+					if(userHaveCar){
+						car = "Ja";
+					}
+					else{
+						car = "Nei";
+					}
+					if(readConditions){
+						conditions = "Ja";
+					}
+					else {
+						conditions = "Nei";
+					}
+					Toast.makeText(getActivity(), 
+							"OnClickListener : " + 
+							"\n Institusjon : " + String.valueOf(institutionSpinner.getSelectedItem()) +
+							"\n Studiested : " + String.valueOf(campusSpinner.getSelectedItem()) + 
+							"\n Avdeling : " + String.valueOf(departmentSpinner.getSelectedItem()) +
+							"\n Studie : " + String.valueOf(studySpinner.getSelectedItem()) + 
+							"\n Kull : " + String.valueOf(startingyearSpinner.getSelectedItem()) +
+							"\n Bil? : " + car +
+							"\n Betingelser godkjent? : " + conditions
+							, Toast.LENGTH_SHORT).show();
+				}
+		});
 	}
 	
 	public void addInstitutionSpinnerListener() {
@@ -279,36 +359,6 @@ public class FinishProfileFragment extends Fragment {
 				// TODO Auto-generated method stub
 			}
 		});
-	}
-	
-	public void carQuestionChecked(View view) {
-	    boolean checked = ((CheckBox) view).isChecked();
-
-	    switch(view.getId()) {
-	        case R.id.carqstCheckBox:
-	            if (checked){
-	            	userHaveCar = true;
-	            }
-	            else{
-	            	userHaveCar = false;
-	            }
-	            break;
-	    }
-	}
-	
-	public void readConditionsCheckBox(View view) {
-		boolean checked = ((CheckBox) view).isChecked();
-		
-		switch(view.getId()) {
-        case R.id.readConditionsCheckBox:
-            if (checked){
-            	readConditions = true;
-            }
-            else{
-            	readConditions = false;
-            }
-            break;
-		}
 	}
 
 }

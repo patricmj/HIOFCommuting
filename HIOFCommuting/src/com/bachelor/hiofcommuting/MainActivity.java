@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import bachelor.register.EmailLoginActivity;
 import bachelor.tab.TabListenerActivity;
+import bachelor.util.Util;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -24,7 +25,8 @@ public class MainActivity extends FragmentActivity {
 	private static final int FRAGMENT_COUNT = SETTINGS + 1;
 	private boolean isResumed = false;
 	private MenuItem settings;
-//
+	FragmentManager fm = getSupportFragmentManager();
+
 	private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
 	@Override
@@ -36,7 +38,7 @@ public class MainActivity extends FragmentActivity {
 
 		setContentView(R.layout.activity_main);
 
-		FragmentManager fm = getSupportFragmentManager();
+		//FragmentManager fm = getSupportFragmentManager();
 		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
 		fragments[SELECTION] = fm.findFragmentById(R.id.selectionFragment);
 		fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
@@ -69,15 +71,6 @@ public class MainActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}*/
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.equals(settings)) {
-			showFragment(SETTINGS, true);
-			return true;
-		}
-		return false;
-	}
 
 	@Override
 	public void onResume() {
@@ -111,22 +104,6 @@ public class MainActivity extends FragmentActivity {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	private void showFragment(int fragmentIndex, boolean addToBackStack) {
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
-		for (int i = 0; i < fragments.length; i++) {
-			if (i == fragmentIndex) {
-				transaction.show(fragments[i]);
-			} else {
-				transaction.hide(fragments[i]);
-			}
-		}
-		if (addToBackStack) {
-			transaction.addToBackStack(null);
-		}
-		transaction.commit();
-	}
-
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
 		// Only make changes if the activity is visible
@@ -147,7 +124,8 @@ public class MainActivity extends FragmentActivity {
 			} else if (state.isClosed()) {
 				// If the session state is closed:
 				// Show the login fragment
-				showFragment(SPLASH, false);
+				//showFragment(SPLASH, false);
+				Util.showFragment(SPLASH,fm,fragments);
 			}
 		}
 	}
@@ -172,7 +150,8 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
-			showFragment(SPLASH, false);
+			//showFragment(SPLASH, false);
+			Util.showFragment(SPLASH, fm, fragments);
 		}
 	}
 

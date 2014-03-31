@@ -31,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
+import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;
 
@@ -48,9 +49,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	private Fragment[] fragments = new Fragment[4];
 	TextView response;
 	ImageView choosenPic;
-	private Spinner institutionSpinner, campusSpinner, departmentSpinner, studySpinner, startingyearSpinner;
-	boolean userHaveCar = false;
-	boolean readConditions = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,7 @@ public class EmailLoginActivity extends FragmentActivity {
 				transaction.hide(fragments[i]);
 			}
 			transaction.commit();
-			showFragment2(LOGIN, false);
+			Util.showFragment(LOGIN,fm,fragments);
 			response = (TextView)findViewById(R.id.resetPasswordResponse);
 			choosenPic = (ImageView)findViewById(R.id.choosenPictureView);
 		}
@@ -103,10 +101,10 @@ public class EmailLoginActivity extends FragmentActivity {
 	    fm = getSupportFragmentManager();
 	        
 	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
-	    	showFragment2(LOGIN, false);
+	    	Util.showFragment(LOGIN, fm, fragments);
 	    } 
 	    if(fragments[FINISH].isVisible()) {
-	    	showFragment2(REGISTER, false);
+	    	Util.showFragment(REGISTER, fm, fragments);
 	    } 
 	    if(fragments[LOGIN].isVisible()) {
 	    	super.onBackPressed(); //Oppf¿rer seg som normalt
@@ -163,14 +161,12 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 
 	public void newUserClicked(View view) {
-		//showFragment(R.id.registerFragment);
-		showFragment2(REGISTER, false);
+		Util.showFragment(REGISTER, fm, fragments);
 	}
 
 	public void forgotPasswordClicked(View view) {
 		response.setText("");
-		showFragment2(FORGOTPW, false);
-		//showFragment(R.id.forgotPwFragment);
+		Util.showFragment(FORGOTPW, fm, fragments);
 	}
 	
 	public void resetPasswordClicked(View view) {
@@ -218,65 +214,9 @@ public class EmailLoginActivity extends FragmentActivity {
     }
 	
 	public void finishProfileClicked(View view) {
-		showFragment2(FINISH, false);
+		Util.showFragment(FINISH, fm,fragments);
 	}
 	
-	//Finishprofilefragment start
-	
-	public void finishButtonClicked(View view) {
-		String car;
-		String conditions;
-		if(userHaveCar){
-			car = "Ja";
-		}
-		else{
-			car = "Nei";
-		}
-		if(readConditions){
-			conditions = "Ja";
-		}
-		else {
-			conditions = "Nei";
-		}
-		Toast.makeText(EmailLoginActivity.this, 
-				"OnClickListener : " + 
-				"\n Institusjon : " + String.valueOf(institutionSpinner.getSelectedItem()) +
-				"\n Studiested : " + String.valueOf(campusSpinner.getSelectedItem()) + 
-				"\n Avdeling : " + String.valueOf(departmentSpinner.getSelectedItem()) +
-				"\n Studie : " + String.valueOf(studySpinner.getSelectedItem()) + 
-				"\n Kull : " + String.valueOf(startingyearSpinner.getSelectedItem()) +
-				"\n Bil? : " + car +
-				"\n Betingelser godkjent? : " + conditions
-				, Toast.LENGTH_SHORT).show();
-	}
-	
-	//Finishprofilefragment end
-	private void showFragment2(int fragmentIndex, boolean addToBackStack) {
-		fm = getSupportFragmentManager();
-		transaction = fm.beginTransaction();
-		for (int i = 0; i < fragments.length; i++) {
-			if (i == fragmentIndex) {
-				transaction.show(fragments[i]);
-			} else {
-				transaction.hide(fragments[i]);
-			}
-		}
-		if (addToBackStack) {
-			transaction.addToBackStack(null);
-		}
-		transaction.commit();
-	}
-	
-	private void showFragment(int fragmentId) {
-		fm = getSupportFragmentManager();
-		transaction = fm.beginTransaction();
-		Fragment container = fm.findFragmentById(R.id.container);
-		transaction.hide(container);
-		Fragment fragment = fm.findFragmentById(fragmentId);
-		transaction.show(fragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
 
 	/**
 	 * 
