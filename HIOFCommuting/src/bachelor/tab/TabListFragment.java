@@ -48,9 +48,9 @@ public class TabListFragment extends Fragment {
 		testText = (TextView) getView().findViewById(R.id.testText);
 		testText.setText("text endret");
 		Intent i = getActivity().getIntent();
-		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
-		System.out.println("Session i tablist " + session);
-		makeMeRequest(session);
+		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");		
+		System.out.println("Session i tablist " + session.getState());
+		makeMeRequest(Session.getActiveSession());
 		//Intent i = getIntent();
 		//session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
 		
@@ -72,7 +72,7 @@ public class TabListFragment extends Fragment {
 								//profilePictureView.setProfileId(user.getId());
 								//fbObj = user;
 								//testText = (TextView) findViewById(R.id.testText);
-								testText.setText(user.getFirstName());
+								testText.setText(user.getFirstName() +" " + user.getLastName().toString() + " "+user.getId());
 							}
 							else {
 								System.out.println("User er null");
