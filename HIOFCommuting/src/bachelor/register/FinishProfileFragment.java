@@ -44,8 +44,6 @@ public class FinishProfileFragment extends Fragment {
 		return inflater.inflate(R.layout.fragment_finish_profile, container, false);
 	}
 	
-	
-	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -61,8 +59,6 @@ public class FinishProfileFragment extends Fragment {
 		getInstitutionData();
 		addDataToStartingYearSpinner();
 	}
-
-
 
 	public void addDataToStartingYearSpinner() {
 		Calendar calendar = Calendar.getInstance();
@@ -82,7 +78,7 @@ public class FinishProfileFragment extends Fragment {
 		addItemsOnSpinner(institutionList); 
 	}
 	
-	public void addItemsOnSpinner(List institutionList) {
+	public void addItemsOnSpinner(List<String> institutionList) {
 		institutionSpinner = (Spinner) getView().findViewById(R.id.institutionSpinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, institutionList);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

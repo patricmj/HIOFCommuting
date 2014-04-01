@@ -137,13 +137,6 @@
             android:onClick="chooseProfilePicClicked"
             android:src="@drawable/camera_logo" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/choosenPictureView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/chooseProfilePicLayout"
-        android:src="@drawable/ic_launcher" />
     
     <Button
         android:id="@+id/register_next"
@@ -153,6 +146,16 @@
         android:layout_below="@+id/choosenPictureView"
         android:onClick="finishProfileClicked"
         android:text="@string/next" />
+
+    <ImageView
+        android:id="@+id/choosenPictureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chooseProfilePicLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:contentDescription="@string/profilepic"
+        android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>
 </ScrollView>

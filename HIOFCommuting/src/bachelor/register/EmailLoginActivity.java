@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
@@ -37,10 +32,8 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int REGISTER = 1;
 	private static final int FORGOTPW = 2;
 	private static final int FINISH = 3;
-	private static final int LOAD_IMAGE_RESULTS = 1;
 	private Fragment[] fragments = new Fragment[4];
 	TextView response;
-	ImageView choosenPic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +54,7 @@ public class EmailLoginActivity extends FragmentActivity {
 			transaction.commit();
 			Util.showFragment(LOGIN,fm,fragments);
 			response = (TextView)findViewById(R.id.resetPasswordResponse);
-			choosenPic = (ImageView)findViewById(R.id.choosenPictureView);
 		}
-		
 	}
 	
 	@Override
@@ -86,7 +77,6 @@ public class EmailLoginActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//Overrider backbutton
 	@Override
 	public void onBackPressed() {
 	    fm = getSupportFragmentManager();
@@ -164,45 +154,6 @@ public class EmailLoginActivity extends FragmentActivity {
 		//todo : send mail til hiof bruker med tilbakestilling...
 		response.setText("Du har faatt en mail for tilbakestilling av passord");
 	}
-	
-	public void chooseProfilePicClicked(View view) {
-		//Starter imagegalleriet
-		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		
-		startActivityForResult(intent, LOAD_IMAGE_RESULTS);
-	}
-	
-	protected void onActivityResult(int requestCode, int resultCode,
-            Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
-        	Uri pickedPicture = data.getData();
-        	String[] filePath = { MediaStore.Images.Media.DATA };
-        	
-        	Cursor cursor = getContentResolver().query(pickedPicture, filePath, null, null ,null);
-        	cursor.moveToFirst();
-        	
-        	String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-        	choosenPic.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-        	//Bitmap bm = BitmapFactory.decodeFile(imagePath);
-        	//int width = bm.getWidth();
-        	//int height = bm.getHeight();
-        	////System.out.println("width : " + width + " height : " + height);
-        	//if(width < 4096 && height < 4096){
-        		//choosenPic.setImageBitmap(bm);
-        	//}
-        	//else {
-        	//	Toast.makeText(this, "For stort bilde", Toast.LENGTH_SHORT).show();
-        	//}
-        	
-        	//Bitmap src = BitmapFactory.decodeFile(imagePath);
-        	//Bitmap rezised = Bitmap.createBitmap(src, 0,0,1000,1000);
-        	//choosenPic.setImageBitmap(src);
-        	
-        	cursor.close();
-        }
-    }
 	
 	public void finishProfileClicked(View view) {
 		Util.showFragment(FINISH, fm,fragments);
