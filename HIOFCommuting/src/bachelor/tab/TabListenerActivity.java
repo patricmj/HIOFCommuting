@@ -13,22 +13,40 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.model.GraphUser;
 
 public class TabListenerActivity extends FragmentActivity implements
 		ActionBar.TabListener {
-
+	
+	TextView testText;
+	GraphUser fbObj;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tab_listener);
-
+		
+		Intent i = getIntent();
+		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
+		System.out.print("Activity Session " + session);
+		Bundle arguments = new Bundle();
+		arguments.putSerializable("FACEBOOK_SESSION", session);
+		
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			//getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment().setArguments(arguments)).commit();
+			FragmentManager fm = getSupportFragmentManager();
+			FragmentTransaction transaction = fm.beginTransaction();
+			PlaceholderFragment pf = new PlaceholderFragment();
+			pf.setArguments(arguments);
+			transaction.add(R.id.container, pf);
 		}
 
 		// Set up the action bar to show tabs.
@@ -43,14 +61,22 @@ public class TabListenerActivity extends FragmentActivity implements
 		actionBar.addTab(actionBar.newTab().setText(R.string.tab_inbox)
 				.setTabListener(this));
 		
-		Intent i = getIntent();
-		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
 		if(session != null && session.isOpened()){
 			System.out.println("logget inn");
-			FragmentManager fm = getSupportFragmentManager();
+			/*FragmentManager fm = getSupportFragmentManager();
 			fm.findFragmentById(R.id.userSettingsFragment);
 			FragmentTransaction transaction = fm.beginTransaction();
-			transaction.commit();
+			transaction.commit();*/
+			
+			makeMeRequest(session);
+			if(fbObj != null){
+				System.out.println(fbObj.getFirstName());
+				testText.setText(fbObj.getFirstName());
+			}
+			else
+			{
+				System.out.println("fb obj er null");
+			}
 		}else{
 			System.out.println("ikke logget inn");
 		}
@@ -89,6 +115,33 @@ public class TabListenerActivity extends FragmentActivity implements
 		startActivity(intent);
 		finish();
 	}
+	
+	public void makeMeRequest(final Session session) {
+		// Make an API call to get user data and define a
+		// new callback to handle the response.
+		Request request = Request.newMeRequest(session,
+				new Request.GraphUserCallback() {
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						// If the response is successful
+						if (session == Session.getActiveSession()) {
+							if (user != null) {
+								// Set the id for the ProfilePictureView
+								// view that in turn displays the profile
+								// picture.
+								//profilePictureView.setProfileId(user.getId());
+								//fbObj = user;
+								//testText = (TextView) findViewById(R.id.testText);
+								testText.setText(fbObj.getFirstName());
+							}
+						}
+						if (response.getError() != null) {
+							// Handle errors, will do so later.
+						}
+					}
+				});
+		request.executeAsync();
+	}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -103,6 +156,8 @@ public class TabListenerActivity extends FragmentActivity implements
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_tab_listener,
 					container, false);
+			Session session = (Session)savedInstanceState.get("FACEBOOK_SESSION");
+			System.out.println("Placeholder Session " + session);
 			return rootView;
 		}
 	}

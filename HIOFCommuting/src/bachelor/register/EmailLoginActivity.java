@@ -1,7 +1,9 @@
 package bachelor.register;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +36,8 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int FINISH = 3;
 	private Fragment[] fragments = new Fragment[4];
 	TextView response;
-
+	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +55,7 @@ public class EmailLoginActivity extends FragmentActivity {
 				transaction.hide(fragments[i]);
 			}
 			transaction.commit();
-			Util.showFragment(LOGIN,fm,fragments);
+			Util.showFragment(LOGIN,fm,fragments, "Logg inn", weakActivity);
 			response = (TextView)findViewById(R.id.resetPasswordResponse);
 		}
 	}
@@ -82,10 +85,10 @@ public class EmailLoginActivity extends FragmentActivity {
 	    fm = getSupportFragmentManager();
 	        
 	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
-	    	Util.showFragment(LOGIN, fm, fragments);
+	    	Util.showFragment(LOGIN, fm, fragments, "Logg inn", weakActivity);
 	    } 
 	    if(fragments[FINISH].isVisible()) {
-	    	Util.showFragment(REGISTER, fm, fragments);
+	    	Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	    } 
 	    if(fragments[LOGIN].isVisible()) {
 	    	super.onBackPressed(); //Oppf¿rer seg som normalt
@@ -142,12 +145,12 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 
 	public void newUserClicked(View view) {
-		Util.showFragment(REGISTER, fm, fragments);
+		Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	}
 
 	public void forgotPasswordClicked(View view) {
 		response.setText("");
-		Util.showFragment(FORGOTPW, fm, fragments);
+		Util.showFragment(FORGOTPW, fm, fragments, "Glemt passord", weakActivity);
 	}
 	
 	public void resetPasswordClicked(View view) {
@@ -156,7 +159,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 	
 	public void finishProfileClicked(View view) {
-		Util.showFragment(FINISH, fm,fragments);
+		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
 	}
 	
 
@@ -165,6 +168,8 @@ public class EmailLoginActivity extends FragmentActivity {
 	 * @author Martin Validerer brukerinput opp mot database. Kjøres i AsyncTask
 	 *         da dette er en tyngre oppgave.
 	 */
+
+	
 	private class ValidateUser extends
 			AsyncTask<ArrayList<String>, Void, String> {
 

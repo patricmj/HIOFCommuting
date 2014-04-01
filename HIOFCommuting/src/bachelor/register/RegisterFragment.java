@@ -35,7 +35,7 @@ public class RegisterFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		cameraLogo = (ImageView) getView().findViewById(R.id.register_cameraLogo);
-		//next = (Button) getView().findViewById(R.id.register_next);
+		next = (Button) getView().findViewById(R.id.register_next);
 		choosenPic = (ImageView) getView().findViewById(R.id.choosenPictureView);
 		addOnClickListeners();
 	}

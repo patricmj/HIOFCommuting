@@ -1,5 +1,8 @@
 package com.bachelor.hiofcommuting;
 
+import java.lang.ref.WeakReference;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +29,7 @@ public class MainActivity extends FragmentActivity {
 	private boolean isResumed = false;
 	private MenuItem settings;
 	FragmentManager fm = getSupportFragmentManager();
-
+	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 	private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
 	@Override
@@ -118,14 +121,14 @@ public class MainActivity extends FragmentActivity {
 			if (state.isOpened()) {
 				// If the session state is open:
 				// Show the authenticated fragment
-				//showFragment(SELECTION, false);
+				//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
 				Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 				startActivity(intent);
 			} else if (state.isClosed()) {
 				// If the session state is closed:
 				// Show the login fragment
 				//showFragment(SPLASH, false);
-				Util.showFragment(SPLASH,fm,fragments);
+				Util.showFragment(SPLASH,fm,fragments, "HIOFCommuting" , weakActivity);
 			}
 		}
 	}
@@ -143,15 +146,15 @@ public class MainActivity extends FragmentActivity {
 		if (session != null && session.isOpened()) {
 			// if the session is already open,
 			// try to show the selection fragment
-			//showFragment(SELECTION, false);
+			//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
 			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			intent.putExtra("FACEBOOK_SESSION", session);
-			startActivity(intent);
+			//startActivity(intent);
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
 			//showFragment(SPLASH, false);
-			Util.showFragment(SPLASH, fm, fragments);
+			Util.showFragment(SPLASH, fm, fragments, "HIOFCommuting", weakActivity);
 		}
 	}
 

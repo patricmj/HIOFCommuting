@@ -39,8 +39,7 @@ public class SelectionFragment extends Fragment {
 		View view = inflater.inflate(R.layout.selection, container, false);
 
 		// Find the user's profile picture custom view
-		profilePictureView = (ProfilePictureView) view
-				.findViewById(R.id.selection_profile_pic);
+		profilePictureView = (ProfilePictureView) view.findViewById(R.id.selection_profile_pic);
 		profilePictureView.setCropped(true);
 
 		// Check for an open session
@@ -50,50 +49,13 @@ public class SelectionFragment extends Fragment {
 			makeMeRequest(session);
 		}
 
-		try {
-			// Loading map
-			//initilizeMap();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return view;
-	}
-
-	private void initilizeMap() {
-		if (googleMap == null) {
-			googleMap = ((SupportMapFragment) getFragmentManager()
-					.findFragmentById(R.id.map2)).getMap();
-			// googleMap = ((MapFragment)
-			// getFragmentManager().findFragmentById(R.id.map)).getMap();
-			// googleMap = ((SupportMapFragment)
-			// getFragmentManager().findFragmentById(R.id.map)).getMap();
-		}
-		LatLng Hiÿ = new LatLng(59.129443, 11.352908);
-		LatLng greaker = new LatLng(59.26789, 11.03205);
-
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(greaker, 10));
-
-		googleMap.addMarker(new MarkerOptions().title("GreÂker")
-				.snippet("Et h¯l").position(greaker));
-
-		googleMap.addMarker(new MarkerOptions().title("Hiÿ")
-				.snippet("Hiÿ Halden").position(Hiÿ));
-
-		// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		// check if map is created successfully or not
-		if (googleMap == null) {
-			Toast.makeText(getActivity().getApplicationContext(),
-					"Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	private void makeMeRequest(final Session session) {
 		// Make an API call to get user data and define a
 		// new callback to handle the response.
-		Request request = Request.newMeRequest(session,
-				new Request.GraphUserCallback() {
+		Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
 						// If the response is successful

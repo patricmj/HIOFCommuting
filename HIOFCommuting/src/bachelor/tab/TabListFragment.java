@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import bachelor.database.HandleUsers;
 import bachelor.user.User;
+import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
@@ -24,6 +26,7 @@ import com.bachelor.hiofcommuting.UserInformationActivity;
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
 	private List<User> userList = new ArrayList<User>();
+	private TextView testText;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +36,14 @@ public class TabListFragment extends Fragment {
 				false);
 		return rootView;
 	}
-	
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		testText = (TextView) getView().findViewById(R.id.testText);
+		testText.setText("text endret");
+	}
+
 	@Override
 	public void onResume(){
 		super.onResume();
