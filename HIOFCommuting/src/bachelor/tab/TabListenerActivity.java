@@ -28,6 +28,7 @@ public class TabListenerActivity extends FragmentActivity implements
 	
 	TextView testText;
 	GraphUser fbObj;
+	Session session = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,8 @@ public class TabListenerActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_tab_listener);
 		
 		Intent i = getIntent();
-		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
+		session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
+		
 		System.out.print("Activity Session " + session);
 		Bundle arguments = new Bundle();
 		arguments.putSerializable("FACEBOOK_SESSION", session);
@@ -62,6 +64,13 @@ public class TabListenerActivity extends FragmentActivity implements
 				.setTabListener(this));
 		
 		if(session != null && session.isOpened()){
+			System.out.println("session 2 er ok");
+		}
+		else {
+			System.out.println("session 2 er fucked");
+		}
+		
+		if(session != null && session.isOpened()){
 			System.out.println("logget inn");
 			/*FragmentManager fm = getSupportFragmentManager();
 			fm.findFragmentById(R.id.userSettingsFragment);
@@ -70,17 +79,18 @@ public class TabListenerActivity extends FragmentActivity implements
 			
 			makeMeRequest(session);
 			if(fbObj != null){
-				System.out.println(fbObj.getFirstName());
+				System.out.println("fb obj + " + fbObj.getFirstName());
 				testText.setText(fbObj.getFirstName());
 			}
-			else
-			{
+			else {
 				System.out.println("fb obj er null");
 			}
 		}else{
 			System.out.println("ikke logget inn");
 		}
 	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,9 +140,9 @@ public class TabListenerActivity extends FragmentActivity implements
 								// view that in turn displays the profile
 								// picture.
 								//profilePictureView.setProfileId(user.getId());
-								//fbObj = user;
+								fbObj = user;
 								//testText = (TextView) findViewById(R.id.testText);
-								testText.setText(fbObj.getFirstName());
+								//testText.setText(fbObj.getFirstName());
 							}
 						}
 						if (response.getError() != null) {
@@ -156,8 +166,8 @@ public class TabListenerActivity extends FragmentActivity implements
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_tab_listener,
 					container, false);
-			Session session = (Session)savedInstanceState.get("FACEBOOK_SESSION");
-			System.out.println("Placeholder Session " + session);
+			//Session session = (Session)savedInstanceState.get("FACEBOOK_SESSION");
+			//System.out.println("Placeholder Session " + session);
 			return rootView;
 		}
 	}

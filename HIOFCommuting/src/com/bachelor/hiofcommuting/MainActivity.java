@@ -123,6 +123,7 @@ public class MainActivity extends FragmentActivity {
 				// Show the authenticated fragment
 				//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
 				Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
+				intent.putExtra("FACEBOOK_SESSION", session);
 				startActivity(intent);
 			} else if (state.isClosed()) {
 				// If the session state is closed:
@@ -149,7 +150,7 @@ public class MainActivity extends FragmentActivity {
 			//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
 			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			intent.putExtra("FACEBOOK_SESSION", session);
-			//startActivity(intent);
+			startActivity(intent);
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
