@@ -178,23 +178,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/startingyearWrapper"
             android:layout_marginTop="25dp"
-            android:weightSum="3" >
+            android:weightSum="4" >
 
             <TextView
                 android:id="@+id/car"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:text="@string/carquestion"
                 android:textSize="20sp" />
 
-            <CheckBox
-                android:id="@+id/carqstCheckBox"
+            <ToggleButton 
+                android:id="@+id/carqstToggleButton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:onClick="carQuestionChecked" />
+			    android:layout_height="match_parent"
+			    android:textOn="Ja"
+			    android:textOff="Nei"
+			    android:layout_weight="2"
+			    android:onClick="onToggleClicked"/>
+			            
         </LinearLayout>
         
         <LinearLayout
@@ -203,23 +206,24 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/carqstWrapper"
             android:layout_marginTop="25dp"
-            android:weightSum="3" >
+            android:weightSum="4" >
 
             <TextView
                 android:id="@+id/readConditions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:text="@string/readconditions"
                 android:textSize="20sp" />
 
-            <CheckBox
-                android:id="@+id/readConditionsCheckBox"
+            <ToggleButton 
+                android:id="@+id/readConditionsToggleButton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:onClick="readConditionsCheckBox" />
+			    android:layout_height="match_parent"
+			    android:textOn="Ja"
+			    android:textOff="Nei"
+			    android:layout_weight="2"/>
         </LinearLayout>       
 
         <Button
@@ -227,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/readConditionsWrapper"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:onClick="finishButtonClicked"
             android:text="@string/finish" />

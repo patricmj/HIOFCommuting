@@ -33,7 +33,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int FORGOTPW = 2;
 	private static final int FINISH = 3;
 	private Fragment[] fragments = new Fragment[4];
-	TextView response;
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 	
 	@Override
@@ -54,7 +53,6 @@ public class EmailLoginActivity extends FragmentActivity {
 			}
 			transaction.commit();
 			Util.showFragment(LOGIN,fm,fragments, "Logg inn", weakActivity);
-			response = (TextView)findViewById(R.id.resetPasswordResponse);
 		}
 	}
 	
@@ -98,13 +96,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 
 	public void forgotPasswordClicked(View view) {
-		response.setText("");
 		Util.showFragment(FORGOTPW, fm, fragments, "Glemt passord", weakActivity);
-	}
-	
-	public void resetPasswordClicked(View view) {
-		//todo : send mail til hiof bruker med tilbakestilling...
-		response.setText("Du har faatt en mail for tilbakestilling av passord");
 	}
 	
 	public void finishProfileClicked(View view) {

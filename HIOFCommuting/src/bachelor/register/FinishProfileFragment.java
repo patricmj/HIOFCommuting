@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.bachelor.hiofcommuting.R;
 
@@ -25,10 +26,10 @@ public class FinishProfileFragment extends Fragment {
 	
 	ImageView choosenPic;
 	private Spinner institutionSpinner, campusSpinner, departmentSpinner, studySpinner, startingyearSpinner;
-	private CheckBox carQstCheckBox, readConditionsCheckBox;
 	private Button finishButton;
 	boolean userHaveCar = false;
 	boolean readConditions = false;
+	ToggleButton carQstButton, readConditionsToggleButton;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -44,9 +45,9 @@ public class FinishProfileFragment extends Fragment {
 		studySpinner = (Spinner) getView().findViewById(R.id.studySpinner);
 		startingyearSpinner = (Spinner) getView().findViewById(R.id.startingyearSpinner);
 		choosenPic = (ImageView) getView().findViewById(R.id.choosenPictureView);
-		carQstCheckBox = (CheckBox) getView().findViewById(R.id.carqstCheckBox);
-		readConditionsCheckBox = (CheckBox) getView().findViewById(R.id.readConditionsCheckBox);
+		readConditionsToggleButton = (ToggleButton) getView().findViewById(R.id.readConditionsToggleButton);
 		finishButton = (Button) getView().findViewById(R.id.finishbtn);
+		carQstButton = (ToggleButton) getView().findViewById(R.id.carqstToggleButton);
 		addOnClickListeners();
 		getInstitutionData();
 		addDataToStartingYearSpinner();
@@ -81,41 +82,33 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public void addOnClickListeners() {
-		//CarQuestion
-		carQstCheckBox.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View view) {
-				boolean checked = ((CheckBox) view).isChecked();
 
-			    switch(view.getId()) {
-			        case R.id.carqstCheckBox:
-			            if (checked){
-			            	userHaveCar = true;
-			            }
-			            else{
-			            	userHaveCar = false;
-			            }
-			            break;
-			    }
-			}
-		});
-		//ReadConditions
-		readConditionsCheckBox.setOnClickListener(new OnClickListener() {
+		//CarQuestion
+		carQstButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View view) {
-					boolean checked = ((CheckBox) view).isChecked();
-					
-					switch(view.getId()) {
-			        case R.id.readConditionsCheckBox:
-			            if (checked){
-			            	readConditions = true;
-			            }
-			            else{
-			            	readConditions = false;
-			            }
-			            break;
-					}
+				boolean on = ((ToggleButton) view).isChecked();
+
+				if (on) {
+					userHaveCar = true;
+				} else {
+					userHaveCar = false;
+				}
+			}
+		});
+		//ReadConditions
+		readConditionsToggleButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				boolean on = ((ToggleButton) view).isChecked();
+
+				if (on) {
+					readConditions = true;
+				} else {
+					readConditions = false;
+				}
 			}
 		});
 		//FinishButton

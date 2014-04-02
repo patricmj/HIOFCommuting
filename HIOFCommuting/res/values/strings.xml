@@ -40,7 +40,7 @@
     <string name="study">Studie</string>
     <string name="startingyear">Kull</string>
     <string name="carquestion">Har du bil?</string>
-    <string name="readconditions">Jeg har lest og forstått betingelser</string>
+    <string name="readconditions">Lest og forstått betingelser</string>
     <string name="finish">Fullfør</string>
     <string name="title_activity_user_information">UserInformationActivity</string>
 	<string name="profilepic">Profile picture</string>
