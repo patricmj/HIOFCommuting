@@ -3,6 +3,7 @@ package bachelor.user;
 import java.io.Serializable;
 
 public class User implements Serializable{
+	private int userid;
 	private String firstName;
 	private double lat;
 	private double lon;
@@ -14,10 +15,11 @@ public class User implements Serializable{
 	private int startingYear;
 	private boolean car;
 	
-	public User(String firstName, double lat, double lon, double distance,
+	public User(int userid, String firstName, double lat, double lon, double distance,
 			String institution, String campus, String department,
 			String study, int startingYear, boolean car) {
 		super();
+		this.userid = userid;
 		this.firstName = firstName;
 		this.lat = lat;
 		this.lon = lon;
@@ -89,5 +91,13 @@ public class User implements Serializable{
 	}
 	public void setCar(boolean car) {
 		this.car = car;
+	}
+
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
 }

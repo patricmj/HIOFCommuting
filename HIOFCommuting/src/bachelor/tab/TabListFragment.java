@@ -48,9 +48,11 @@ public class TabListFragment extends Fragment {
 		testText = (TextView) getView().findViewById(R.id.testText);
 		testText.setText("text endret");
 		Intent i = getActivity().getIntent();
-		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");		
-		System.out.println("Session i tablist " + session.getState());
-		makeMeRequest(Session.getActiveSession());
+		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
+		if(session!=null){
+			System.out.println("Session i tablist " + session.getState());
+			makeMeRequest(Session.getActiveSession());
+		}
 		//Intent i = getIntent();
 		//session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
 		

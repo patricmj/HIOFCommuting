@@ -26,8 +26,6 @@ import com.bachelor.hiofcommuting.R;
 
 
 public class EmailLoginActivity extends FragmentActivity {
-	
-	protected int attempts = 5;
 	FragmentManager fm = getSupportFragmentManager();
 	FragmentTransaction transaction = fm.beginTransaction();
 	private static final int LOGIN = 0;
@@ -95,55 +93,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	    } 
 	}
 
-	// BRUKEREN TRYKKER PÅ KNAPPEN: LOGG INN
-	public void buttonLogin(View view) {
-		// Henter brukerinput
-		String email = ((EditText) findViewById(R.id.login_editText_email))
-				.getText().toString();
-		String password = ((EditText) findViewById(R.id.login_editText_passord))
-				.getText().toString();
-
-		// Forbereder toast-melding
-		CharSequence toastMessage = null;
-
-		// Sjekker om brukeren har fyllt inn data
-		if (!email.isEmpty() && !password.isEmpty()) {
-			// Sjekker om brukeren har prøvd å logge inn med feil passord for
-			// mange ganger
-			if (attempts > 0) {
-				ArrayList<String> userInput = new ArrayList<String>();
-				userInput.add(email);
-				userInput.add(password);
-				new ValidateUser().execute(userInput);
-			} else {
-				toastMessage = "Glemt passord?";
-			}
-		} else {
-			toastMessage = "Fyll inn brukernavn og passord";
-		}
-
-		// Skriver ut toast om noe gikk galt
-		if (toastMessage != null) {
-			Context context = getApplicationContext();
-			int duration = Toast.LENGTH_SHORT;
-			Toast.makeText(context, toastMessage, duration).show();
-		}
-	}
-
-	// Når ValiderBruker-tråden er ferdig, blir denne metoden trigget
-	private void ValiderBrukerFerdig(String results) {
-		// Hvis brukernavn og passord stemte, logges brukeren inn
-		if (results == null) {
-			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
-			startActivity(intent);
-			//avslutter denne aktiviteten, så den ikke ligger på stack
-			finish();
-		} else {
-			Toast.makeText(getApplicationContext(), results, Toast.LENGTH_SHORT)
-					.show();
-		}
-	}
-
 	public void newUserClicked(View view) {
 		Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	}
@@ -160,53 +109,5 @@ public class EmailLoginActivity extends FragmentActivity {
 	
 	public void finishProfileClicked(View view) {
 		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
-	}
-	
-
-	/**
-	 * 
-	 * @author Martin Validerer brukerinput opp mot database. Kjøres i AsyncTask
-	 *         da dette er en tyngre oppgave.
-	 */
-
-	
-	private class ValidateUser extends
-			AsyncTask<ArrayList<String>, Void, String> {
-
-		private ProgressDialog Dialog = new ProgressDialog(
-				EmailLoginActivity.this);
-
-		@Override
-		protected void onPreExecute() {
-			Dialog.setMessage("Logger inn...");
-			Dialog.show();
-		}
-
-		@Override
-		protected String doInBackground(ArrayList<String>... params) {
-			String epost = params[0].get(0);
-			String passord = params[0].get(1);
-
-			// Sjekker om eposten ligger i systemet
-			if (HandleLogin.checkEmail(epost)) {
-				// Sjekker om passordet matcher eposten
-				if (HandleLogin.checkPassord(epost, passord)) {
-					// Brukeren logget inn
-					return null;
-				} else {
-					return "Feil brukernavn/passord. " + (--attempts)
-							+ " forsøk igjen.";
-				}
-			} else {
-				return "Fant ingen bruker med angitt epost i systemet";
-			}
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			EmailLoginActivity.this.ValiderBrukerFerdig(result);
-			Dialog.dismiss();
-		}
-
 	}
 }

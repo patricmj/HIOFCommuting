@@ -27,8 +27,7 @@
         android:layout_below="@+id/login_editText_passord"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
-        android:text="@string/login" 
-        android:onClick="buttonLogin"/>
+        android:text="@string/login" />
 
     <EditText
         android:id="@+id/login_editText_passord"

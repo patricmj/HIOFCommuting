@@ -16,6 +16,7 @@ public class HandleUsers {
 
 	public static List<User> getAllUsers(Context context) {
 		if (userList.isEmpty()) {
+			int [] userid = {1,2,3,4,5};
 			String[] firstName = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
 			// double[] lat = {};
 			// double[] lon = {};
@@ -47,7 +48,7 @@ public class HandleUsers {
 					e.printStackTrace();
 				}
 				double distance = distFrom(myLat, myLon, lat, lon);
-				userList.add(new User(firstName[i], lat, lon, distance,
+				userList.add(new User(userid[i],firstName[i], lat, lon, distance,
 						institution, campus, department, study, startingYear, car));
 			}
 

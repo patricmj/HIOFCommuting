@@ -1,6 +1,11 @@
 package bachelor.database;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import bachelor.user.EmailUser;
+import bachelor.user.User;
 
 public class HandleLogin {
 
@@ -14,12 +19,24 @@ public class HandleLogin {
 
 	// SJEKK AT PASSORD STEMMER OVERENS MED EPOST (tabell for alternative
 	// brukere)test commment
-	public static boolean checkPassord(String email, String password) {
+	public static boolean checkPassword(String email, String password) {
 		String un = "martino@hiof.no";
 		String pw = "passord";
 		if (password.equals(pw) && email.equals(un))
 			return true;
 		return false;
+	}
+	
+	public static List<EmailUser> getCurrentUserLoggedIn(String epost){
+		List<EmailUser> userLoggedIn = new ArrayList<EmailUser>();
+		try{
+			//get user from database (email_user), where email = epost
+			userLoggedIn.add(new EmailUser(1, "Martin", 59.249620, 11.183409, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true, "martino@hiof.no", "password"));
+		}catch(Exception e){
+			userLoggedIn = null;
+		}
+		System.out.println(userLoggedIn.get(0).getFirstName());
+		return userLoggedIn;
 	}
 
 	// SEND EPOST TIL BRUKEREN FOR TILBAKESTILLING AV PASSORD
