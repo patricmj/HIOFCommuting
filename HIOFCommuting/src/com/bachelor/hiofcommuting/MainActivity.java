@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,8 +13,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import bachelor.database.HandleLogin;
 import bachelor.register.EmailLoginActivity;
-import bachelor.tab.TabListenerActivity;
+import bachelor.user.User;
 import bachelor.util.Util;
 
 import com.facebook.Session;
@@ -23,9 +25,8 @@ import com.facebook.UiLifecycleHelper;
 public class MainActivity extends FragmentActivity {
 	
 	private static final int SPLASH = 0;
-	private static final int SELECTION = 1;
-	private static final int SETTINGS = 2;
-	private static final int FRAGMENT_COUNT = SETTINGS + 1;
+	//private static final int SETTINGS = 1;
+	private static final int FRAGMENT_COUNT = 1;//SETTINGS + 1;
 	private boolean isResumed = false;
 	private MenuItem settings;
 	FragmentManager fm = getSupportFragmentManager();
@@ -40,11 +41,9 @@ public class MainActivity extends FragmentActivity {
 		uiHelper.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-
 		//FragmentManager fm = getSupportFragmentManager();
 		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
-		fragments[SELECTION] = fm.findFragmentById(R.id.selectionFragment);
-		fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
+		//fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
 
 		FragmentTransaction transaction = fm.beginTransaction();
 		for (int i = 0; i < fragments.length; i++) {
@@ -56,24 +55,14 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		//only add the menu when the selection fragment is showing
-		if (fragments[SELECTION].isVisible()) {
 			if (menu.size() == 0) {
 				settings = menu.add(R.string.settings);
+			} else {
+				menu.clear();
+				settings = null;
 			}
-			return true;
-		} else {
-		menu.clear();
-			settings = null;
-		}
 		return false;
 	}
-	
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}*/
 
 	@Override
 	public void onResume() {
@@ -118,14 +107,27 @@ public class MainActivity extends FragmentActivity {
 			for (int i = 0; i < backStackSize; i++) {
 				manager.popBackStack();
 			}
+			
+			/*
+			//AUTHENTICATE USER IN OUR DATABASE
+			int facebookid = 1; //get facebook id
+			new AuthenticateUser().execute(facebookid);
+			*/
+			
 			if (state.isOpened()) {
 				// If the session state is open:
 				// Show the authenticated fragment
 				//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
-				Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
+				
+				//AUTHENTICATE USER IN OUR DATABASE
+				int facebookid = 1; //get facebook id
+				new AuthenticateUser().execute(facebookid, session);
+				/*Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 				intent.putExtra("FACEBOOK_SESSION", session);
 				startActivity(intent);
-			} else if (state.isClosed()) {
+				finish();
+				*/
+			} else if(state.isClosed()) {
 				// If the session state is closed:
 				// Show the login fragment
 				//showFragment(SPLASH, false);
@@ -146,11 +148,16 @@ public class MainActivity extends FragmentActivity {
 
 		if (session != null && session.isOpened()) {
 			// if the session is already open,
-			// try to show the selection fragment
-			//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
+
+			//AUTHENTICATE USER IN OUR DATABASE
+			int facebookid = 1; //get facebook id
+			new AuthenticateUser().execute(facebookid, session);
+			/*
 			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
-			intent.putExtra("FACEBOOK_SESSION", session);
+			intent.putExtra("SESSION", session);
 			startActivity(intent);
+			*/
+			
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
@@ -168,4 +175,41 @@ public class MainActivity extends FragmentActivity {
 		}
 	};
 
+	private class AuthenticateUser extends AsyncTask<Object, Void, User> {
+
+		private int facebookid;
+		private Session session;
+		
+		@Override
+		protected User doInBackground(Object... params) {
+			User userLoggedIn = null;
+			facebookid = (Integer)params[0];
+			session = (Session)params[1];
+			try{
+				userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(facebookid);
+				return userLoggedIn;
+			}catch(NullPointerException e){
+				//User not yet registerred in app (first time user)
+				return userLoggedIn;
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(User result){
+			if(result==null){
+				//user not yet registered
+				System.out.println("User er ikke registrert i systemet fra før");
+				// TODO: show FinishProfileFragment (hadde vært lettere om det var en activity?)
+			}else{
+				//user IS registered, send user to map
+				System.out.println("User ER registrert i systemet");
+				Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
+				intent.putExtra("CURRENT_USER", result);
+				intent.putExtra("FACEBOOK_SESSION", session);
+				startActivity(intent);
+				finish();
+			}
+		}
+		
+	}
 }

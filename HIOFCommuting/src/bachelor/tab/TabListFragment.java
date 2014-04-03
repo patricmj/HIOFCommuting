@@ -1,6 +1,5 @@
 package bachelor.tab;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import bachelor.database.HandleUsers;
 import bachelor.user.User;
-import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphUser;
 
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
 	private List<User> userList = new ArrayList<User>();
-	private TextView testText;
+	private User userLoggedIn;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,48 +39,7 @@ public class TabListFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		testText = (TextView) getView().findViewById(R.id.testText);
-		testText.setText("text endret");
-		Intent i = getActivity().getIntent();
-		Session session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
-		if(session!=null){
-			System.out.println("Session i tablist " + session.getState());
-			makeMeRequest(Session.getActiveSession());
-		}
-		//Intent i = getIntent();
-		//session = (Session)i.getSerializableExtra("FACEBOOK_SESSION");
-		
-	}
-	
-	public void makeMeRequest(final Session session) {
-		// Make an API call to get user data and define a
-		// new callback to handle the response.
-		Request request = Request.newMeRequest(session,
-				new Request.GraphUserCallback() {
-					@Override
-					public void onCompleted(GraphUser user, Response response) {
-						// If the response is successful
-						if (session == Session.getActiveSession()) {
-							if (user != null) {
-								// Set the id for the ProfilePictureView
-								// view that in turn displays the profile
-								// picture.
-								//profilePictureView.setProfileId(user.getId());
-								//fbObj = user;
-								//testText = (TextView) findViewById(R.id.testText);
-								testText.setText(user.getFirstName() +" " + user.getLastName().toString() + " "+user.getId());
-							}
-							else {
-								System.out.println("User er null");
-							}
-						}
-						if (response.getError() != null) {
-							// Handle errors, will do so later.
-							System.out.println("Session ikke aktiv");
-						}
-					}
-				});
-		request.executeAsync();
+		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
 	}
 
 	@Override
@@ -120,7 +73,7 @@ public class TabListFragment extends Fragment {
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-				userList = HandleUsers.getAllUsers(getActivity());
+				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
 				return userList;
 			} catch (Exception e) {
 				Log.e("ITCRssReader", e.getMessage());

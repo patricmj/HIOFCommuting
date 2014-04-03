@@ -14,7 +14,7 @@ import bachelor.user.User;
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
 
-	public static List<User> getAllUsers(Context context) {
+	public static List<User> getAllUsers(Context context, User userLoggedIn) {
 		if (userList.isEmpty()) {
 			int [] userid = {1,2,3,4,5};
 			String[] firstName = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
@@ -33,8 +33,8 @@ public class HandleUsers {
 			String address[] = { "Bodalsvei 1", "Nye tindlundvei 24b",
 					"Likollveien 56", "Skjebergveien 122", "Nedre langgate 89" };
 			int postalCode[] = { 1743, 1718, 1781, 1743, 1743 };
-			double myLat = 59.129443;
-			double myLon = 11.352908;
+			double myLat = userLoggedIn.getLat();
+			double myLon = userLoggedIn.getLon();
 			for (int i = 0; i < address.length; i++) {
 				double lat = 0;
 				double lon = 0;
@@ -57,6 +57,7 @@ public class HandleUsers {
 					return Double.compare(s1.getDistance(), s2.getDistance());
 				}
 			});
+			userList.remove(0);
 		} else {
 			// Vurdere om lista bør oppdateres
 			System.out

@@ -31,7 +31,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -43,6 +45,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	private HashMap <String, User> hashMap = new HashMap <String, User>();
 	private MenuItem settings;
 	private LayoutInflater inflater;
+	private User userLoggedIn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,20 +61,16 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		FragmentManager fm = getChildFragmentManager();
-	    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
 	    if (fragment == null) {
+	    	FragmentManager fm = getChildFragmentManager();
+		    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
 	        fragment = SupportMapFragment.newInstance();
 	        fm.beginTransaction().replace(R.id.map, fragment).commit();
 	    }
 	    else{
 	    	initilizeMap();
 	    }
-		/*try {
-			initilizeMap();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
 	}
 	
 	@Override
@@ -85,10 +84,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	}
 
 	private void initilizeMap() {
-		/*if (googleMap == null) {
-			googleMap = ((SupportMapFragment) getFragmentManager()
-					.findFragmentById(R.id.map)).getMap();
-		}*/
 		if (fragment == null) {
 			System.out.println("fragment er null");
 		}
@@ -117,7 +112,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 				TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
 				TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
 				
-				profilePic.setImageResource(R.drawable.com_facebook_profile_default_icon);
+				profilePic.setImageResource(R.drawable.profile_picture_test);
 				nameTxt.setText(firstName);
 				
 				distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
@@ -127,8 +122,16 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 			}
 		});
 		
-		LatLng hiof = new LatLng(59.129443, 11.352908);
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hiof, 8));
+		LatLng user = new LatLng(userLoggedIn.getLat(), userLoggedIn.getLon());
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 8));
+		Marker userLoggedInMarker = googleMap.addMarker(new MarkerOptions()
+		.title(userLoggedIn.getFirstName())
+		.snippet("Her bor du!")
+		.position(user)
+		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+		hashMap.put(userLoggedInMarker.getId(), userLoggedIn);
+		
+		
 		new GetUsers().execute();
 		
 		
@@ -163,7 +166,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		protected List<User> doInBackground(Void... params) {
 			try {
 				List<User> userList = new ArrayList<User>();
-				userList = HandleUsers.getAllUsers(getActivity());
+				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
 				return userList;
 			} catch (Exception e) {
 				Log.e("ITCRssReader", e.getMessage());

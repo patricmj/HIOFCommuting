@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
-import bachelor.user.EmailUser;
 import bachelor.user.User;
 
 import com.bachelor.hiofcommuting.R;
@@ -87,7 +86,7 @@ public class LoginFragment extends Fragment {
 
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		private String errorMessage;
-		private List<EmailUser> userLoggedIn;
+		private User userLoggedIn;
 
 		@Override
 		protected void onPreExecute() {
@@ -106,7 +105,7 @@ public class LoginFragment extends Fragment {
 				// Sjekker om passordet matcher eposten
 				if (HandleLogin.checkPassword(epost, passord)) {
 					try{
-						userLoggedIn = HandleLogin.getCurrentUserLoggedIn(epost);
+						userLoggedIn = HandleLogin.getCurrentEmailUserLoggedIn(epost);
 						return true;
 					}catch(NullPointerException e){
 						errorMessage = "null pointer";
@@ -127,7 +126,7 @@ public class LoginFragment extends Fragment {
 			Dialog.dismiss();
 			if(result){
 				Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
-				intent.putExtra("EMAIL_LOGIN_SESSION", userLoggedIn.get(0));
+				intent.putExtra("CURRENT_USER", userLoggedIn);
 				startActivity(intent);
 				getActivity().finish();
 			}else{

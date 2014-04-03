@@ -34,7 +34,7 @@ public class CustomListView extends ArrayAdapter<User>{
 		TextView distanceTxt = (TextView) rowView.findViewById(R.id.textView_tabList_distance);
 		TextView departmentTxt = (TextView) rowView.findViewById(R.id.textView_tabList_department);
 		
-		profilePic.setImageResource(R.drawable.com_facebook_profile_default_icon);
+		profilePic.setImageResource(R.drawable.profile_picture_test);
 		nameTxt.setText(userObjects.get(position).getFirstName());
 		DecimalFormat df = new DecimalFormat("0.0");
 		String formattedDistance = df.format(userObjects.get(position).getDistance());

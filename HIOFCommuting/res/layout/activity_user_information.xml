@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+        android:src="@drawable/profile_picture_test" />"
 
     <TextView
         android:id="@+id/textView_distance"
