@@ -144,7 +144,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/choosenPictureView"
-        android:onClick="finishProfileClicked"
         android:text="@string/next" />
 
     <ImageView

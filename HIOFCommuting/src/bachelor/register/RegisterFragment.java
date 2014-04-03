@@ -15,16 +15,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements OnClickListener {
 	
 	ImageView cameraLogo, choosenPic;
 	Button next;
 	private static final int LOAD_IMAGE_RESULTS = 1;
-	EditText firstName, lastName, email, password, repeatPassword;
+	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, repeatPasswordEditText;
+	String firstName, lastName, email, password, repeatPassword;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -38,22 +40,43 @@ public class RegisterFragment extends Fragment {
 		cameraLogo = (ImageView) getView().findViewById(R.id.register_cameraLogo);
 		next = (Button) getView().findViewById(R.id.register_next);
 		choosenPic = (ImageView) getView().findViewById(R.id.choosenPictureView);
-		addOnClickListeners();
+		firstNameEditText = (EditText) getView().findViewById(R.id.register_firstName);
+		lastNameEditText = (EditText) getView().findViewById(R.id.register_lastName);
+		emailEditText = (EditText) getView().findViewById(R.id.register_email);
+		passwordEditText = (EditText) getView().findViewById(R.id.register_password);
+		repeatPasswordEditText = (EditText) getView().findViewById(R.id.register_repeatPassword);
+		cameraLogo.setOnClickListener(this);
+		next.setOnClickListener(this);
 	}
 	
-	public void addOnClickListeners() {
-		cameraLogo.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View view) {
-				//Starter imagegalleriet
-				Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				
-				startActivityForResult(intent, LOAD_IMAGE_RESULTS);
-			}
-		});
+	public void onClick(View view) {
+		switch (view.getId()) {
+        case R.id.register_cameraLogo: 
+			Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+        break;
+        
+        case R.id.register_next:
+        	firstName = firstNameEditText.getText().toString();
+        	lastName = lastNameEditText.getText().toString();
+        	email = emailEditText.getText().toString();
+        	password = passwordEditText.getText().toString();
+        	repeatPassword = repeatPasswordEditText.getText().toString();
+        	boolean passwordEquals = ValidateRegistration.validatePasswords(password, repeatPassword);
+        	boolean lengthsAreOk = ValidateRegistration.validateLengths(firstName, lastName, email, password, repeatPassword);
+        	if(passwordEquals && lengthsAreOk) {
+        		Toast.makeText(getActivity().getApplicationContext(), "Passord er like og lengde ok" , Toast.LENGTH_SHORT).show();
+        		((EmailLoginActivity)getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
+        	}
+        	else {
+        		Toast.makeText(getActivity().getApplicationContext(), "Passord er IKKE like og lengde ikke ok" , Toast.LENGTH_SHORT).show();
+        	}
+	        //Toast.makeText(getActivity().getApplicationContext(), firstName + " " + lastName + " " + email + " " + password + " " + repeatPassword, Toast.LENGTH_LONG).show();
+	        //((EmailLoginActivity)getActivity()).changeFragment(3, "Fullfør profil");
+        break;
+		}
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode,
             Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

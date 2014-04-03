@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,6 +30,8 @@ public class FinishProfileFragment extends Fragment {
 	boolean userHaveCar = false;
 	boolean readConditions = false;
 	ToggleButton carQstButton, readConditionsToggleButton;
+	EditText addressEditText, postalCodeEditText;
+	String address, postalCode, institution, campus, department, study, startingYear;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class FinishProfileFragment extends Fragment {
 		readConditionsToggleButton = (ToggleButton) getView().findViewById(R.id.readConditionsToggleButton);
 		finishButton = (Button) getView().findViewById(R.id.finishbtn);
 		carQstButton = (ToggleButton) getView().findViewById(R.id.carqstToggleButton);
+		addressEditText = (EditText) getView().findViewById(R.id.address);
+		postalCodeEditText = (EditText) getView().findViewById(R.id.postal);
 		addOnClickListeners();
 		getInstitutionData();
 		addDataToStartingYearSpinner();
@@ -118,6 +122,13 @@ public class FinishProfileFragment extends Fragment {
 			public void onClick(View v) {
 					String car;
 					String conditions;
+					address = addressEditText.getText().toString();
+					postalCode = postalCodeEditText.getText().toString();
+					institution = String.valueOf(institutionSpinner.getSelectedItem());
+					campus = String.valueOf(campusSpinner.getSelectedItem());
+					department = String.valueOf(departmentSpinner.getSelectedItem());
+					study = String.valueOf(studySpinner.getSelectedItem());
+					startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
 					if(userHaveCar){
 						car = "Ja";
 					}
@@ -132,14 +143,20 @@ public class FinishProfileFragment extends Fragment {
 					}
 					Toast.makeText(getActivity(), 
 							"OnClickListener : " + 
-							"\n Institusjon : " + String.valueOf(institutionSpinner.getSelectedItem()) +
-							"\n Studiested : " + String.valueOf(campusSpinner.getSelectedItem()) + 
-							"\n Avdeling : " + String.valueOf(departmentSpinner.getSelectedItem()) +
-							"\n Studie : " + String.valueOf(studySpinner.getSelectedItem()) + 
-							"\n Kull : " + String.valueOf(startingyearSpinner.getSelectedItem()) +
+							"\n Institusjon : " + institution +
+							"\n Studiested : " + campus + 
+							"\n Avdeling : " + department +
+							"\n Studie : " + study + 
+							"\n Kull : " + startingYear +
 							"\n Bil? : " + car +
 							"\n Betingelser godkjent? : " + conditions
 							, Toast.LENGTH_SHORT).show();
+					if(readConditions) {
+						((EmailLoginActivity)getActivity()).setFinishProfileList(address, postalCode, institution, campus, department, startingYear, userHaveCar);
+					}
+					else {
+						Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
+					}
 				}
 		});
 	}

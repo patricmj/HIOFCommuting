@@ -18,7 +18,6 @@ public class User implements Serializable{
 	public User(int userid, String firstName, double lat, double lon, double distance,
 			String institution, String campus, String department,
 			String study, int startingYear, boolean car) {
-		super();
 		this.userid = userid;
 		this.firstName = firstName;
 		this.lat = lat;
