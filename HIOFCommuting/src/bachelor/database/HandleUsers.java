@@ -28,25 +28,16 @@ public class HandleUsers {
 			int startingYear = 2011;
 			boolean car = true;
 
-			Geocoder coder = new Geocoder(context);
-			List<Address> addressList;
 			String address[] = { "Bodalsvei 1", "Nye tindlundvei 24b",
 					"Likollveien 56", "Skjebergveien 122", "Nedre langgate 89" };
 			int postalCode[] = { 1743, 1718, 1781, 1743, 1743 };
 			double myLat = userLoggedIn.getLat();
 			double myLon = userLoggedIn.getLon();
 			for (int i = 0; i < address.length; i++) {
-				double lat = 0;
-				double lon = 0;
-				try {
-					addressList = coder.getFromLocationName(address[i] + ","
-							+ postalCode[i], 1);
-					Address location = addressList.get(0);
-					lat = location.getLatitude();
-					lon = location.getLongitude();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				double[] latLon = getLatLon(context, address[i], postalCode[i]);
+				double lat = latLon[0];
+				double lon = latLon[1];
+				
 				double distance = distFrom(myLat, myLon, lat, lon);
 				userList.add(new User(userid[i],firstName[i], lat, lon, distance,
 						institution, campus, department, study, startingYear, car));
@@ -64,6 +55,24 @@ public class HandleUsers {
 					.println("userList allerede fylt opp, bruker gammel arraylist");
 		}
 		return userList;
+	}
+	
+	public static double[] getLatLon(Context context, String address, int postalCode){
+		Geocoder coder = new Geocoder(context);
+		List<Address> addressList;
+
+		try {
+			addressList = coder.getFromLocationName(address,1);
+		    if (address == null) {
+		        return null;
+		    }
+		    Address location = addressList.get(0);
+		    double[] latLon = {location.getLatitude(), location.getLongitude() };
+		    return latLon;
+		}catch(Exception e){
+			
+		}
+		return null;
 	}
 
 	public static double distFrom(double lat1, double lng1, double lat2,double lng2) {
