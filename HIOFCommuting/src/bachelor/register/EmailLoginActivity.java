@@ -87,7 +87,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	    	Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	    } 
 	    if(fragments[LOGIN].isVisible()) {
-	    	super.onBackPressed(); //Oppf¿rer seg som normalt
+	    	super.onBackPressed();
 	    } 
 	}
 

@@ -10,10 +10,10 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import bachelor.util.Util;
 
@@ -24,6 +24,7 @@ public class RegisterFragment extends Fragment {
 	ImageView cameraLogo, choosenPic;
 	Button next;
 	private static final int LOAD_IMAGE_RESULTS = 1;
+	EditText firstName, lastName, email, password, repeatPassword;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {

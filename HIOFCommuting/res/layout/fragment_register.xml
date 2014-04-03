@@ -21,7 +21,7 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/firstName"
+        android:id="@+id/register_firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -37,12 +37,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/firstName"
+        android:layout_below="@+id/register_firstName"
         android:text="@string/lastname"
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/lastName"
+        android:id="@+id/register_lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/lastName"
+        android:layout_below="@+id/register_lastName"
         android:text="@string/email"
         android:textSize="20sp" />
 

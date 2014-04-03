@@ -43,7 +43,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_tab_listener);
 		
 		try{
-			session = (Session)getIntent().getSerializableExtra("SESSION");
+			session = (Session)getIntent().getSerializableExtra("FACEBOOK_SESSION");
 			System.out.println(session.getState());
 			System.out.println("Logget inn med facebook");
 		}catch(NullPointerException e){
@@ -131,7 +131,7 @@ public class TabListenerActivity extends FragmentActivity implements
 	private void performLogout() {
 		if(session != null){
 			try{
-				Session session = Session.getActiveSession();
+				session = Session.getActiveSession();
 				session.closeAndClearTokenInformation();
 			}catch(NullPointerException e){
 				System.out.println("Wooops! Var ikke logga inn med facebook?");
@@ -141,7 +141,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
-	}
+  	}
 	
 	public User getUserLoggedIn() {
 		return userLoggedIn;

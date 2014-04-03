@@ -39,9 +39,9 @@ public class HandleLogin {
 		User userLoggedIn;
 		try{
 			///if get userid from database (facebook_user), where facebookid = facebookid
-			userLoggedIn = new User(1, "Martin", 59.249620, 11.183409, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true);
+			//userLoggedIn = new User(1, "Martin", 59.249620, 11.183409, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true);
 			//else if there is no user in database (not yet registered), return null
-			//userLoggedIn = null;
+			userLoggedIn = null;
 			return userLoggedIn;
 		}catch(Exception e){
 			return null;
