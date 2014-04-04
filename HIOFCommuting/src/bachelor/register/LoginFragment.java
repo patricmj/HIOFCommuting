@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
-import bachelor.user.User;
+import bachelor.objects.User;
 
 import com.bachelor.hiofcommuting.R;
 

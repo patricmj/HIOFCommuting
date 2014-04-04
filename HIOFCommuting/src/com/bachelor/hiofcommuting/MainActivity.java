@@ -22,8 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.database.HandleLogin;
+import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
-import bachelor.user.User;
 import bachelor.util.Util;
 
 import com.facebook.Session;

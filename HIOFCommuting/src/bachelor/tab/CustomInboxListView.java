@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import bachelor.user.Inbox;
-import bachelor.user.User;
+import bachelor.objects.Inbox;
+import bachelor.objects.User;
 
 
 public class CustomInboxListView extends ArrayAdapter<Inbox>{

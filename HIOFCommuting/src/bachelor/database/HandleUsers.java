@@ -9,7 +9,7 @@ import java.util.List;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import bachelor.user.User;
+import bachelor.objects.User;
 
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();

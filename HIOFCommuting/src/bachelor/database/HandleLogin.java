@@ -2,7 +2,7 @@ package bachelor.database;
 
 import java.util.Random;
 
-import bachelor.user.User;
+import bachelor.objects.User;
 
 public class HandleLogin {
 

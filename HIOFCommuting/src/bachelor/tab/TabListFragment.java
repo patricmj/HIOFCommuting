@@ -17,7 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import bachelor.database.HandleUsers;
-import bachelor.user.User;
+import bachelor.objects.User;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
@@ -55,7 +55,8 @@ public class TabListFragment extends Fragment {
 					int position, long id) {
 				User selectedUser = result.get(position);
 				Intent intent = new Intent(getActivity(), UserInformationActivity.class);
-				intent.putExtra("bruker", selectedUser);
+				intent.putExtra("SELECTED_USER", selectedUser);
+				intent.putExtra("CURRENT_USER", userLoggedIn);
 				startActivity(intent);
 			}
 		});
