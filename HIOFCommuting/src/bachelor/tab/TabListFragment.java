@@ -45,7 +45,7 @@ public class TabListFragment extends Fragment {
 	@Override
 	public void onResume(){
 		super.onResume();
-		new HentBrukere().execute();
+		new getUsers().execute();
 	}
 	
 	private void asyncTaskIsDone(final List<User> result) {
@@ -62,7 +62,7 @@ public class TabListFragment extends Fragment {
 	}
 	
 	
-	private class HentBrukere extends AsyncTask<Void, Void, List<User>> {
+	private class getUsers extends AsyncTask<Void, Void, List<User>> {
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		@Override
 	    protected void onPreExecute(){
@@ -88,7 +88,7 @@ public class TabListFragment extends Fragment {
 				itcItems = (ListView) getView().findViewById(R.id.listview_list_users);
 				
 				// Create a list adapter
-				CustomListView adapter = new CustomListView(getActivity(), result);
+				CustomListListView adapter = new CustomListListView(getActivity(), result);
 				
 				// Set list adapter for the ListView
 				itcItems.setAdapter(adapter);

@@ -46,6 +46,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	private MenuItem settings;
 	private LayoutInflater inflater;
 	private User userLoggedIn;
+	private List<User> user;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,7 +124,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		});
 		
 		LatLng user = new LatLng(userLoggedIn.getLat(), userLoggedIn.getLon());
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 8));
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 11));
 		Marker userLoggedInMarker = googleMap.addMarker(new MarkerOptions()
 		.title(userLoggedIn.getFirstName())
 		.snippet("Her bor du!")

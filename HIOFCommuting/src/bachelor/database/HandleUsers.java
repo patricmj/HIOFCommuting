@@ -16,7 +16,7 @@ public class HandleUsers {
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn) {
 		if (userList.isEmpty()) {
-			int [] userid = {1,2,3,4,5};
+			int [] userid = {5,4,3,1,2};
 			String[] firstName = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
 			// double[] lat = {};
 			// double[] lon = {};

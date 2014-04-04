@@ -14,11 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomListView extends ArrayAdapter<User>{
+public class CustomListListView extends ArrayAdapter<User>{
 	private final Context context;
 	private final List<User> userObjects;
 
-	public CustomListView(Context context, List<User> userObjects) {
+	public CustomListListView(Context context, List<User> userObjects) {
 		super(context, R.layout.tab_list_customrow, userObjects);
 		this.context = context;
 		this.userObjects = userObjects;
