@@ -42,7 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -61,7 +60,12 @@
         </activity>
         <activity
             android:name="com.bachelor.hiofcommuting.UserInformationActivity"
-            android:label="sett inn ->" >//@string/title_activity_user_information
+            android:label="sett inn ->" >
+//@string/title_activity_user_information
+        </activity>
+        <activity
+            android:name="chat.ChatActivity"
+            android:label="@string/title_activity_chat" >
         </activity>
     </application>
 

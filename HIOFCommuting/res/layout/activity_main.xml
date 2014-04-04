@@ -9,4 +9,10 @@
           android:id="@+id/splashFragment"
           android:layout_width="match_parent"
           android:layout_height="match_parent" />
+    
+    <fragment android:name="bachelor.register.FinishProfileFragment" 
+          android:id="@+id/finishProfileFragment"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+    
 </LinearLayout>

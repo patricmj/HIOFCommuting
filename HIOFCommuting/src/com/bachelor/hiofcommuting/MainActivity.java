@@ -33,13 +33,12 @@ import com.facebook.UiLifecycleHelper;
 public class MainActivity extends FragmentActivity {
 	
 	private static final int SPLASH = 0;
-	//private static final int SETTINGS = 1;
-	private static final int FRAGMENT_COUNT = 1;//SETTINGS + 1;
+	private static final int FINISH = 1;
+	private Fragment[] fragments = new Fragment[2];
 	private boolean isResumed = false;
 	private MenuItem settings;
 	FragmentManager fm = getSupportFragmentManager();
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
-	private Fragment[] fragments = new Fragment[FRAGMENT_COUNT];
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		//FragmentManager fm = getSupportFragmentManager();
 		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
-		//fragments[SETTINGS] = fm.findFragmentById(R.id.userSettingsFragment);
+		fragments[FINISH] = fm.findFragmentById(R.id.finishProfileFragment);
 
 		FragmentTransaction transaction = fm.beginTransaction();
 		for (int i = 0; i < fragments.length; i++) {
@@ -88,6 +87,15 @@ public class MainActivity extends FragmentActivity {
 				settings = null;
 			}
 		return false;
+	}
+	
+	@Override
+	public void onBackPressed() {	        
+	    if(fragments[FINISH].isVisible()) {
+	    	Util.showFragment(SPLASH, fm, fragments, "HIOFCommuting", weakActivity);
+	    	Session session = Session.getActiveSession();
+			session.closeAndClearTokenInformation();
+	    } 
 	}
 
 	@Override
@@ -226,6 +234,7 @@ public class MainActivity extends FragmentActivity {
 				//user not yet registered
 				System.out.println("User er ikke registrert i systemet fra før");
 				// TODO: show FinishProfileFragment (hadde vært lettere om det var en activity?)
+				Util.showFragment(FINISH, fm, fragments, "Fullfør profil", weakActivity);
 			}else{
 				//user IS registered, send user to map
 				System.out.println("User ER registrert i systemet");

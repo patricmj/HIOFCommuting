@@ -82,4 +82,8 @@ public class Util {
 				});
 		request.executeAsync();
 	}
+	
+	public static void uploadImageToServer() {
+		//http://sunil-android.blogspot.no/2013/03/image-upload-on-server.html
+	}
 }

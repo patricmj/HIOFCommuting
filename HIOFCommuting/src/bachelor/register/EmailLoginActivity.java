@@ -4,10 +4,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,10 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import bachelor.database.HandleLogin;
+import bachelor.user.User;
 import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;
@@ -34,6 +27,9 @@ public class EmailLoginActivity extends FragmentActivity {
 	private static final int FINISH = 3;
 	private Fragment[] fragments = new Fragment[4];
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
+	ArrayList<String> registerData = new ArrayList<String>();
+	ArrayList<String> finishProfileData = new ArrayList<String>();
+	String actvityName = "EmailLoginActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +74,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	
 	@Override
 	public void onBackPressed() {
-	    fm = getSupportFragmentManager();
-	        
 	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
 	    	Util.showFragment(LOGIN, fm, fragments, "Logg inn", weakActivity);
 	    } 
@@ -87,8 +81,44 @@ public class EmailLoginActivity extends FragmentActivity {
 	    	Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	    } 
 	    if(fragments[LOGIN].isVisible()) {
-	    	super.onBackPressed(); //Oppf¿rer seg som normalt
+	    	super.onBackPressed();
 	    } 
+	}
+	
+	public void setRegistrationList(String firstName, String lastName, String email, String password, String repeatPassword) {
+		registerData.add(firstName);
+		registerData.add(lastName);
+		registerData.add(email);
+		registerData.add(password);
+		registerData.add(repeatPassword);
+		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
+	}
+	
+	public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String startingYear, boolean hasCar) {
+		finishProfileData.add(address);
+		finishProfileData.add(postalCode);
+		finishProfileData.add(institution);
+		finishProfileData.add(campus);
+		finishProfileData.add(department);
+		finishProfileData.add(startingYear);
+		if(hasCar)
+			finishProfileData.add("Ja");
+		else
+			finishProfileData.add("Nei");
+		createUserObject();
+	}
+	
+	public void createUserObject() {
+//public User(int userid, String firstName, double lat, double lon, double distance,String institution, String campus, String department,String study, int startingYear, boolean car)
+		//Hente userid fra database?
+		
+		
+		
+		//User user = new User();
+	}
+	
+	public String getActivityName() {
+		return getActivityName();
 	}
 
 	public void newUserClicked(View view) {
@@ -97,9 +127,5 @@ public class EmailLoginActivity extends FragmentActivity {
 
 	public void forgotPasswordClicked(View view) {
 		Util.showFragment(FORGOTPW, fm, fragments, "Glemt passord", weakActivity);
-	}
-	
-	public void finishProfileClicked(View view) {
-		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
 	}
 }

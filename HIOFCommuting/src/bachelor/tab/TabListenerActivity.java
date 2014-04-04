@@ -136,7 +136,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
-	}
+  	}
 	
 	public User getUserLoggedIn() {
 		return userLoggedIn;
