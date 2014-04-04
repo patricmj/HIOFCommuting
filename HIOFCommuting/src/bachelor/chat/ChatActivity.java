@@ -1,4 +1,4 @@
-package chat;
+package bachelor.chat;
 
 import bachelor.tab.TabListenerActivity;
 import bachelor.user.User;

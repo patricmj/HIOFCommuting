@@ -64,7 +64,7 @@
 //@string/title_activity_user_information
         </activity>
         <activity
-            android:name="chat.ChatActivity"
+            android:name="bachelor.chat.ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
     </application>

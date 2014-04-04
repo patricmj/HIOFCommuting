@@ -14,12 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import bachelor.chat.ChatActivity;
 import bachelor.database.HandleMessages;
 import bachelor.user.Inbox;
 import bachelor.user.Message;
 import bachelor.user.User;
 
-import chat.ChatActivity;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
