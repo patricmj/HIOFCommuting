@@ -23,7 +23,9 @@ import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
 import bachelor.user.User;
 
+import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
+import com.facebook.Session;
 
 public class FinishProfileFragment extends Fragment {
 	
@@ -181,6 +183,7 @@ public class FinishProfileFragment extends Fragment {
 					department = String.valueOf(departmentSpinner.getSelectedItem());
 					study = String.valueOf(studySpinner.getSelectedItem());
 					startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
+					String activity = getActivity().toString();
 					if(userHaveCar){
 						car = "Ja";
 					}
@@ -201,13 +204,19 @@ public class FinishProfileFragment extends Fragment {
 							"\n Studie : " + study + 
 							"\n Kull : " + startingYear +
 							"\n Bil? : " + car +
-							"\n Betingelser godkjent? : " + conditions
+							"\n Betingelser godkjent? : " + conditions + " akt " + activity
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
 						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 					}
 					else {
-						Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
+					}
+					if(activity.startsWith("com.bachelor.hiofcommuting.MainActivity")){
+						Toast.makeText(getActivity(), "Facebook", Toast.LENGTH_LONG).show();
+					}
+					if(activity.startsWith("bachelor.register.EmailLoginActivity")){
+						Toast.makeText(getActivity(), "Email", Toast.LENGTH_LONG).show();
 					}
 				}
 		});
