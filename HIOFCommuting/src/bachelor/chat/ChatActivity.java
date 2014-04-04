@@ -58,7 +58,8 @@ public class ChatActivity extends FragmentActivity {
 			setUserLoggedIn((User) getIntent().getSerializableExtra("CURRENT_USER"));
 			setUserToChatWith((User) getIntent().getSerializableExtra("SELECTED_USER"));
 			System.out.println("Du heter "+userLoggedIn.getFirstName());
-			System.out.println("Den du chatter med heter "+userToChatWith.getFirstName());
+			System.out.println("Du chatter med "+userToChatWith.getFirstName());
+			setTitle(userToChatWith.getFirstName()+"");
 		}catch(NullPointerException e){
 			
 		}

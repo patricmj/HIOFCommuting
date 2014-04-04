@@ -8,11 +8,13 @@ import com.bachelor.hiofcommuting.R;
 import bachelor.objects.Conversation;
 import bachelor.objects.User;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
@@ -20,6 +22,7 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 	private final User userLoggedIn;
 	private final User userToChatWith;
 	private final List<Conversation> messages;
+	private LinearLayout wrapper;
 	
 	public ChatArrayAdapter(Context context, User userLoggedIn, User userToChatWith, List<Conversation> messages) {
 		super(context, R.layout.chat_customrow, messages);
@@ -36,13 +39,21 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 			row = inflater.inflate(R.layout.chat_customrow, parent, false);
 		}
 		
-		ImageView profilePic = (ImageView) row.findViewById(R.id.imageView_chat_profilePic);
-		TextView message = (TextView) row.findViewById(R.id.textView_chat_message);
-		TextView date  = (TextView) row.findViewById(R.id.textView_chat_date);
+		TextView message = (TextView) row.findViewById(R.id.textview_chat_message);
+		//TextView date  = (TextView) row.findViewById(R.id.textview_chat_sent);
 		
-		profilePic.setImageResource(R.drawable.profile_picture_test);
 		message.setText(messages.get(position).getMessage());
-		date.setText(messages.get(position).getSent());
+		//date.setText(messages.get(position).getSent());
+		
+		wrapper = (LinearLayout) row.findViewById(R.id.container_chat_message);
+		if(messages.get(position).getReceiver().getUserid() == userLoggedIn.getUserid()){
+			message.setBackgroundResource(R.drawable.bubble_green);
+			wrapper.setGravity(Gravity.RIGHT);
+		}else if(messages.get(position).getSender().getUserid() == userToChatWith.getUserid()){
+			message.setBackgroundResource(R.drawable.bubble_yellow);
+			wrapper.setGravity(Gravity.LEFT);
+		}
+		
 		
 		return row;
 	}

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
+import android.net.Uri.Builder;
 import bachelor.objects.Conversation;
 import bachelor.objects.Inbox;
 import bachelor.objects.User;
@@ -24,15 +27,25 @@ public class HandleMessages {
 	
 	public static List<Conversation> getConversation(User sender, User receiver) {
 		List<Conversation> chat = new ArrayList<Conversation>();
-		
-		//THIS IS ONLY STATIC DATA FOR TESTING
-		String[] message = {"Test1", "Test%202", "wjnasdjn%20asdasd", "asdasd"};
-		String sent = "ja";
-		for(int i=0; i<message.length; i++){
-			String msg = message[i].replaceAll("%20", " ");
-			chat.add(new Conversation(sender, receiver, msg, sent));
-		}
 		/*
+		//THIS IS ONLY STATIC DATA FOR TESTING
+		String[] message = {"Halla Martin, hva skjer? Dette er Arthur speaking.", "Halla Arthur! Nei, ikke mye du, trenger litt hjelp med scriptet for det slutta brått å fungere, kunne du sette på det?", "Seff, hva er problemet?", "Nei, du skjønner det at jeg satt i MySQL Workbench og skulle endre litt på SQL-setninga så man fikk ut ALLE meldinger, ikke bare de som ikke var lest, og det FUNGERTE i mysql workbench, men når jeg kopierte setninga inn i scriptet slutta det å fungere. WHATS UP?", "2 sec skal se", "trenger mer tekst for å sjekke om scroll fungerer...", "meeeer test", "meeeeeeeeeeeeeeeeeeeeeeeer", "GREEEEEEEEEEEESS"};
+		String sent = "Dato + kl her";
+
+		for(int i=0; i<message.length; i++){
+			User sendr = null;
+			User recev = null;
+			if(i%2==0){
+				sendr = sender;
+				recev = receiver;
+			}else{
+				sendr = receiver;
+				recev = sender;
+			}
+			String msg = message[i].replaceAll("%20", " ");
+			chat.add(new Conversation(sendr, recev, msg, sent));
+		}*/
+		
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
 		try {
@@ -49,18 +62,21 @@ public class HandleMessages {
 					JSONObject obj = arr.getJSONObject(i);
 					int user_id_sender = obj.getInt("user_id_sender");
 					int user_id_receiver = obj.getInt("user_id_receiver");
-					if(sender.getUserid() == user_id_receiver && receiver.getUserid() == user_id_sender){
-						User buffer = sender;
-						receiver = sender;
-						sender = buffer;
+					User sendr = null;
+					User recvr = null;
+					if(sender.getUserid() == user_id_sender && receiver.getUserid() == user_id_receiver){
+						sendr = sender;
+						recvr = receiver;
+					}else{
+						sendr = receiver;
+						recvr = sender;
 					}
 					String message = obj.getString("message");
 					String sent = obj.getString("sent");
-					chat.add(new Conversation(sender, receiver, message, sent));
+					chat.add(new Conversation(sendr, recvr, message, sent));
 				}
+				//TODO: Set message as read
 				
-				httpclient.execute(new HttpGet(
-					"http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=read&user_id_sender="+sender.getUserid()+"&user_id_receiver="+receiver.getUserid());
 
 			} else {
 				// Closes the connection.
@@ -80,12 +96,13 @@ public class HandleMessages {
 			// TODO Auto-generated catch block
 			System.out.println("TRØBBEL" + e);
 			return null;
-		}*/
+		}
 		return chat;
 	}
 
 	public static boolean sendMessage(User sender, User receiver, String message) {
-		String msg = message.replace(" ", "%20");
+		String msg = message.replace(" ", "%20").trim();
+		String url = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=send&user_id_sender="+sender.getUserid()+"&user_id_receiver="+receiver.getUserid()+"&message="+msg;
 		try {
 			System.out.println("Avsender:"+sender.getFirstName()+"\nMottaker:"+receiver.getFirstName()+"\nMelding:"+msg);
 		} catch (Exception e) {

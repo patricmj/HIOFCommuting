@@ -18,7 +18,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ChatFragment extends Fragment{
 
@@ -39,13 +42,24 @@ public class ChatFragment extends Fragment{
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		System.out.println("Fragment works!");
 		userLoggedIn = ((ChatActivity)getActivity()).getUserLoggedIn();
 		userToChatWith = ((ChatActivity)getActivity()).getUserToChatWith();
 		new GetMessages().execute();
+		
+		Button sendMsg = (Button)getView().findViewById(R.id.button_chat_sendmessage);
+		sendMsg.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
+				String message = edittext.getText().toString();
+				new SendMessage().execute(message);
+			}
+		});
 	}
 	
-private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
+
+	
+	private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
 		
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		@Override
@@ -57,7 +71,6 @@ private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
 		@Override
 		protected List<Conversation> doInBackground(Void... params) {
 			List<Conversation> chat;
-			System.out.println("DoInBackground triggered");
 			try {
 				
 				chat = HandleMessages.getConversation(userLoggedIn, userToChatWith);
@@ -72,7 +85,7 @@ private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
 		protected void onPostExecute(List<Conversation> result) {
 			if(result!=null){
 				// Get a ListView from main view
-				chatView = (ListView)getView().findViewById(R.id.fragment_listview_chat);
+				chatView = (ListView)getView().findViewById(R.id.listview_chat);
 				
 				// Create a list adapter
 				ChatArrayAdapter adapter = new ChatArrayAdapter(getActivity(), userLoggedIn, userToChatWith, result);
@@ -82,5 +95,28 @@ private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
 			}
 			Dialog.dismiss();
 		}
+	}
+	
+	private class SendMessage extends AsyncTask<String, Void, Boolean> {
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			String message = params[0].toString();
+			try{
+				HandleMessages.sendMessage(userLoggedIn, userToChatWith, message);
+				return true;
+			}catch(NullPointerException e){
+				return false;
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result){
+			if(result){
+				EditText et = (EditText)getView().findViewById(R.id.edittext_chat_input);
+				et.setText("");
+			}
+		}
+
 	}
 }
