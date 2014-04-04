@@ -152,7 +152,7 @@ public class FinishProfileFragment extends Fragment {
 							"\n Betingelser godkjent? : " + conditions
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
-						((EmailLoginActivity)getActivity()).setFinishProfileList(address, postalCode, institution, campus, department, startingYear, userHaveCar);
+						((EmailLoginActivity)getActivity()).setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 					}
 					else {
 						Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();

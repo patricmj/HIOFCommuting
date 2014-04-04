@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import bachelor.database.HandleUsers;
 import bachelor.user.User;
 import bachelor.util.Util;
 
@@ -29,7 +31,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 	ArrayList<String> registerData = new ArrayList<String>();
 	ArrayList<String> finishProfileData = new ArrayList<String>();
-	String actvityName = "EmailLoginActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,33 +95,47 @@ public class EmailLoginActivity extends FragmentActivity {
 		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
 	}
 	
-	public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String startingYear, boolean hasCar) {
+	public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String study, String startingYear, boolean hasCar) {
 		finishProfileData.add(address);
 		finishProfileData.add(postalCode);
 		finishProfileData.add(institution);
 		finishProfileData.add(campus);
 		finishProfileData.add(department);
+		finishProfileData.add(study);
 		finishProfileData.add(startingYear);
 		if(hasCar)
 			finishProfileData.add("Ja");
 		else
 			finishProfileData.add("Nei");
-		createUserObject();
+		User user = createUserObject();
+		Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
+		intent.putExtra("CURRENT_USER", user);
+		startActivity(intent);
+		finish();
 	}
 	
-	public void createUserObject() {
-//public User(int userid, String firstName, double lat, double lon, double distance,String institution, String campus, String department,String study, int startingYear, boolean car)
+	public User createUserObject() {
+		//etternavn?
 		//Hente userid fra database?
-		
-		
-		
-		//User user = new User();
+		int userid = 10;
+		String firstName = registerData.get(0);
+		int postalCode = Integer.parseInt(finishProfileData.get(1));
+		double[] latlon = HandleUsers.getLatLon(this, finishProfileData.get(0), postalCode);
+		double lat = latlon[0];
+		double lon = latlon[1];
+		double distance = 0.0;
+		String institution = finishProfileData.get(2);
+		String campus = finishProfileData.get(3);
+		String department = finishProfileData.get(4);
+		String study = finishProfileData.get(5);
+		int startingYear = Integer.parseInt(finishProfileData.get(6));
+		boolean car = false;
+		if(finishProfileData.get(7).equals("Ja")){
+			car = true;
+		}
+		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 	
-	public String getActivityName() {
-		return getActivityName();
-	}
-
 	public void newUserClicked(View view) {
 		Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	}

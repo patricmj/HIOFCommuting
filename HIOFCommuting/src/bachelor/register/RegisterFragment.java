@@ -62,8 +62,10 @@ public class RegisterFragment extends Fragment implements OnClickListener {
         	email = emailEditText.getText().toString();
         	password = passwordEditText.getText().toString();
         	repeatPassword = repeatPasswordEditText.getText().toString();
-        	boolean passwordEquals = ValidateRegistration.validatePasswords(password, repeatPassword);
-        	boolean lengthsAreOk = ValidateRegistration.validateLengths(firstName, lastName, email, password, repeatPassword);
+        	//boolean passwordEquals = ValidateRegistration.validatePasswords(password, repeatPassword);
+        	//boolean lengthsAreOk = ValidateRegistration.validateLengths(firstName, lastName, email, password, repeatPassword);
+        	boolean passwordEquals = true;
+        	boolean lengthsAreOk = true;
         	if(passwordEquals && lengthsAreOk) {
         		Toast.makeText(getActivity().getApplicationContext(), "Passord er like og lengde ok" , Toast.LENGTH_SHORT).show();
         		((EmailLoginActivity)getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
