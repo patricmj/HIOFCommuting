@@ -16,9 +16,9 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import bachelor.chat.ChatActivity;
 import bachelor.database.HandleMessages;
-import bachelor.user.Inbox;
-import bachelor.user.Message;
-import bachelor.user.User;
+import bachelor.objects.Conversation;
+import bachelor.objects.Inbox;
+import bachelor.objects.User;
 
 
 import com.bachelor.hiofcommuting.R;

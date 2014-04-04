@@ -1,4 +1,4 @@
-package bachelor.user;
+package bachelor.objects;
 
 import java.io.Serializable;
 

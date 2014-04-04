@@ -24,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleUsers;
+import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
-import bachelor.user.User;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
@@ -154,7 +154,8 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		User selectedUser = hashMap.get(arg0.getId());
 		
 		Intent intent = new Intent(getActivity(), UserInformationActivity.class);
-		intent.putExtra("bruker", selectedUser);
+		intent.putExtra("SELECTED_USER", selectedUser);
+		intent.putExtra("CURRENT_USER", userLoggedIn);
 		startActivity(intent);
 	}
 	

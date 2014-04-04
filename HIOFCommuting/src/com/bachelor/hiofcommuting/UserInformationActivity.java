@@ -2,25 +2,33 @@ package com.bachelor.hiofcommuting;
 
 import java.text.DecimalFormat;
 
-import bachelor.user.User;
+import bachelor.chat.ChatActivity;
+import bachelor.objects.User;
+import bachelor.tab.TabListenerActivity;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class UserInformationActivity extends Activity {
 	private TextView lv;
+	private User valgtBruker;
+	private User userLoggedIn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_information);
 
+		userLoggedIn = (User)getIntent().getSerializableExtra("CURRENT_USER");
+		
 		//Mottar valgt user-objekt fra forrige activity
-		User valgtBruker = (User)getIntent().getSerializableExtra("bruker");
+		valgtBruker = (User)getIntent().getSerializableExtra("SELECTED_USER");
 		
 		//Setter tittel på activity til navnet på user-objekt
 		setTitle(valgtBruker.getFirstName());
@@ -69,5 +77,12 @@ public class UserInformationActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void startChatClick(View view){
+		Intent intent = new Intent(this, ChatActivity.class);
+		intent.putExtra("SELECTED_USER", valgtBruker);
+		intent.putExtra("CURRENT_USER", userLoggedIn);
+		startActivity(intent);
 	}
 }

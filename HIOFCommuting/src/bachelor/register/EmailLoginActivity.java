@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.database.HandleUsers;
-import bachelor.user.User;
+import bachelor.objects.User;
 import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.R;

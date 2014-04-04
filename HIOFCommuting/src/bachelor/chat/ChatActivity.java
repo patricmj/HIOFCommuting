@@ -1,7 +1,14 @@
 package bachelor.chat;
 
+import java.util.List;
+
+import bachelor.database.HandleMessages;
+import bachelor.database.HandleUsers;
+import bachelor.objects.Conversation;
+import bachelor.objects.User;
+import bachelor.tab.CustomListListView;
 import bachelor.tab.TabListenerActivity;
-import bachelor.user.User;
+import bachelor.tab.TabListenerActivity.PlaceholderFragment;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.R.id;
@@ -11,19 +18,28 @@ import com.bachelor.hiofcommuting.R.menu;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.os.Build;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends FragmentActivity {
 
 	private User userLoggedIn;
 	private User userToChatWith;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +47,16 @@ public class ChatActivity extends Activity {
 		setContentView(R.layout.activity_chat);
 
 		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.container, new ChatFragment()).commit();
+			FragmentManager fm = getSupportFragmentManager();
+			FragmentTransaction transaction = fm.beginTransaction();
+			ChatFragment pf = new ChatFragment();
+			transaction.add(R.id.container, pf);
 		}
 		
 		try{
-			userLoggedIn = (User) getIntent().getSerializableExtra("CURRENT_USER");
-			userToChatWith = (User) getIntent().getSerializableExtra("SELECTED_USER");
+			setUserLoggedIn((User) getIntent().getSerializableExtra("CURRENT_USER"));
+			setUserToChatWith((User) getIntent().getSerializableExtra("SELECTED_USER"));
 			System.out.println("Du heter "+userLoggedIn.getFirstName());
 			System.out.println("Den du chatter med heter "+userToChatWith.getFirstName());
 		}catch(NullPointerException e){
@@ -65,6 +84,22 @@ public class ChatActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public User getUserLoggedIn() {
+		return userLoggedIn;
+	}
+
+	public void setUserLoggedIn(User userLoggedIn) {
+		this.userLoggedIn = userLoggedIn;
+	}
+
+	public User getUserToChatWith() {
+		return userToChatWith;
+	}
+
+	public void setUserToChatWith(User userToChatWith) {
+		this.userToChatWith = userToChatWith;
+	}
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -81,5 +116,4 @@ public class ChatActivity extends Activity {
 			return rootView;
 		}
 	}
-
 }

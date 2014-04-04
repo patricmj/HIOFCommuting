@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.bachelor.hiofcommuting.R;
 
-import bachelor.user.User;
+import bachelor.objects.User;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

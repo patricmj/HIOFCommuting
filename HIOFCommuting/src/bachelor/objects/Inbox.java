@@ -1,4 +1,4 @@
-package bachelor.user;
+package bachelor.objects;
 
 public class Inbox {
 	private User sender;
