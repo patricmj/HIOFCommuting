@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,12 +41,14 @@ public class TabListenerActivity extends FragmentActivity implements
 	private List<User> users;
 	private User userLoggedIn;
 	Session session = null;
+	//Bitmap profilePic;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//Mottar valgt user-objekt fra forrige activity
 		setUserLoggedIn((User)getIntent().getSerializableExtra("CURRENT_USER"));
+		//profilePic = (Bitmap)getIntent().getParcelableExtra("PROFILE_PIC");
 		setContentView(R.layout.activity_tab_listener);
 		
 		
@@ -95,7 +98,9 @@ public class TabListenerActivity extends FragmentActivity implements
 		}
 	}
 
-
+	/*public Bitmap getProfilePic() {
+		return profilePic;
+	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -27,6 +27,7 @@ public class RegisterFragment extends Fragment implements OnClickListener {
 	private static final int LOAD_IMAGE_RESULTS = 1;
 	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, repeatPasswordEditText;
 	String firstName, lastName, email, password, repeatPassword;
+	Bitmap rotatedBitmap;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class RegisterFragment extends Fragment implements OnClickListener {
         	
         	Bitmap src = BitmapFactory.decodeFile(imagePath);
         	Bitmap scaledBitmap = Bitmap.createScaledBitmap(src, 850, 850, false);
-        	Bitmap rotatedBitmap = Util.rotateBitmap(imagePath, scaledBitmap);
+        	rotatedBitmap = Util.rotateBitmap(imagePath, scaledBitmap);
         	
         	choosenPic.setImageBitmap(rotatedBitmap);
         	

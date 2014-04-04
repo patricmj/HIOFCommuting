@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import bachelor.database.HandleUsers;
+import bachelor.user.User;
 
 import com.bachelor.hiofcommuting.R;
 
@@ -32,6 +35,7 @@ public class FinishProfileFragment extends Fragment {
 	ToggleButton carQstButton, readConditionsToggleButton;
 	EditText addressEditText, postalCodeEditText;
 	String address, postalCode, institution, campus, department, study, startingYear;
+	ArrayList<String> finishProfileData = new ArrayList<String>();
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -55,6 +59,55 @@ public class FinishProfileFragment extends Fragment {
 		addOnClickListeners();
 		getInstitutionData();
 		addDataToStartingYearSpinner();
+	}
+	
+	public ArrayList<String> getFinishProfileList() {
+		return finishProfileData;
+	}
+	
+	public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String study, String startingYear, boolean hasCar) {
+		finishProfileData.add(address);
+		finishProfileData.add(postalCode);
+		finishProfileData.add(institution);
+		finishProfileData.add(campus);
+		finishProfileData.add(department);
+		finishProfileData.add(study);
+		finishProfileData.add(startingYear);
+		if(hasCar)
+			finishProfileData.add("Ja");
+		else
+			finishProfileData.add("Nei");
+		User user = createUserObject();
+		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
+		intent.putExtra("CURRENT_USER", user);
+		//if(profilePic != null)
+			//intent.putExtra("PROFILE_PIC", profilePic);
+		startActivity(intent);
+		getActivity().finish();
+	}
+	
+	public User createUserObject() {
+		//etternavn?
+		//Hente userid fra database?
+		//if emailUser()
+		ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
+		int userid = 10;
+		String firstName = registerData.get(0);
+		int postalCode = Integer.parseInt(finishProfileData.get(1));
+		double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
+		double lat = latlon[0];
+		double lon = latlon[1];
+		double distance = 0.0;
+		String institution = finishProfileData.get(2);
+		String campus = finishProfileData.get(3);
+		String department = finishProfileData.get(4);
+		String study = finishProfileData.get(5);
+		int startingYear = Integer.parseInt(finishProfileData.get(6));
+		boolean car = false;
+		if(finishProfileData.get(7).equals("Ja")){
+			car = true;
+		}
+		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {
@@ -86,7 +139,6 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public void addOnClickListeners() {
-
 		//CarQuestion
 		carQstButton.setOnClickListener(new OnClickListener() {
 			
@@ -152,7 +204,7 @@ public class FinishProfileFragment extends Fragment {
 							"\n Betingelser godkjent? : " + conditions
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
-						((EmailLoginActivity)getActivity()).setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
+						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 					}
 					else {
 						Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();

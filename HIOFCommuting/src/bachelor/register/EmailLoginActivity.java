@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +32,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
 	ArrayList<String> registerData = new ArrayList<String>();
 	ArrayList<String> finishProfileData = new ArrayList<String>();
+	Bitmap profilePic = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class EmailLoginActivity extends FragmentActivity {
 	}
 	
 	public void setRegistrationList(String firstName, String lastName, String email, String password, String repeatPassword) {
+		//profilePic = bm;
 		registerData.add(firstName);
 		registerData.add(lastName);
 		registerData.add(email);
@@ -95,7 +98,14 @@ public class EmailLoginActivity extends FragmentActivity {
 		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
 	}
 	
-	public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String study, String startingYear, boolean hasCar) {
+	public ArrayList<String> getRegistrationList() {
+		return registerData;
+	}
+	
+	//FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
+	//fragment.
+	
+	/*public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String study, String startingYear, boolean hasCar) {
 		finishProfileData.add(address);
 		finishProfileData.add(postalCode);
 		finishProfileData.add(institution);
@@ -110,11 +120,21 @@ public class EmailLoginActivity extends FragmentActivity {
 		User user = createUserObject();
 		Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
+		//if(profilePic != null)
+			//intent.putExtra("PROFILE_PIC", profilePic);
 		startActivity(intent);
 		finish();
+	}*/
+	
+	private void getFinishProfileList() {
+		FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
+		finishProfileData = fragment.getFinishProfileList();
 	}
 	
-	public User createUserObject() {
+	//FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
+	//fragment.
+	
+	/*public User createUserObject() {
 		//etternavn?
 		//Hente userid fra database?
 		int userid = 10;
@@ -134,7 +154,7 @@ public class EmailLoginActivity extends FragmentActivity {
 			car = true;
 		}
 		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
-	}
+	}*/
 	
 	public void newUserClicked(View view) {
 		Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
