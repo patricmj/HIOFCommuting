@@ -271,6 +271,9 @@ public class FinishProfileFragment extends Fragment {
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
 						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
+						if(!facebookUser){
+							navigateToMap();
+						}
 					}
 					else {
 						//Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
