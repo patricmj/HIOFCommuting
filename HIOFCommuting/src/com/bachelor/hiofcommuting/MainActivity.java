@@ -169,6 +169,11 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 	}
+	
+	public Session getFacebookSession() {
+		Session session = Session.getActiveSession();
+		return session;
+	}
 
 	public void loggInnMedEpost(View view) {
 		Intent intent = new Intent(this, EmailLoginActivity.class);

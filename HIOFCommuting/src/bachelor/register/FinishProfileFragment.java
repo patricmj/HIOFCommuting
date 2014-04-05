@@ -1,5 +1,6 @@
 package bachelor.register;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -22,10 +23,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
 import bachelor.objects.User;
+import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.model.GraphUser;
 
 public class FinishProfileFragment extends Fragment {
 	
@@ -34,10 +39,12 @@ public class FinishProfileFragment extends Fragment {
 	private Button finishButton;
 	boolean userHaveCar = false;
 	boolean readConditions = false;
+	boolean facebookUser = false;
 	ToggleButton carQstButton, readConditionsToggleButton;
 	EditText addressEditText, postalCodeEditText;
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
+	String fbFirstName;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -60,7 +67,31 @@ public class FinishProfileFragment extends Fragment {
 		postalCodeEditText = (EditText) getView().findViewById(R.id.postal);
 		addOnClickListeners();
 		getInstitutionData();
-		addDataToStartingYearSpinner();
+		addDataToStartingYearSpinner();	
+		/*
+		Session session;
+		session = ((MainActivity)getActivity()).getFacebookSession();
+		makeMeRequest(session);
+		*/
+	}
+	
+	public void makeMeRequest(final Session session) {
+		// Make an API call to get user data and define a
+		// new callback to handle the response.
+		Request request = Request.newMeRequest(session,
+				new Request.GraphUserCallback() {
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						// If the response is successful
+						if (session == Session.getActiveSession()) {
+							if (user != null) {
+								fbFirstName = user.getFirstName();
+								navigateToMap();
+							}
+						}
+					}
+				});
+		request.executeAsync();
 	}
 	
 	public ArrayList<String> getFinishProfileList() {
@@ -79,11 +110,19 @@ public class FinishProfileFragment extends Fragment {
 			finishProfileData.add("Ja");
 		else
 			finishProfileData.add("Nei");
+	}
+	
+	public void navigateToMap() {
 		User user = createUserObject();
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
 		//if(profilePic != null)
 			//intent.putExtra("PROFILE_PIC", profilePic);
+		if(facebookUser) {
+			Session session;
+			session = ((MainActivity)getActivity()).getFacebookSession();
+			intent.putExtra("FACEBOOK_SESSION", session);
+		}
 		startActivity(intent);
 		getActivity().finish();
 	}
@@ -92,24 +131,45 @@ public class FinishProfileFragment extends Fragment {
 		//etternavn?
 		//Hente userid fra database?
 		//if emailUser()
-		ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
-		int userid = 10;
-		String firstName = registerData.get(0);
-		int postalCode = Integer.parseInt(finishProfileData.get(1));
-		double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
-		double lat = latlon[0];
-		double lon = latlon[1];
-		double distance = 0.0;
-		String institution = finishProfileData.get(2);
-		String campus = finishProfileData.get(3);
-		String department = finishProfileData.get(4);
-		String study = finishProfileData.get(5);
-		int startingYear = Integer.parseInt(finishProfileData.get(6));
-		boolean car = false;
-		if(finishProfileData.get(7).equals("Ja")){
-			car = true;
+		if(!facebookUser) {
+			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
+			int userid = 10;
+			String firstName = registerData.get(0);
+			int postalCode = Integer.parseInt(finishProfileData.get(1));
+			double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
+			double lat = latlon[0];
+			double lon = latlon[1];
+			double distance = 0.0;
+			String institution = finishProfileData.get(2);
+			String campus = finishProfileData.get(3);
+			String department = finishProfileData.get(4);
+			String study = finishProfileData.get(5);
+			int startingYear = Integer.parseInt(finishProfileData.get(6));
+			boolean car = false;
+			if(finishProfileData.get(7).equals("Ja")){
+				car = true;
+			}
+			return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 		}
-		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		else {
+			int userid = 10;
+			int postalCode = Integer.parseInt(finishProfileData.get(1));
+			String firstName = fbFirstName;
+			double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
+			double lat = latlon[0];
+			double lon = latlon[1];
+			double distance = 0.0;
+			String institution = finishProfileData.get(2);
+			String campus = finishProfileData.get(3);
+			String department = finishProfileData.get(4);
+			String study = finishProfileData.get(5);
+			int startingYear = Integer.parseInt(finishProfileData.get(6));
+			boolean car = false;
+			if(finishProfileData.get(7).equals("Ja")){
+				car = true;
+			}
+			return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		}
 	}
 
 	public void addDataToStartingYearSpinner() {
@@ -184,6 +244,16 @@ public class FinishProfileFragment extends Fragment {
 					study = String.valueOf(studySpinner.getSelectedItem());
 					startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
 					String activity = getActivity().toString();
+					if(activity.startsWith("com.bachelor.hiofcommuting.MainActivity")){
+						Toast.makeText(getActivity(), "Facebook", Toast.LENGTH_LONG).show();
+						facebookUser = true;
+						Session session;
+						session = ((MainActivity)getActivity()).getFacebookSession();
+						makeMeRequest(session);
+					}
+					if(activity.startsWith("bachelor.register.EmailLoginActivity")){
+						Toast.makeText(getActivity(), "Email", Toast.LENGTH_LONG).show();
+					}
 					if(userHaveCar){
 						car = "Ja";
 					}
@@ -196,6 +266,7 @@ public class FinishProfileFragment extends Fragment {
 					else {
 						conditions = "Nei";
 					}
+					
 					Toast.makeText(getActivity(), 
 							"OnClickListener : " + 
 							"\n Institusjon : " + institution +
@@ -204,19 +275,13 @@ public class FinishProfileFragment extends Fragment {
 							"\n Studie : " + study + 
 							"\n Kull : " + startingYear +
 							"\n Bil? : " + car +
-							"\n Betingelser godkjent? : " + conditions + " akt " + activity
+							"\n Betingelser godkjent? : " + conditions 
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
 						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 					}
 					else {
 						//Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
-					}
-					if(activity.startsWith("com.bachelor.hiofcommuting.MainActivity")){
-						Toast.makeText(getActivity(), "Facebook", Toast.LENGTH_LONG).show();
-					}
-					if(activity.startsWith("bachelor.register.EmailLoginActivity")){
-						Toast.makeText(getActivity(), "Email", Toast.LENGTH_LONG).show();
 					}
 				}
 		});
