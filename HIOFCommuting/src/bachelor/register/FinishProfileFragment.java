@@ -68,11 +68,6 @@ public class FinishProfileFragment extends Fragment {
 		addOnClickListeners();
 		getInstitutionData();
 		addDataToStartingYearSpinner();	
-		/*
-		Session session;
-		session = ((MainActivity)getActivity()).getFacebookSession();
-		makeMeRequest(session);
-		*/
 	}
 	
 	public void makeMeRequest(final Session session) {
@@ -128,9 +123,6 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public User createUserObject() {
-		//etternavn?
-		//Hente userid fra database?
-		//if emailUser()
 		if(!facebookUser) {
 			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 			int userid = 10;
