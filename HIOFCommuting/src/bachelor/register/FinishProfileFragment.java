@@ -123,45 +123,30 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public User createUserObject() {
+		String firstName;
 		if(!facebookUser) {
 			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
-			int userid = 10;
-			String firstName = registerData.get(0);
-			int postalCode = Integer.parseInt(finishProfileData.get(1));
-			double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
-			double lat = latlon[0];
-			double lon = latlon[1];
-			double distance = 0.0;
-			String institution = finishProfileData.get(2);
-			String campus = finishProfileData.get(3);
-			String department = finishProfileData.get(4);
-			String study = finishProfileData.get(5);
-			int startingYear = Integer.parseInt(finishProfileData.get(6));
-			boolean car = false;
-			if(finishProfileData.get(7).equals("Ja")){
-				car = true;
-			}
-			return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+			firstName = registerData.get(0);
 		}
 		else {
-			int userid = 10;
-			int postalCode = Integer.parseInt(finishProfileData.get(1));
-			String firstName = fbFirstName;
-			double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
-			double lat = latlon[0];
-			double lon = latlon[1];
-			double distance = 0.0;
-			String institution = finishProfileData.get(2);
-			String campus = finishProfileData.get(3);
-			String department = finishProfileData.get(4);
-			String study = finishProfileData.get(5);
-			int startingYear = Integer.parseInt(finishProfileData.get(6));
-			boolean car = false;
-			if(finishProfileData.get(7).equals("Ja")){
-				car = true;
-			}
-			return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+			firstName = fbFirstName;
 		}
+		int userid = 10;
+		int postalCode = Integer.parseInt(finishProfileData.get(1));
+		double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
+		double lat = latlon[0];
+		double lon = latlon[1];
+		double distance = 0.0;
+		String institution = finishProfileData.get(2);
+		String campus = finishProfileData.get(3);
+		String department = finishProfileData.get(4);
+		String study = finishProfileData.get(5);
+		int startingYear = Integer.parseInt(finishProfileData.get(6));
+		boolean car = false;
+		if(finishProfileData.get(7).equals("Ja")){
+			car = true;
+		}
+		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {

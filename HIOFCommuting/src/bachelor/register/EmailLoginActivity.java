@@ -102,60 +102,6 @@ public class EmailLoginActivity extends FragmentActivity {
 		return registerData;
 	}
 	
-	//FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
-	//fragment.
-	
-	/*public void setFinishProfileList(String address, String postalCode, String institution, String campus, String department, String study, String startingYear, boolean hasCar) {
-		finishProfileData.add(address);
-		finishProfileData.add(postalCode);
-		finishProfileData.add(institution);
-		finishProfileData.add(campus);
-		finishProfileData.add(department);
-		finishProfileData.add(study);
-		finishProfileData.add(startingYear);
-		if(hasCar)
-			finishProfileData.add("Ja");
-		else
-			finishProfileData.add("Nei");
-		User user = createUserObject();
-		Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
-		intent.putExtra("CURRENT_USER", user);
-		//if(profilePic != null)
-			//intent.putExtra("PROFILE_PIC", profilePic);
-		startActivity(intent);
-		finish();
-	}*/
-	
-	private void getFinishProfileList() {
-		FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
-		finishProfileData = fragment.getFinishProfileList();
-	}
-	
-	//FinishProfileFragment fragment = (FinishProfileFragment) getSupportFragmentManager().findFragmentById(R.id.finishProfileFragment);
-	//fragment.
-	
-	/*public User createUserObject() {
-		//etternavn?
-		//Hente userid fra database?
-		int userid = 10;
-		String firstName = registerData.get(0);
-		int postalCode = Integer.parseInt(finishProfileData.get(1));
-		double[] latlon = HandleUsers.getLatLon(this, finishProfileData.get(0), postalCode);
-		double lat = latlon[0];
-		double lon = latlon[1];
-		double distance = 0.0;
-		String institution = finishProfileData.get(2);
-		String campus = finishProfileData.get(3);
-		String department = finishProfileData.get(4);
-		String study = finishProfileData.get(5);
-		int startingYear = Integer.parseInt(finishProfileData.get(6));
-		boolean car = false;
-		if(finishProfileData.get(7).equals("Ja")){
-			car = true;
-		}
-		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
-	}*/
-	
 	public void newUserClicked(View view) {
 		Util.showFragment(REGISTER, fm, fragments, "Ny bruker", weakActivity);
 	}
