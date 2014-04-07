@@ -43,25 +43,24 @@ public class HandleUsers {
 					int study_id = objectUser.getInt("study_id");
 					String firstname = objectUser.getString("firstname");
 					String surname = objectUser.getString("surname");
-					//String point = objectUser.getString("lonlat").replace("POINT(", "").replace(")", "");
-					//System.out.println(point);
-					//String[] latlon = point.split(" ");
-					
-					//double lat = Double.parseDouble(latlon[0]);
-					//double lon = Double.parseDouble(latlon[1]);
-					boolean car = objectUser.getBoolean("car");
+					String point = objectUser.getString("lonlat").replace("POINT(", "").replace(")", "");
+					String[] latlon = point.split(" ");
+					double lat = Double.parseDouble(latlon[0]);
+					double lon = Double.parseDouble(latlon[1]);
+					int iscar = objectUser.getInt("car");
+					boolean car = false;
+					if(iscar==1)car = true;
 					//STUDY OBJECT
 					objectStudy = arrayStudy.getJSONObject(study_id);
 					String institution = objectStudy.getString("institution_name");
 					String campus = objectStudy.getString("campus_name");
 					String department = objectStudy.getString("department_name");
 					String study = objectStudy.getString("name_of_study");
-					//double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
+					double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
 					int startingYear = objectStudy.getInt("starting_year");
 					
 					//ADD USER OBJECT
-					//userList.add(new User(user_id, firstname, surname, lon, lat, distance, institution, campus, department, study, startingYear, car));
-					userList.add(new User(user_id, firstname, surname, 59.220537, 10.934701, 0.0, institution,campus,department,study,startingYear, car));
+					userList.add(new User(user_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

@@ -72,7 +72,6 @@ public class ChatFragment extends Fragment{
 		protected List<Conversation> doInBackground(Void... params) {
 			List<Conversation> chat;
 			try {
-				
 				chat = HandleMessages.getConversation(userLoggedIn, userToChatWith);
 				return chat;
 			} catch (Exception e) {

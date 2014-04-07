@@ -79,8 +79,13 @@ public class TabInboxFragment extends Fragment {
 		
 		@Override
 		protected List<Inbox> doInBackground(Void... params) {
-			newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), users);
-			return newMessage;
+			try{
+				newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), users);
+				return newMessage;
+			}catch(NullPointerException e){
+				return null;
+			}
+			
 		}
 
 		@Override

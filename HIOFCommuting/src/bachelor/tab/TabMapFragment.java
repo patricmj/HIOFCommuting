@@ -178,30 +178,33 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 				List<User> userList = new ArrayList<User>();
 				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
 				return userList;
-			} catch (Exception e) {
-				Log.e("ITCRssReader", e.getMessage());
+			} catch (NullPointerException e) {
+				//Log.e("ITCRssReader", e.getMessage());
+				System.out.println("FUNKA IKKE");
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(List<User> result) {
-			for(int i=0; i<result.size();i++){
-				String firstName = result.get(i).getFirstName();
-				double lat = result.get(i).getLat();
-				double lon = result.get(i).getLon();
-				DecimalFormat df = new DecimalFormat("0.0");
-				String distance = df.format(result.get(i).getDistance());
-				LatLng pos = new LatLng(lat, lon);
-				BitmapDescriptor icon = null;
-				if(result.get(i).userHasCar()){
-					icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_car);
-				}else{
-					icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_nocar);
+			if(result!=null){
+				for(int i=0; i<result.size();i++){
+					String firstName = result.get(i).getFirstName();
+					double lat = result.get(i).getLat();
+					double lon = result.get(i).getLon();
+					DecimalFormat df = new DecimalFormat("0.0");
+					String distance = df.format(result.get(i).getDistance());
+					LatLng pos = new LatLng(lat, lon);
+					BitmapDescriptor icon = null;
+					if(result.get(i).userHasCar()){
+						icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_car);
+					}else{
+						icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_nocar);
+					}
+					Marker marker = googleMap.addMarker(new MarkerOptions().title(firstName).icon(icon)
+							.snippet("Bor "+distance+"km fra din adresse").position(pos));
+					hashMap.put(marker.getId(), result.get(i));
 				}
-				Marker marker = googleMap.addMarker(new MarkerOptions().title(firstName).icon(icon)
-						.snippet("Bor "+distance+"km fra din adresse").position(pos));
-				hashMap.put(marker.getId(), result.get(i));
 			}
 			Dialog.dismiss();
 		}
