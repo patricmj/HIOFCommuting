@@ -1,11 +1,28 @@
 package bachelor.register;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
+import bachelor.objects.Inbox;
 import bachelor.objects.User;
 import bachelor.util.Util;
 
@@ -45,6 +63,7 @@ public class FinishProfileFragment extends Fragment {
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
 	String fbFirstName;
+	JSONArray jsonArr;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -66,8 +85,8 @@ public class FinishProfileFragment extends Fragment {
 		addressEditText = (EditText) getView().findViewById(R.id.address);
 		postalCodeEditText = (EditText) getView().findViewById(R.id.postal);
 		addOnClickListeners();
-		getInstitutionData();
 		addDataToStartingYearSpinner();	
+		new Read().execute();
 	}
 	
 	public void makeMeRequest(final Session session) {
@@ -160,10 +179,19 @@ public class FinishProfileFragment extends Fragment {
 		startingyearSpinner.setAdapter(adapter);
 	}
 	
-	public void getInstitutionData() {
+	public void getInstitutionData(List<JSONObject> institutionObjects) {
 		List<String> institutionList = new ArrayList<String>();
-		institutionList.add("Hiÿ");
-		institutionList.add("HiSF");
+		//institutionList.add("Hiÿ");
+		//institutionList.add("HiSF");
+		//addItemsOnSpinner(institutionList); 
+		try {
+			for(int i = 0; i < institutionObjects.size(); i++){
+				institutionList.add(institutionObjects.get(i).getString("institution_name"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		addItemsOnSpinner(institutionList); 
 	}
 	
@@ -267,7 +295,7 @@ public class FinishProfileFragment extends Fragment {
 		});
 	}
 	
-	public void addInstitutionSpinnerListener() {
+	/*public void addInstitutionSpinnerListener() {
 		institutionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView,
@@ -299,6 +327,10 @@ public class FinishProfileFragment extends Fragment {
 				// TODO Auto-generated method stub
 			}
 		});
+	}*/
+	
+	public void addInstitutionSpinnerListener() {
+		
 	}
 	
 	public void addCampusSpinnerListener() {
@@ -463,6 +495,39 @@ public class FinishProfileFragment extends Fragment {
 				// TODO Auto-generated method stub
 			}
 		});
+	}
+	
+	public class Read extends AsyncTask<String, Integer, String>{
+
+		List<JSONObject> institutionObjects = new ArrayList<JSONObject>();	
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try {
+				JSONParser jp = new JSONParser("http://frigg.hiof.no/bo14-g23/py/institution.py");
+				jsonArr = jp.loadData();
+				
+				for(int i = 0; i < jsonArr.length(); i++) {
+					institutionObjects.add(jsonArr.getJSONObject(i));
+				}
+				
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			getInstitutionData(institutionObjects);
+		}
 	}
 
 }
