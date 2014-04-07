@@ -29,115 +29,71 @@ public class HandleUsers {
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn) {
 		if (userList.isEmpty()) {
-			/*
-			int [] userid = {5,4,3,1,2};
-			String[] firstName = { "Martin", "Patrick", "Arthur", "Chris", "Lars" };
-			// double[] lat = {};
-			// double[] lon = {};
-			// double[] avstand = {};
-			String institution = "Hiÿ";
-			String campus = "Remmen";
-			String department = "IT";
-			String study = "Informatikk";
-			int startingYear = 2011;
-			boolean car = true;
-
-			String address[] = { "Bodalsvei 1", "Nye tindlundvei 24b",
-					"Likollveien 56", "Skjebergveien 122", "Nedre langgate 89" };
-			int postalCode[] = { 1743, 1718, 1781, 1743, 1743 };
-			
-			double myLat = userLoggedIn.getLat();
-			double myLon = userLoggedIn.getLon();
-			for (int i = 0; i < address.length; i++) {
-				double[] latLon = getLatLon(context, address[i], postalCode[i]);
-				double lat = latLon[0];
-				double lon = latLon[1];
-				
-				double distance = distFrom(myLat, myLon, lat, lon);
-				userList.add(new User(userid[i],firstName[i], lat, lon, distance,
-						institution, campus, department, study, startingYear, car));
-			}
-
-			Collections.sort(userList, new Comparator<User>() {
-				public int compare(User s1, User s2) {
-					return Double.compare(s1.getDistance(), s2.getDistance());
-				}
-			});
-			userList.remove(0);
-			*/
-			
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse response;
-			try {
-				response = httpclient.execute(new HttpGet("http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr"));
-				StatusLine statusLine = response.getStatusLine();
-				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-					out.close();
+			String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
+			String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
+			JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
+			JSONArray arrayStudy = new JsonParser().getJsonArray(urlStudy);
+			for (int i = 0; i < arrayUser.length(); i++) {
+				JSONObject objectUser;
+				JSONObject objectStudy;
+				try {
+					//USER OBJECT
+					objectUser = arrayUser.getJSONObject(i);
+					int user_id = objectUser.getInt("user_id");
+					int study_id = objectUser.getInt("study_id");
+					String firstname = objectUser.getString("firstname");
+					String surname = objectUser.getString("surname");
+					//String point = objectUser.getString("lonlat").replace("POINT(", "").replace(")", "");
+					//System.out.println(point);
+					//String[] latlon = point.split(" ");
 					
-					JSONArray arr = new JSONArray(out.toString());
-					for (int i = 0; i < arr.length(); i++) {
-						JSONObject obj = arr.getJSONObject(i);
-						int user_id = obj.getInt("user_id");
-						int study_id = obj.getInt("study_id");
-						String firstname = obj.getString("firstname");
-						String surname = obj.getString("surname");
-						String point = obj.getString("lonlat");
-						
-						
-						//userList.add(new User());
-					}
-					//TODO: Set message as read
+					//double lat = Double.parseDouble(latlon[0]);
+					//double lon = Double.parseDouble(latlon[1]);
+					boolean car = objectUser.getBoolean("car");
+					//STUDY OBJECT
+					objectStudy = arrayStudy.getJSONObject(study_id);
+					String institution = objectStudy.getString("institution_name");
+					String campus = objectStudy.getString("campus_name");
+					String department = objectStudy.getString("department_name");
+					String study = objectStudy.getString("name_of_study");
+					//double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
+					int startingYear = objectStudy.getInt("starting_year");
 					
-
-				} else {
-					// Closes the connection.
-					response.getEntity().getContent().close();
-					throw new IOException(statusLine.getReasonPhrase());
+					//ADD USER OBJECT
+					//userList.add(new User(user_id, firstname, surname, lon, lat, distance, institution, campus, department, study, startingYear, car));
+					userList.add(new User(user_id, firstname, surname, 59.220537, 10.934701, 0.0, institution,campus,department,study,startingYear, car));
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-
-			} catch (ClientProtocolException e) {
-				// TODO Handle problems..
-				System.out.println("TRÿBBEL" + e);
-				return null;
-			} catch (IOException e) {
-				// TODO Handle problems..
-				System.out.println("TRÿBBEL" + e);
-				return null;
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				System.out.println("TRÿBBEL" + e);
-				return null;
 			}
-			
 		} else {
 			// Vurdere om lista b¯r oppdateres
-			System.out
-					.println("userList allerede fylt opp, bruker gammel arraylist");
+			System.out.println("userList allerede fylt opp, bruker gammel arraylist");
 		}
 		return userList;
 	}
-	
-	public static double[] getLatLon(Context context, String address, int postalCode){
+
+	public static double[] getLatLon(Context context, String address,
+			int postalCode) {
 		Geocoder coder = new Geocoder(context);
 		List<Address> addressList;
 
 		try {
-			addressList = coder.getFromLocationName(address,1);
-		    if (address == null) {
-		        return null;
-		    }
-		    Address location = addressList.get(0);
-		    double[] latLon = {location.getLatitude(), location.getLongitude() };
-		    return latLon;
-		}catch(Exception e){
-			
+			addressList = coder.getFromLocationName(address, 1);
+			if (address == null) {
+				return null;
+			}
+			Address location = addressList.get(0);
+			double[] latLon = { location.getLatitude(), location.getLongitude() };
+			return latLon;
+		} catch (Exception e) {
+
 		}
 		return null;
 	}
 
-	public static double distFrom(double lat1, double lng1, double lat2,double lng2) {
+	public static double distFrom(double lat1, double lng1, double lat2,
+			double lng2) {
 		double earthRadius = 3958.75;
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLng = Math.toRadians(lng2 - lng1);

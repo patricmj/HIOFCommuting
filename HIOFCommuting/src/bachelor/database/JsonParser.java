@@ -15,7 +15,7 @@ import org.json.JSONException;
 
 public class JsonParser {
 
-	public static JSONArray getJsonArray(String url){
+	public JSONArray getJsonArray(String url){
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
 		try {
@@ -33,7 +33,6 @@ public class JsonParser {
 				response.getEntity().getContent().close();
 				throw new IOException(statusLine.getReasonPhrase());
 			}
-
 		} catch (ClientProtocolException e) {
 			// TODO Handle problems..
 			return null;
@@ -45,5 +44,4 @@ public class JsonParser {
 			return null;
 		}
 	}
-	
 }
