@@ -3,6 +3,7 @@ package bachelor.database;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -10,12 +11,15 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.google.android.gms.drive.internal.e;
+
 public class JsonParser {
 
-	public static JSONArray getJsonArray(String url){
+	public JSONArray getJsonArray(String url){
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
 		try {

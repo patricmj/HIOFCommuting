@@ -97,6 +97,11 @@ public class TabListenerActivity extends FragmentActivity implements
 			System.out.println("ECEPITON"+e);
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		//Do nothing
+	}
 
 	/*public Bitmap getProfilePic() {
 		return profilePic;
