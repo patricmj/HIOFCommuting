@@ -39,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
+import bachelor.database.JsonParser;
 import bachelor.objects.Inbox;
 import bachelor.objects.User;
 import bachelor.util.Util;
@@ -504,19 +505,12 @@ public class FinishProfileFragment extends Fragment {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
-				JSONParser jp = new JSONParser("http://frigg.hiof.no/bo14-g23/py/institution.py");
-				jsonArr = jp.loadData();
+				JsonParser jp = new JsonParser();
+				jsonArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/institution.py");
 				
 				for(int i = 0; i < jsonArr.length(); i++) {
 					institutionObjects.add(jsonArr.getJSONObject(i));
 				}
-				
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
