@@ -165,7 +165,7 @@ public class FinishProfileFragment extends Fragment {
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
 		}
-		return new User(userid, firstName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		return new User(userid, firstName, "FIX(etternavn)", lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {

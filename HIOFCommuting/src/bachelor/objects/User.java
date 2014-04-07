@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class User implements Serializable{
 	private int userid;
-	private String firstName;
+	private String firstname;
+	private String surname;
 	private double lat;
 	private double lon;
 	private double distance;
@@ -15,11 +16,12 @@ public class User implements Serializable{
 	private int startingYear;
 	private boolean car;
 	
-	public User(int userid, String firstName, double lat, double lon, double distance,
+	public User(int userid, String firstname, String surname, double lat, double lon, double distance,
 			String institution, String campus, String department,
 			String study, int startingYear, boolean car) {
 		this.userid = userid;
-		this.firstName = firstName;
+		this.firstname = firstname;
+		this.surname = surname;
 		this.lat = lat;
 		this.lon = lon;
 		this.distance = distance;
@@ -32,10 +34,17 @@ public class User implements Serializable{
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return firstname;
 	}
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstname = firstName;
+	}
+	
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 	public double getLat() {
 		return lat;

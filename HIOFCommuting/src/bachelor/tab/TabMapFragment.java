@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -81,7 +82,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		super.onResume();
 		if (googleMap == null){
 			googleMap = fragment.getMap();
-			googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)));
 			initilizeMap();
 		}
 	}
@@ -103,26 +103,29 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 			
 			@Override
 			public View getInfoContents(Marker arg0){
-				View view = inflater.inflate(R.layout.tab_map_custominfowindow, null);
-				String firstName = hashMap.get(arg0.getId()).getFirstName();
-				DecimalFormat df = new DecimalFormat("0.0");
-				String distance = df.format(hashMap.get(arg0.getId()).getDistance());
-				String department = hashMap.get(arg0.getId()).getDepartment();
-				String institution = hashMap.get(arg0.getId()).getInstitution();
-				
-				ImageView profilePic = (ImageView) view.findViewById(R.id.imageView_tabMap_profilePic);
-				TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
-				TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
-				TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
-				
-				//Bitmap pp = ((TabListenerActivity)getActivity()).getProfilePic();
-				//profilePic.setImageBitmap(pp);
-				profilePic.setImageResource(R.drawable.profile_picture_test);
-				nameTxt.setText(firstName);
-				
-				distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
-				departmentTxt.setText("Studerer på "+department+" ved "+institution);
-				return view;
+				if(!(hashMap.get(arg0.getId()).getUserid() == userLoggedIn.getUserid())){
+					View view = inflater.inflate(R.layout.tab_map_custominfowindow, null);
+					String firstName = hashMap.get(arg0.getId()).getFirstName();
+					DecimalFormat df = new DecimalFormat("0.0");
+					String distance = df.format(hashMap.get(arg0.getId()).getDistance());
+					String department = hashMap.get(arg0.getId()).getDepartment();
+					String institution = hashMap.get(arg0.getId()).getInstitution();
+					
+					ImageView profilePic = (ImageView) view.findViewById(R.id.imageView_tabMap_profilePic);
+					TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
+					TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
+					TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
+					
+					//Bitmap pp = ((TabListenerActivity)getActivity()).getProfilePic();
+					//profilePic.setImageBitmap(pp);
+					profilePic.setImageResource(R.drawable.profile_picture_test);
+					nameTxt.setText(firstName);
+					
+					distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
+					departmentTxt.setText("Studerer på "+department+" ved "+institution);
+					return view;
+				}
+				return null;
 			
 			}
 		});
@@ -152,11 +155,12 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	@Override
 	public void onInfoWindowClick(Marker arg0) {
 		User selectedUser = hashMap.get(arg0.getId());
-		
-		Intent intent = new Intent(getActivity(), UserInformationActivity.class);
-		intent.putExtra("SELECTED_USER", selectedUser);
-		intent.putExtra("CURRENT_USER", userLoggedIn);
-		startActivity(intent);
+		if(!(selectedUser.getUserid() == userLoggedIn.getUserid())){
+			Intent intent = new Intent(getActivity(), UserInformationActivity.class);
+			intent.putExtra("SELECTED_USER", selectedUser);
+			intent.putExtra("CURRENT_USER", userLoggedIn);
+			startActivity(intent);
+		}
 	}
 	
 	private class GetUsers extends AsyncTask<Void, Void, List<User>> {
@@ -189,7 +193,13 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 				DecimalFormat df = new DecimalFormat("0.0");
 				String distance = df.format(result.get(i).getDistance());
 				LatLng pos = new LatLng(lat, lon);
-				Marker marker = googleMap.addMarker(new MarkerOptions().title(firstName)
+				BitmapDescriptor icon = null;
+				if(result.get(i).userHasCar()){
+					icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_car);
+				}else{
+					icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_nocar);
+				}
+				Marker marker = googleMap.addMarker(new MarkerOptions().title(firstName).icon(icon)
 						.snippet("Bor "+distance+"km fra din adresse").position(pos));
 				hashMap.put(marker.getId(), result.get(i));
 			}
