@@ -2,11 +2,13 @@ package bachelor.chat;
 
 import java.util.List;
 
+import android.os.Handler;
 import bachelor.database.HandleMessages;
 import bachelor.objects.Conversation;
 import bachelor.objects.User;
 import bachelor.tab.TabListenerActivity;
 
+import bachelor.util.HTTPClient;
 import com.bachelor.hiofcommuting.R;
 
 import android.app.ProgressDialog;
@@ -53,6 +55,14 @@ public class ChatFragment extends Fragment{
 				EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
 				String message = edittext.getText().toString();
 				new SendMessage().execute(message);
+
+                Handler sleepHandler = new Handler();  // Sleeping thread so db can update, a callback should be implemented
+                sleepHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        new GetMessages().execute();
+                    }
+                }, 250);
 			}
 		});
 	}
@@ -102,8 +112,13 @@ public class ChatFragment extends Fragment{
 		protected Boolean doInBackground(String... params) {
 			String message = params[0].toString();
 			try{
-				HandleMessages.sendMessage(userLoggedIn, userToChatWith, message);
-				return true;
+                HandleMessages.sendMessage(userLoggedIn, userToChatWith, message);
+
+                if (HTTPClient.sent)
+                    return true;
+                else
+                    return false;
+
 			}catch(NullPointerException e){
 				return false;
 			}

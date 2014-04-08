@@ -15,8 +15,9 @@ import java.util.List;
 public class HTTPClient {
 
     private static final String URL = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=";
+    public static boolean sent = false;
 
-    public static boolean post(String operation, int sender, int receiver, String message){
+    public static void post(String operation, int sender, int receiver, String message){
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(URL);
 
@@ -31,7 +32,7 @@ public class HTTPClient {
                 HttpResponse httpResponse = httpClient.execute(httpPost);
 
                 if (httpResponse.getStatusLine().getStatusCode() == 200)
-                    return true;
+                    sent = true;
 
             }catch (UnsupportedEncodingException e){
                 e.printStackTrace();
@@ -51,7 +52,7 @@ public class HTTPClient {
                 HttpResponse httpResponse = httpClient.execute(httpPost);
 
                 if (httpResponse.getStatusLine().getStatusCode() == 200)
-                    return true;
+                    sent = true;
 
             }catch (UnsupportedEncodingException e){
                 e.printStackTrace();
@@ -59,7 +60,5 @@ public class HTTPClient {
                 e.printStackTrace();
             }
         }
-
-        return false;
     }
 }

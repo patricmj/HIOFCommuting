@@ -59,9 +59,16 @@ public class HandleMessages {
         t.start();
     }
 
+    public static void sendMessage(final User sender, final User receiver, final String message) {
 
-    public static boolean sendMessage(final User sender, final User receiver, final String message) {
-        return false;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HTTPClient.post("send", sender.getUserid(), receiver.getUserid(), message);
+            }
+        });
+
+        t.start();
     }
 
     public static List<Inbox> getInbox(int userid_receiver, List<User> users) {
