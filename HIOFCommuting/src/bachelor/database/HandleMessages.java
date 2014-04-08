@@ -61,15 +61,6 @@ public class HandleMessages {
 
 
     public static boolean sendMessage(final User sender, final User receiver, final String message) {
-//
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (HTTPClient.post("read", sender.getUserid(), receiver.getUserid(), message))
-//            }
-//        });
-//
-//        t.start();
         return false;
     }
 
