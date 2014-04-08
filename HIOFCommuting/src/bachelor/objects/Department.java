@@ -3,10 +3,18 @@ package bachelor.objects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Institution {
+public class Department {
 	
-	private int institutionId;
-	private String institutionName;
+	private int departmentId, institutionId;
+	private String departmentName;
+
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
+	}
 
 	public int getInstitutionId() {
 		return institutionId;
@@ -16,18 +24,19 @@ public class Institution {
 		this.institutionId = institutionId;
 	}
 
-	public String getInstitutionName() {
-		return institutionName;
+	public String getDepartmentName() {
+		return departmentName;
 	}
 
-	public void setInstitutionName(String institutionName) {
-		this.institutionName = institutionName;
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 
-	public Institution(JSONObject jo) {
+	public Department(JSONObject jo) {
 		try {
+			departmentId = Integer.parseInt(jo.getString("department_id"));
 			institutionId = Integer.parseInt(jo.getString("institution_id"));
-			institutionName = jo.getString("institution_name");
+			departmentName = jo.getString("department_name");
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,7 +48,7 @@ public class Institution {
 	
 	@Override
 	public String toString(){
-		return institutionName;
+		return departmentName;
 	}
 
 }

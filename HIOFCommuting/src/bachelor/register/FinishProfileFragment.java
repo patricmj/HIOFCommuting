@@ -1,26 +1,13 @@
 package bachelor.register;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,10 +27,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
 import bachelor.database.JsonParser;
-import bachelor.objects.Inbox;
+import bachelor.objects.Department;
 import bachelor.objects.Institution;
+import bachelor.objects.Study;
 import bachelor.objects.User;
-import bachelor.util.Util;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -65,7 +52,10 @@ public class FinishProfileFragment extends Fragment {
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
 	String fbFirstName;
-	JSONArray jsonArr;
+	private HashMap <Integer, Institution> hashMap = new HashMap <Integer, Institution>();
+	private List<Institution> institutionObjects = new ArrayList<Institution>();
+	private List<Department> departmentObjects = new ArrayList<Department>();
+	private List<Study> studyObjects = new ArrayList<Study>();
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -181,31 +171,16 @@ public class FinishProfileFragment extends Fragment {
 		startingyearSpinner.setAdapter(adapter);
 	}
 	
-	public void getInstitutionData(List<JSONObject> institutionObjects) {
-		List<String> institutionList = new ArrayList<String>();
-		//institutionList.add("HiØ");
-		//institutionList.add("HiSF");
-		//addItemsOnSpinner(institutionList); 
-		try {
-			for(int i = 0; i < institutionObjects.size(); i++){
-				institutionList.add(institutionObjects.get(i).getString("institution_name"));
-				new Institution(institutionObjects.get(i));
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void addItemsOnSpinner() {
+		if(institutionObjects!=null){
+			institutionSpinner = (Spinner) getView().findViewById(R.id.institutionSpinner);
+			ArrayAdapter<Institution> adapter = new ArrayAdapter<Institution>(getActivity(), android.R.layout.simple_spinner_item, institutionObjects);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			institutionSpinner.setAdapter(adapter);
+			addInstitutionSpinnerListener();
+			addCampusSpinnerListener();
+			addDepartmentSpinnerListener();
 		}
-		addItemsOnSpinner(institutionList); 
-	}
-	
-	public void addItemsOnSpinner(List<String> institutionList) {
-		institutionSpinner = (Spinner) getView().findViewById(R.id.institutionSpinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, institutionList);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		institutionSpinner.setAdapter(adapter);
-		addInstitutionSpinnerListener();
-		addCampusSpinnerListener();
-		addDepartmentSpinnerListener();
 	}
 	
 	public void addOnClickListeners() {
@@ -298,31 +273,35 @@ public class FinishProfileFragment extends Fragment {
 		});
 	}
 	
-	/*public void addInstitutionSpinnerListener() {
+	public void addInstitutionSpinnerListener() {
 		institutionSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parentView,
 					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> campusList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item,campusList);
+
+				institution = String.valueOf(institutionSpinner.getSelectedItem());
+				int currentInstitutionId = 0;
+				List<Department> currentList = new ArrayList<Department>();
+				ArrayAdapter<Department> adapter = new ArrayAdapter<Department>(parentView.getContext(),android.R.layout.simple_spinner_item,currentList);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-				switch (itemId) {
-				case 0:// HiØ
-					campusList.add("Halden");
-					campusList.add("Fredrikstad");
-
-					campusSpinner.setAdapter(adapter);
-					break;
-
-				case 1:// HiSF
-					campusList.add("Sogndal");
-					campusList.add("Førde");
-
-					campusSpinner.setAdapter(adapter);
-					break;
+				for(int i = 0; i < institutionObjects.size(); i++) {
+					if(institutionObjects.get(i).getInstitutionName()==institution){
+						currentInstitutionId = institutionObjects.get(i).getInstitutionId();
+					}
 				}
+				
+				int institutionSize = institutionObjects.size();
+				while (institutionSize > 0) {
+					for(int i = 0; i < departmentObjects.size(); i++){
+						if(departmentObjects.get(i).getInstitutionId()==currentInstitutionId){
+							currentList.add(departmentObjects.get(i));
+						}
+					}
+					institutionSize--;
+				}
+				
+				campusSpinner.setAdapter(adapter);
 			}
 
 			@Override
@@ -330,12 +309,8 @@ public class FinishProfileFragment extends Fragment {
 				// TODO Auto-generated method stub
 			}
 		});
-	}*/
-	
-	public void addInstitutionSpinnerListener() {
-		
 	}
-	
+
 	public void addCampusSpinnerListener() {
 		campusSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -500,30 +475,44 @@ public class FinishProfileFragment extends Fragment {
 		});
 	}
 	
-	public class Read extends AsyncTask<String, Integer, String>{
-
-		List<JSONObject> institutionObjects = new ArrayList<JSONObject>();	
+	public class Read extends AsyncTask<Void, Integer, Boolean>{
+		
+		
 		@Override
-		protected String doInBackground(String... params) {
+		protected Boolean doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			try {
 				JsonParser jp = new JsonParser();
-				jsonArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/institution.py");
-				
-				for(int i = 0; i < jsonArr.length(); i++) {
-					institutionObjects.add(jsonArr.getJSONObject(i));
+				JSONArray jsonInstArr, jsonDepartmentArr, jsonStudArr;
+				jsonInstArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/institution.py");
+				for(int i = 0; i < jsonInstArr.length(); i++) {
+					institutionObjects.add(new Institution(jsonInstArr.getJSONObject(i)));
 				}
+				
+				jsonDepartmentArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/department.py");
+				for(int i = 0; i < jsonDepartmentArr.length(); i++) {
+					departmentObjects.add(new Department(jsonDepartmentArr.getJSONObject(i)));
+				}
+			
+				jsonStudArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/study.py?q=getAllStudies");
+				for(int i = 0; i < jsonStudArr.length(); i++) {
+					studyObjects.add(new Study(jsonStudArr.getJSONObject(i)));
+				}
+				
+				return true;
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return false;
 			}
-			return null;
 		}
-
+		
 		@Override
-		protected void onPostExecute(String result) {
-			getInstitutionData(institutionObjects);
+		protected void onPostExecute(Boolean result){
+			if(result){
+				//TODO kjør første spinner herifra
+				addItemsOnSpinner();
+			}
 		}
 	}
-
 }
