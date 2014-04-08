@@ -41,6 +41,7 @@ import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
 import bachelor.database.JsonParser;
 import bachelor.objects.Inbox;
+import bachelor.objects.Institution;
 import bachelor.objects.User;
 import bachelor.util.Util;
 
@@ -188,6 +189,7 @@ public class FinishProfileFragment extends Fragment {
 		try {
 			for(int i = 0; i < institutionObjects.size(); i++){
 				institutionList.add(institutionObjects.get(i).getString("institution_name"));
+				new Institution(institutionObjects.get(i));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
