@@ -77,14 +77,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	    }
 	}
 	
-	@Override
+	/*@Override
 	public void onResume(){
 		super.onResume();
 		if (googleMap == null){
 			googleMap = fragment.getMap();
 			initilizeMap();
 		}
-	}
+	}*/
 
 	private void initilizeMap() {
 		if (fragment == null) {
