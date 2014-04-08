@@ -42,7 +42,7 @@ import com.facebook.model.GraphUser;
 public class FinishProfileFragment extends Fragment {
 	
 	ImageView choosenPic;
-	private Spinner institutionSpinner, campusSpinner, departmentSpinner, studySpinner, startingyearSpinner;
+	private Spinner institutionSpinner, departmentSpinner, studySpinner, startingyearSpinner;
 	private Button finishButton;
 	boolean userHaveCar = false;
 	boolean readConditions = false;
@@ -51,8 +51,7 @@ public class FinishProfileFragment extends Fragment {
 	EditText addressEditText, postalCodeEditText;
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
-	String fbFirstName;
-	private HashMap <Integer, Institution> hashMap = new HashMap <Integer, Institution>();
+	String fbFirstName, fbLastName;
 	private List<Institution> institutionObjects = new ArrayList<Institution>();
 	private List<Department> departmentObjects = new ArrayList<Department>();
 	private List<Study> studyObjects = new ArrayList<Study>();
@@ -66,7 +65,6 @@ public class FinishProfileFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		campusSpinner = (Spinner) getView().findViewById(R.id.campusSpinner);
 		departmentSpinner = (Spinner) getView().findViewById(R.id.departmentSpinner);
 		studySpinner = (Spinner) getView().findViewById(R.id.studySpinner);
 		startingyearSpinner = (Spinner) getView().findViewById(R.id.startingyearSpinner);
@@ -92,6 +90,7 @@ public class FinishProfileFragment extends Fragment {
 						if (session == Session.getActiveSession()) {
 							if (user != null) {
 								fbFirstName = user.getFirstName();
+								fbLastName = user.getLastName();
 								navigateToMap();
 							}
 						}
@@ -134,13 +133,15 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public User createUserObject() {
-		String firstName;
+		String firstName, lastName;
 		if(!facebookUser) {
 			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 			firstName = registerData.get(0);
+			lastName = registerData.get(1);
 		}
 		else {
 			firstName = fbFirstName;
+			lastName = fbLastName;
 		}
 		int userid = 10;
 		int postalCode = Integer.parseInt(finishProfileData.get(1));
@@ -157,7 +158,7 @@ public class FinishProfileFragment extends Fragment {
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
 		}
-		return new User(userid, firstName, "FIX(etternavn)", lat, lon, distance, institution, campus, department, study, startingYear, car);
+		return new User(userid, firstName, lastName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {
@@ -179,7 +180,6 @@ public class FinishProfileFragment extends Fragment {
 			institutionSpinner.setAdapter(adapter);
 			addInstitutionSpinnerListener();
 			addCampusSpinnerListener();
-			addDepartmentSpinnerListener();
 		}
 	}
 	
@@ -222,7 +222,6 @@ public class FinishProfileFragment extends Fragment {
 					address = addressEditText.getText().toString();
 					postalCode = postalCodeEditText.getText().toString();
 					institution = String.valueOf(institutionSpinner.getSelectedItem());
-					campus = String.valueOf(campusSpinner.getSelectedItem());
 					department = String.valueOf(departmentSpinner.getSelectedItem());
 					study = String.valueOf(studySpinner.getSelectedItem());
 					startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
@@ -291,17 +290,13 @@ public class FinishProfileFragment extends Fragment {
 					}
 				}
 				
-				int institutionSize = institutionObjects.size();
-				while (institutionSize > 0) {
-					for(int i = 0; i < departmentObjects.size(); i++){
-						if(departmentObjects.get(i).getInstitutionId()==currentInstitutionId){
-							currentList.add(departmentObjects.get(i));
-						}
+				for(int i = 0; i < departmentObjects.size(); i++){
+					if(departmentObjects.get(i).getInstitutionId()==currentInstitutionId){
+						currentList.add(departmentObjects.get(i));
 					}
-					institutionSize--;
 				}
-				
-				campusSpinner.setAdapter(adapter);
+
+				departmentSpinner.setAdapter(adapter);
 			}
 
 			@Override
@@ -312,160 +307,31 @@ public class FinishProfileFragment extends Fragment {
 	}
 
 	public void addCampusSpinnerListener() {
-		campusSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parentView,
-					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> departmentList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item, departmentList);
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				
-				if(institutionSpinner.getSelectedItem().equals("HiØ")){
-					switch (itemId) {
-					case 0://Remmen
-						departmentList.add("IT");
-						departmentList.add("Lærerutdanning");
-						departmentList.add("Økonomi");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Kraakeroy
-						departmentList.add("Ingeniør");
-						departmentList.add("Helse- og sosialfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(institutionSpinner.getSelectedItem().equals("HiSF")) {
-					switch (itemId) {
-					case 0://Songdal
-						departmentList.add("Naturfag");
-						departmentList.add("Lærerutdanning");
-						departmentList.add("Samfunnsfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Førde
-						departmentList.add("Helse- og sosialfag");
-						departmentList.add("Ingeniørfag");
-	
-						departmentSpinner.setAdapter(adapter);
-						break;
-					}
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-	}
-	
-	public void addDepartmentSpinnerListener() {
 		departmentSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parentView,
 					View selectedItemView, int position, long id) {
-				int itemId = (int) parentView.getItemIdAtPosition(position);
-				List<String> studyList = new ArrayList<String>();
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(parentView.getContext(),android.R.layout.simple_spinner_item, studyList);
+							
+				campus = String.valueOf(departmentSpinner.getSelectedItem());
+				int currentDepartmentId = 0;
+				List<Study> currentList = new ArrayList<Study>();
+				ArrayAdapter<Study> adapter = new ArrayAdapter<Study>(parentView.getContext(),android.R.layout.simple_spinner_item,currentList);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				
-				if(campusSpinner.getSelectedItem().equals("Halden")){
-					switch (itemId) {
-					case 0://IT
-						studyList.add("Informatikk");
-						studyList.add("Digital medieproduksjon");
-						studyList.add("Dataingeniør");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://LU
-						studyList.add("Grunnskolelærer 1-7");
-						studyList.add("Grunnskolelærer 5-10");
-						studyList.add("Barnehagelærer");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-						
-					case 2://ØSS
-						studyList.add("Revisjon og regnskap");
-						studyList.add("Økonomi og administrasjon");
-	
-						studySpinner.setAdapter(adapter);
-						break;
+				for(int i = 0; i < departmentObjects.size(); i++) {
+					if(departmentObjects.get(i).getDepartmentName()==campus){
+						currentDepartmentId = departmentObjects.get(i).getDepartmentId();
 					}
 				}
-				else if(campusSpinner.getSelectedItem().equals("Fredrikstad")) {
-					switch (itemId) {
-					case 0://Ingeniør
-						studyList.add("Byggingeniør");
-						studyList.add("Bioingeniør");
-						studyList.add("Innovasjon og prosjektledelse");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://HS
-						studyList.add("Barnevern");
-						studyList.add("Vernepleie");
-	
-						studySpinner.setAdapter(adapter);
-						break;
+				
+				for(int i = 0; i < studyObjects.size(); i++){
+					if(studyObjects.get(i).getDepartmentId()==currentDepartmentId){
+						currentList.add(studyObjects.get(i));
 					}
 				}
-				else if(campusSpinner.getSelectedItem().equals("Sogndal")){
-					switch (itemId) {
-					case 0://Naturfag
-						studyList.add("Fornybar energi");
-						studyList.add("Geologi og geofare");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Lærerutdanning
-						studyList.add("Grunnskolelærer 1-7");
-						studyList.add("Grunnskolelærer 5-10");
-						studyList.add("Barnehagelærer");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-						
-					case 2://Samfunnsfag
-						studyList.add("Historie");
-						studyList.add("Sosiologi");
-						studyList.add("Samfunnsfag");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
-				else if(campusSpinner.getSelectedItem().equals("Førde")) {
-					switch (itemId) {
-					case 0://HS
-						studyList.add("Barnevern");
-						studyList.add("Sykepleie");
-						studyList.add("Vernepleie");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-	
-					case 1://Ingeniør
-						studyList.add("Ingeniør elektro - energi, elkraft og miljø");
-						studyList.add("Ingeniør elektro - automatiseringsteknikk");
-	
-						studySpinner.setAdapter(adapter);
-						break;
-					}
-				}
+				
+				studySpinner.setAdapter(adapter);
 			}
 
 			@Override

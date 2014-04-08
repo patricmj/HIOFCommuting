@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/institution"
                 android:textSize="20sp" />
 
@@ -77,34 +77,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/campusWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/institutionWrapper"
-            android:layout_marginTop="25dp"
-            android:weightSum="2" >
-
-            <TextView
-                android:id="@+id/campus"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/campus"
-                android:textSize="20sp" />
-
-            <Spinner
-                android:id="@+id/campusSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/departmentWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/campusWrapper"
+            android:layout_below="@+id/institutionWrapper"
             android:layout_marginTop="25dp"
             android:weightSum="2" >
 
@@ -113,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/department"
                 android:textSize="20sp" />
 
@@ -137,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/study"
                 android:textSize="20sp" />
 
@@ -161,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/startingyear"
                 android:textSize="20sp" />
 
@@ -185,7 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/carquestion"
                 android:textSize="20sp" />
 
@@ -213,7 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/readconditions"
                 android:textSize="20sp" />
 
