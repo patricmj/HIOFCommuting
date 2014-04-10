@@ -108,7 +108,7 @@ public class HTTPClient {
          */
 
     	
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
         nameValuePairs.add(new BasicNameValuePair("q", String.valueOf(q)));
         nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(sid)));
         nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(fname)));

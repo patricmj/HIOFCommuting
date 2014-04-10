@@ -259,6 +259,11 @@ public class FinishProfileFragment extends Fragment {
                         && validator.isPostalCodeValid(fragment, postalCode, postalCodeEditText)
                         && validator.isConditionsRead(fragment, readConditions, readConditionsToggleButton))
                     setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
+
+                if(!facebookUser){
+                    navigateToMap();
+                }
+
                 else
                     return;
             }
