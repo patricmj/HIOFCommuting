@@ -90,7 +90,7 @@ public class HandleMessages {
                         sender = users.get(ix);
                     }
                 }
-                System.out.println(sender.getFirstName());
+                System.out.println(sender.getSurname());
                 //System.out.println(obj.getInt("user_id_sender")+"");
                 //System.out.println(users.get(obj.getInt("user_id_sender")).getFirstName()+"");
                 String message = obj.getString("message");
