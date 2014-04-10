@@ -23,6 +23,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import bachelor.objects.Conversation;
 import bachelor.objects.User;
+import bachelor.util.HTTPClient;
 
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
@@ -66,7 +67,7 @@ public class HandleUsers {
 				}
 			}
 		} else {
-			// Vurdere om lista bør oppdateres
+			// Vurdere om lista bï¿½r oppdateres
 			System.out.println("userList allerede fylt opp, bruker gammel arraylist");
 		}
 		return userList;
@@ -107,4 +108,28 @@ public class HandleUsers {
 
 		return (double) (dist * meterConversion) / 1000;
 	}
+	
+	public static void insertEmailUserToDb(final User user, final ArrayList<String> registerData) {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	HTTPClient.insertEmailUser(user, registerData);
+            }
+        });
+
+        t.start();
+    }
+	
+	public static void insertFacebookUserToDb(final User user, final String fbId) {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	HTTPClient.insertFacebookUser(user, fbId);
+            }
+        });
+
+        t.start();
+    }
 }

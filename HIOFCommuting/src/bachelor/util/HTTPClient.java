@@ -116,28 +116,28 @@ public class HTTPClient {
         }
     }
     
-    public static void insertFacebookUser(User user, String fbData) {
-    	final String URL = "";
+    public static void insertFacebookUser(User user, String fbId) {
+    	final String URL = "http://frigg.hiof.no/bo14-g23/py/regfbusr.py?q=";
     	HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(URL);
                 
-        String q = "";
+        String q = "facebookUser";
       	int sid = user.getStudyid();
         String fname = user.getFirstName();
         String sname = user.getSurname();
         double lon = user.getLon();
         double lat = user.getLat();
         String car;
-    	String email;
-    	String pw;
+
         if(user.hasCar()){
         	car = "true";
         }
         else {
         	car = "false";
         }
+        //System.out.println("q=" + q + "&sid=" + sid + "&fname=" + fname + "&sname=" + sname + "&lon=" + lon + "&lat=" + lat + "&car=" + car + "&fbid=" + fbId);
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
         nameValuePairs.add(new BasicNameValuePair("q", q));
         nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(sid)));
         nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(fname)));
@@ -145,9 +145,8 @@ public class HTTPClient {
         nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
         nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
         nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(car)));
-        nameValuePairs.add(new BasicNameValuePair("email", "testfra@kode7"));
-        nameValuePairs.add(new BasicNameValuePair("pw", "passordet7"));
-        
+        nameValuePairs.add(new BasicNameValuePair("fbid", String.valueOf(fbId)));
+
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse httpResponse = httpClient.execute(httpPost);

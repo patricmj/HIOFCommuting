@@ -53,11 +53,12 @@ public class FinishProfileFragment extends Fragment {
 	EditText addressEditText, postalCodeEditText;
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
-	String fbFirstName, fbLastName, fbId;
+	String fbFirstName, fbSurName, fbId;
 	private List<Institution> institutionObjects = new ArrayList<Institution>();
 	private List<Department> departmentObjects = new ArrayList<Department>();
 	private List<Study> studyObjects = new ArrayList<Study>();
     private FinishProfileFragment fragment = this;
+    ArrayList<String>registerData;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class FinishProfileFragment extends Fragment {
 						if (session == Session.getActiveSession()) {
 							if (user != null) {
 								fbFirstName = user.getFirstName();
-								fbLastName = user.getLastName();
+								fbSurName = user.getLastName();
 								fbId = user.getId();
 								System.out.println("facebook id " + user.getId());
 								System.out.println("facebook username " + user.getUsername());
@@ -124,14 +125,14 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public void navigateToMap() {
-		ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
-		User user = createUserObject(registerData);
-		//TODO: insert user to database
+		
+		User user = createUserObject();
+
 		if(facebookUser) {
-			insertFacebookUserToDb(user, fbId);
+			HandleUsers.insertFacebookUserToDb(user, fbId);
 		} 
 		else {
-			insertEmailUserToDb(user, registerData);
+			HandleUsers.insertEmailUserToDb(user, registerData);
 		} 
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
@@ -146,41 +147,15 @@ public class FinishProfileFragment extends Fragment {
 		getActivity().finish();
 	}
 	
-	public static void insertEmailUserToDb(final User user, final ArrayList<String> registerData) {
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-            	HTTPClient.insertEmailUser(user, registerData);
-            }
-        });
-
-        t.start();
-        System.out.println("Tr�d starta");
-    }
-	
-	public static void insertFacebookUserToDb(final User user, final String fbId) {
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-            	HTTPClient.insertFacebookUser(user, fbId);
-            }
-        });
-
-        t.start();
-        System.out.println("Tr�d starta");
-    }
-	
-	public User createUserObject(ArrayList<String> registerData) {
-		String firstName, lastName;
+	public User createUserObject() {
+		String firstName, surName;
 		if(!facebookUser) {
 			firstName = registerData.get(0);
-			lastName = registerData.get(1);
+			surName = registerData.get(1);
 		}
 		else {
 			firstName = fbFirstName;
-			lastName = fbLastName;
+			surName = fbSurName;
 		}
 		int userid = 10;
 		int postalCode = Integer.parseInt(finishProfileData.get(1));
@@ -206,7 +181,7 @@ public class FinishProfileFragment extends Fragment {
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
 		}
-		return new User(userid, studyId, firstName, lastName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		return new User(userid, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {
@@ -302,6 +277,7 @@ public class FinishProfileFragment extends Fragment {
 						makeMeRequest(session);
 					}
 					if(activity.startsWith("bachelor.register.EmailLoginActivity")){
+						registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 						Toast.makeText(getActivity(), "Email", Toast.LENGTH_LONG).show();
 					}
 					if(userHaveCar){
