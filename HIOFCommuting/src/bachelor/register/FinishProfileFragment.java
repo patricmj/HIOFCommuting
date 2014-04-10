@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import bachelor.util.UserInputValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
 

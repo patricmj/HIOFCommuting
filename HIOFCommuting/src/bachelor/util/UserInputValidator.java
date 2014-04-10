@@ -9,7 +9,7 @@ import bachelor.register.RegisterFragment;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// Insert check methods here
+// Insert all validate methods here
 public class UserInputValidator {
 
     public UserInputValidator(){}
