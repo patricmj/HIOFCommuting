@@ -94,6 +94,8 @@ public class FinishProfileFragment extends Fragment {
 							if (user != null) {
 								fbFirstName = user.getFirstName();
 								fbLastName = user.getLastName();
+								System.out.println("facebook id " + user.getId());
+								System.out.println("facebook username " + user.getUsername());
 								navigateToMap();
 							}
 						}
@@ -262,14 +264,11 @@ public class FinishProfileFragment extends Fragment {
                         && validator.isConditionsRead(fragment, readConditions, readConditionsToggleButton))
                     setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 
-                if(!facebookUser){
+                /*if(!facebookUser){
                     navigateToMap();
                 }
 
-                else
-                    return;
-            }
-                /*
+                else{*/
 					String car;
 					String conditions;
 					address = addressEditText.getText().toString().trim();
@@ -322,7 +321,7 @@ public class FinishProfileFragment extends Fragment {
 					else {
 						//Toast.makeText(getActivity().getApplicationContext(), "Du m� lese og godta betingelser for � fortsette", Toast.LENGTH_SHORT).show();
 					}
-				}*/
+				}
 		});
 	}
 	
