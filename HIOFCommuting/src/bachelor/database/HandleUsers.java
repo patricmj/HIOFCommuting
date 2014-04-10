@@ -60,7 +60,7 @@ public class HandleUsers {
 					int startingYear = objectStudy.getInt("starting_year");
 					
 					//ADD USER OBJECT
-					userList.add(new User(user_id, study_id, firstname, surname, "email", lat, lon, distance, institution,campus,department,study,startingYear, car));
+					userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

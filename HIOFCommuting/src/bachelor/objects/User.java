@@ -7,7 +7,6 @@ public class User implements Serializable{
 	private int studyId;
 	private String firstname;
 	private String surname;
-	private String email;
 	private double lat;
 	private double lon;
 	private double distance;
@@ -17,15 +16,14 @@ public class User implements Serializable{
 	private String study;
 	private int startingYear;
 	private boolean car;
-	//email bare for emailusers??
-	public User(int userid, int studyid, String firstname, String surname, String email, double lat, double lon, double distance,
+	
+	public User(int userid, int studyid, String firstname, String surname, double lat, double lon, double distance,
 			String institution, String campus, String department,
 			String study, int startingYear, boolean car) {
 		this.userId = userid;
 		this.studyId = studyid;
 		this.firstname = firstname;
 		this.surname = surname;
-		this.email = email;
 		this.lat = lat;
 		this.lon = lon;
 		this.distance = distance;
@@ -57,12 +55,6 @@ public class User implements Serializable{
 	}
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	public double getLat() {
 		return lat;

@@ -121,9 +121,10 @@ public class FinishProfileFragment extends Fragment {
 	}
 	
 	public void navigateToMap() {
-		User user = createUserObject();
+		ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
+		User user = createUserObject(registerData);
 		//TODO: insert user to database
-		insertUserToDb(user, facebookUser);
+		insertUserToDb(user, registerData);
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
 		//if(profilePic != null)
@@ -137,12 +138,12 @@ public class FinishProfileFragment extends Fragment {
 		getActivity().finish();
 	}
 	
-	public static void insertUserToDb(final User user, final boolean fbUser) {
+	public static void insertUserToDb(final User user, final ArrayList<String> registerData) {
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	HTTPClient.insertUser(user, fbUser);
+            	HTTPClient.insertEmailUser(user, registerData);
             }
         });
 
@@ -150,15 +151,11 @@ public class FinishProfileFragment extends Fragment {
         System.out.println("Tr�d starta");
     }
 	
-	public User createUserObject() {
-		String firstName, lastName, email = "", password, repeatedPassword;
+	public User createUserObject(ArrayList<String> registerData) {
+		String firstName, lastName;
 		if(!facebookUser) {
-			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 			firstName = registerData.get(0);
 			lastName = registerData.get(1);
-			email = registerData.get(2);
-			password = registerData.get(3);
-			repeatedPassword = registerData.get(4); 
 		}
 		else {
 			firstName = fbFirstName;
@@ -188,7 +185,7 @@ public class FinishProfileFragment extends Fragment {
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
 		}
-		return new User(userid, studyId, firstName, lastName, email, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		return new User(userid, studyId, firstName, lastName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {
