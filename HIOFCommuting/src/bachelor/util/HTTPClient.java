@@ -79,52 +79,40 @@ public class HTTPClient {
         String sname = user.getSurname();
         double lon = user.getLon();
         double lat = user.getLat();
-        int car;
+        String car;
         if(user.hasCar()){
-        	car = 1;
+        	car = "true";
         }
         else {
-        	car = 0;
+        	car = "false";
         }
         if(!fbUser) {
 	        String email = user.getEmail();
-	        //password
+	        //String password = user.get
         }
         else {
         	
         }
-        
-        /*
-         * sid = args.getfirst("sid", "")
-			fname = args.getfirst("fname", "")
-			sname = args.getfirst("sname", "")
-			lon = args.getfirst("lon", "")
-			lat = args.getfirst("lat", "")
-			car = args.getfirst("car", "")
-			
-			""" Email table """
-			email = args.getfirst("email", "")
-			pw = args.getfirst("pw", "")
-         */
 
-    	
         final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
-        nameValuePairs.add(new BasicNameValuePair("q", String.valueOf(q)));
+        nameValuePairs.add(new BasicNameValuePair("q", q));
         nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(sid)));
         nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(fname)));
         nameValuePairs.add(new BasicNameValuePair("sname", String.valueOf(sname)));
         nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
         nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
         nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(car)));
-        nameValuePairs.add(new BasicNameValuePair("email", String.valueOf("emailfrakode")));
-        nameValuePairs.add(new BasicNameValuePair("pw", String.valueOf("passordfrakode")));
+        nameValuePairs.add(new BasicNameValuePair("email", "testfra@kode6"));
+        nameValuePairs.add(new BasicNameValuePair("pw", "passordet6"));
         
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
-            if (httpResponse.getStatusLine().getStatusCode() == 200)
-                sent = true;
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+            	sent = true;
+            }
+            System.out.println("sendt " + sent);
 
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();

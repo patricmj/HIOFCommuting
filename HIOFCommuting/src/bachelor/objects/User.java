@@ -3,8 +3,8 @@ package bachelor.objects;
 import java.io.Serializable;
 
 public class User implements Serializable{
-	private int userid;
-	private int studyid;
+	private int userId;
+	private int studyId;
 	private String firstname;
 	private String surname;
 	private String email;
@@ -17,13 +17,15 @@ public class User implements Serializable{
 	private String study;
 	private int startingYear;
 	private boolean car;
-	
+	//email bare for emailusers??
 	public User(int userid, int studyid, String firstname, String surname, String email, double lat, double lon, double distance,
 			String institution, String campus, String department,
 			String study, int startingYear, boolean car) {
-		this.userid = userid;
+		this.userId = userid;
+		this.studyId = studyid;
 		this.firstname = firstname;
 		this.surname = surname;
+		this.email = email;
 		this.lat = lat;
 		this.lon = lon;
 		this.distance = distance;
@@ -36,11 +38,11 @@ public class User implements Serializable{
 	}
 	
 	public int getStudyid() {
-		return studyid;
+		return studyId;
 	}
 
 	public void setStudyid(int studyid) {
-		this.studyid = studyid;
+		this.studyId = studyid;
 	}
 
 	public String getFirstName() {
@@ -59,7 +61,6 @@ public class User implements Serializable{
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -119,10 +120,10 @@ public class User implements Serializable{
 	}
 
 	public int getUserid() {
-		return userid;
+		return userId;
 	}
 
 	public void setUserid(int userid) {
-		this.userid = userid;
+		this.userId = userid;
 	}
 }

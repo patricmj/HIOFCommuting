@@ -68,17 +68,17 @@ public class RegisterFragment extends Fragment implements OnClickListener {
 
             UserInputValidator validator = new UserInputValidator();
 
-            if (validator.isFirstNameValid(this, firstName, firstNameEditText)
+            /*if (validator.isFirstNameValid(this, firstName, firstNameEditText)
                     && validator.isLastNameValid(this, lastName, lastNameEditText)
                     && validator.isEmailValid(this, email, emailEditText)
                     && validator.isPasswordValid(this, password, passwordEditText)
                     && validator.isPasswordMatch(this, password, repeatPassword, repeatPasswordEditText)
-                    && validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)) {
+                    && validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)) {*/
 
                 ((EmailLoginActivity) getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
-            }
-            else
-               return;
+            //}
+            //else
+              // return;
         break;
 		}
 	}

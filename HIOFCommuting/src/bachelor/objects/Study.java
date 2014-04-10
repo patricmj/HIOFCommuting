@@ -14,7 +14,7 @@ public class Study {
 			departmentId = Integer.parseInt(jo.getString("department_id"));
 			campusId = Integer.parseInt(jo.getString("campus_id"));
 			studyName = jo.getString("name_of_study");
-			studyId = Integer.parseInt(jo.getString("starting_year"));
+			startingYear = Integer.parseInt(jo.getString("starting_year"));
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

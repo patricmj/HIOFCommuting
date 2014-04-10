@@ -175,10 +175,12 @@ public class FinishProfileFragment extends Fragment {
 		String department = finishProfileData.get(4);
 		String study = finishProfileData.get(5);
 		int studyId = 0;
+		System.out.println("studyid 1" + study);
 		for(int i = 0; i < studyObjects.size(); i++){
 			if(studyObjects.get(i).getStudyName().equals(study)){
+				System.out.println("studyid 2" + studyObjects.get(i).getStudyName());
 				studyId = studyObjects.get(i).getStudyId();
-				System.out.println("studyid " + studyId);
+				System.out.println("studyid 3" + studyId);
 			}
 		}
 		int startingYear = Integer.parseInt(finishProfileData.get(6));
