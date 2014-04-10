@@ -116,12 +116,12 @@ public class HTTPClient {
         }
     }
     
-    public static void insertFacebookUser(User user, ArrayList<String> fbData) {
+    public static void insertFacebookUser(User user, String fbData) {
     	final String URL = "";
     	HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(URL);
                 
-        String q = "emailUser";
+        String q = "";
       	int sid = user.getStudyid();
         String fname = user.getFirstName();
         String sname = user.getSurname();

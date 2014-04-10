@@ -53,7 +53,7 @@ public class FinishProfileFragment extends Fragment {
 	EditText addressEditText, postalCodeEditText;
 	String address, postalCode, institution, campus, department, study, startingYear;
 	ArrayList<String> finishProfileData = new ArrayList<String>();
-	String fbFirstName, fbLastName;
+	String fbFirstName, fbLastName, fbId;
 	private List<Institution> institutionObjects = new ArrayList<Institution>();
 	private List<Department> departmentObjects = new ArrayList<Department>();
 	private List<Study> studyObjects = new ArrayList<Study>();
@@ -94,6 +94,7 @@ public class FinishProfileFragment extends Fragment {
 							if (user != null) {
 								fbFirstName = user.getFirstName();
 								fbLastName = user.getLastName();
+								fbId = user.getId();
 								System.out.println("facebook id " + user.getId());
 								System.out.println("facebook username " + user.getUsername());
 								navigateToMap();
@@ -126,7 +127,12 @@ public class FinishProfileFragment extends Fragment {
 		ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 		User user = createUserObject(registerData);
 		//TODO: insert user to database
-		insertUserToDb(user, registerData);
+		if(facebookUser) {
+			insertFacebookUserToDb(user, fbId);
+		} 
+		else {
+			insertEmailUserToDb(user, registerData);
+		} 
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
 		//if(profilePic != null)
@@ -140,12 +146,25 @@ public class FinishProfileFragment extends Fragment {
 		getActivity().finish();
 	}
 	
-	public static void insertUserToDb(final User user, final ArrayList<String> registerData) {
+	public static void insertEmailUserToDb(final User user, final ArrayList<String> registerData) {
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
             	HTTPClient.insertEmailUser(user, registerData);
+            }
+        });
+
+        t.start();
+        System.out.println("Tr�d starta");
+    }
+	
+	public static void insertFacebookUserToDb(final User user, final String fbId) {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	HTTPClient.insertFacebookUser(user, fbId);
             }
         });
 
