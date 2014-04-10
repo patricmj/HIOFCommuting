@@ -116,45 +116,52 @@
         android:inputType="textPassword" />
 
     <LinearLayout
-        android:id="@+id/chooseProfilePicLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/register_repeatPassword" >
-
-        <TextView
-            android:id="@+id/register_chooseProfilePic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="chooseProfilePic"
-            android:text="@string/choosepicture"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/register_cameraLogo"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/cameraimage"
-            android:onClick="chooseProfilePicClicked"
-            android:src="@drawable/camera_logo" />
-    </LinearLayout>
-    
-    <Button
-        android:id="@+id/register_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/choosenPictureView"
-        android:text="@string/next" />
+            android:orientation="horizontal"
+            android:layout_below="@+id/register_repeatPassword">
+        <LinearLayout
+                android:id="@+id/chooseProfilePicLayout"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+            <TextView
+                    android:id="@+id/register_chooseProfilePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="chooseProfilePic"
+                    android:text="@string/choosepicture"
+                    android:textSize="20sp" />
+            <ImageView
+                    android:id="@+id/register_cameraLogo"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/cameraimage"
+                    android:onClick="chooseProfilePicClicked"
+                    android:src="@drawable/camera_logo_gray" />
 
-    <ImageView
-        android:id="@+id/choosenPictureView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chooseProfilePicLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="15dp"
-        android:contentDescription="@string/profilepic"
-        android:src="@drawable/ic_launcher" />
+            <ImageView
+                    android:id="@+id/choosenPictureView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/chooseProfilePicLayout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="15dp"
+                    android:contentDescription="@string/profilepic"
+                    android:src="@drawable/ic_launcher"
+                    android:visibility="gone"/>
+        </LinearLayout>
+        <Button
+                android:id="@+id/register_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next"
+                android:layout_gravity="bottom"/>
+    </LinearLayout>
+
+
 
 </RelativeLayout>
 </ScrollView>

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import bachelor.util.UserInputValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -55,6 +56,7 @@ public class FinishProfileFragment extends Fragment {
 	private List<Institution> institutionObjects = new ArrayList<Institution>();
 	private List<Department> departmentObjects = new ArrayList<Department>();
 	private List<Study> studyObjects = new ArrayList<Study>();
+    private FinishProfileFragment fragment = this;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -214,13 +216,31 @@ public class FinishProfileFragment extends Fragment {
 		});
 		//FinishButton
 		finishButton.setOnClickListener(new OnClickListener() {
-			
+
+//TODO: Clean
 			@Override
 			public void onClick(View v) {
+                address = addressEditText.getText().toString().trim();
+                postalCode = postalCodeEditText.getText().toString().trim();
+                institution = String.valueOf(institutionSpinner.getSelectedItem());
+                department = String.valueOf(departmentSpinner.getSelectedItem());
+                study = String.valueOf(studySpinner.getSelectedItem());
+                startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
+
+                UserInputValidator validator = new UserInputValidator();
+
+                if (validator.isAddressValid(fragment, address, addressEditText)
+                        && validator.isPostalCodeValid(fragment, postalCode, postalCodeEditText)
+                        && validator.isConditionsRead(fragment, readConditions, readConditionsToggleButton))
+                    setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
+                else
+                    return;
+            }
+                /*
 					String car;
 					String conditions;
-					address = addressEditText.getText().toString();
-					postalCode = postalCodeEditText.getText().toString();
+					address = addressEditText.getText().toString().trim();
+					postalCode = postalCodeEditText.getText().toString().trim();
 					institution = String.valueOf(institutionSpinner.getSelectedItem());
 					department = String.valueOf(departmentSpinner.getSelectedItem());
 					study = String.valueOf(studySpinner.getSelectedItem());
@@ -260,15 +280,16 @@ public class FinishProfileFragment extends Fragment {
 							"\n Betingelser godkjent? : " + conditions 
 							, Toast.LENGTH_SHORT).show();
 					if(readConditions) {
+
 						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 						if(!facebookUser){
 							navigateToMap();
 						}
 					}
 					else {
-						//Toast.makeText(getActivity().getApplicationContext(), "Du må lese og godta betingelser for å fortsette", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(getActivity().getApplicationContext(), "Du mï¿½ lese og godta betingelser for ï¿½ fortsette", Toast.LENGTH_SHORT).show();
 					}
-				}
+				}*/
 		});
 	}
 	
@@ -376,7 +397,7 @@ public class FinishProfileFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(result){
-				//TODO kjør første spinner herifra
+				//TODO kjï¿½r fï¿½rste spinner herifra
 				addItemsOnSpinner();
 			}
 		}
