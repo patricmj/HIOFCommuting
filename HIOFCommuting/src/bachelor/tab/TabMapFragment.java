@@ -196,7 +196,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					String distance = df.format(result.get(i).getDistance());
 					LatLng pos = new LatLng(lat, lon);
 					BitmapDescriptor icon = null;
-					if(result.get(i).userHasCar()){
+					if(result.get(i).hasCar()){
 						icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_car);
 					}else{
 						icon = BitmapDescriptorFactory.fromResource(R.drawable.icon_user_nocar);

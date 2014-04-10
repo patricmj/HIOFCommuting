@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.client.HttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -31,6 +32,7 @@ import bachelor.objects.Department;
 import bachelor.objects.Institution;
 import bachelor.objects.Study;
 import bachelor.objects.User;
+import bachelor.util.HTTPClient;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -119,6 +121,8 @@ public class FinishProfileFragment extends Fragment {
 	
 	public void navigateToMap() {
 		User user = createUserObject();
+		//TODO: insert user to database
+		insertUserToDb(user, facebookUser);
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", user);
 		//if(profilePic != null)
@@ -132,12 +136,28 @@ public class FinishProfileFragment extends Fragment {
 		getActivity().finish();
 	}
 	
+	public static void insertUserToDb(final User user, final boolean fbUser) {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	HTTPClient.insertUser(user, fbUser);
+            }
+        });
+
+        t.start();
+        System.out.println("Tråd starta");
+    }
+	
 	public User createUserObject() {
-		String firstName, lastName;
+		String firstName, lastName, email = "", password, repeatedPassword;
 		if(!facebookUser) {
 			ArrayList<String>registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
 			firstName = registerData.get(0);
 			lastName = registerData.get(1);
+			email = registerData.get(2);
+			password = registerData.get(3);
+			repeatedPassword = registerData.get(4); 
 		}
 		else {
 			firstName = fbFirstName;
@@ -153,12 +173,19 @@ public class FinishProfileFragment extends Fragment {
 		String campus = finishProfileData.get(3);
 		String department = finishProfileData.get(4);
 		String study = finishProfileData.get(5);
+		int studyId = 0;
+		for(int i = 0; i < studyObjects.size(); i++){
+			if(studyObjects.get(i).getStudyName().equals(study)){
+				studyId = studyObjects.get(i).getStudyId();
+				System.out.println("studyid " + studyId);
+			}
+		}
 		int startingYear = Integer.parseInt(finishProfileData.get(6));
 		boolean car = false;
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
 		}
-		return new User(userid, firstName, lastName, lat, lon, distance, institution, campus, department, study, startingYear, car);
+		return new User(userid, studyId, firstName, lastName, email, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {

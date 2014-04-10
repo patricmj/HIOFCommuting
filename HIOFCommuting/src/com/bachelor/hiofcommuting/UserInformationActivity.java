@@ -53,7 +53,7 @@ public class UserInformationActivity extends Activity {
 		
 		//Setter om brukeren har bil
 		lv = (TextView)findViewById(R.id.textView_car);
-		if(valgtBruker.userHasCar()){
+		if(valgtBruker.hasCar()){
 			lv.setText("Bil: Ja");
 		}else{
 			lv.setText("Bil: Nei");
