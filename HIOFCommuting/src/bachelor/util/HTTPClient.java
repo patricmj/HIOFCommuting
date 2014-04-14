@@ -81,7 +81,9 @@ public class HTTPClient {
         double lat = user.getLat();
         String car;
     	String email = registerData.get(2);
+    	//TODO : Hash password
     	String pw = registerData.get(3);
+    	int startingYear = user.getStartingYear();
         if(user.hasCar()){
         	car = "true";
         }
@@ -89,7 +91,7 @@ public class HTTPClient {
         	car = "false";
         }
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
         nameValuePairs.add(new BasicNameValuePair("q", q));
         nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(sid)));
         nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(fname)));
@@ -97,8 +99,9 @@ public class HTTPClient {
         nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
         nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
         nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(car)));
-        nameValuePairs.add(new BasicNameValuePair("email", "testfra@kode7"));
-        nameValuePairs.add(new BasicNameValuePair("pw", "passordet7"));
+        nameValuePairs.add(new BasicNameValuePair("starting_year", String.valueOf(startingYear)));
+        nameValuePairs.add(new BasicNameValuePair("email", String.valueOf(email)));
+        nameValuePairs.add(new BasicNameValuePair("pw", String.valueOf(pw)));
         
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -128,6 +131,7 @@ public class HTTPClient {
         double lon = user.getLon();
         double lat = user.getLat();
         String car;
+        int startingYear = user.getStartingYear();
 
         if(user.hasCar()){
         	car = "true";
@@ -135,9 +139,8 @@ public class HTTPClient {
         else {
         	car = "false";
         }
-        //System.out.println("q=" + q + "&sid=" + sid + "&fname=" + fname + "&sname=" + sname + "&lon=" + lon + "&lat=" + lat + "&car=" + car + "&fbid=" + fbId);
-
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(8);
+        System.out.println("parameters : q=" + q + "&sid=" + sid + "&fname=" + fname + "&sname=" + sname + "&lon=" + lon + "&lat=" + lat + "&car=" + car + "&starting_year=" + startingYear + "&fbid=" + fbId);
+        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
         nameValuePairs.add(new BasicNameValuePair("q", q));
         nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(sid)));
         nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(fname)));
@@ -145,6 +148,7 @@ public class HTTPClient {
         nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
         nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
         nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(car)));
+        nameValuePairs.add(new BasicNameValuePair("starting_year", String.valueOf(startingYear)));
         nameValuePairs.add(new BasicNameValuePair("fbid", String.valueOf(fbId)));
 
         try {

@@ -58,6 +58,8 @@ public class HandleLogin {
 			String[] latlon = point.split(" ");
 			lon = Double.parseDouble(latlon[0]);
 			lat = Double.parseDouble(latlon[1]);
+			System.out.println("lat2 : " + lat);
+			System.out.println("lon2 : " + lon);
 			distance = 0.0;
 			String carString = obj.getString("car");
 			if(carString.equals("1")) {

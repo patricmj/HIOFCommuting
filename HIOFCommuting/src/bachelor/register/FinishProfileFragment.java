@@ -160,8 +160,10 @@ public class FinishProfileFragment extends Fragment {
 		int userid = 10;
 		int postalCode = Integer.parseInt(finishProfileData.get(1));
 		double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
-		double lon = latlon[0];
-		double lat = latlon[1];
+		double lat = latlon[0];
+		double lon = latlon[1];
+		System.out.println("lat1 : " + lat);
+		System.out.println("lon1 : " + lon);
 		double distance = 0.0;
 		String institution = finishProfileData.get(2);
 		String campus = finishProfileData.get(3);
@@ -177,6 +179,7 @@ public class FinishProfileFragment extends Fragment {
 			}
 		}
 		int startingYear = Integer.parseInt(finishProfileData.get(6));
+		System.out.println("starting yr : " + startingYear);
 		boolean car = false;
 		if(finishProfileData.get(7).equals("Ja")){
 			car = true;
