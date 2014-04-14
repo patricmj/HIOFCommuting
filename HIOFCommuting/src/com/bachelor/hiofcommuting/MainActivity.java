@@ -256,7 +256,7 @@ public class MainActivity extends FragmentActivity {
 			try{
 				JsonParser jp = new JsonParser();
 				JSONArray jsonFbArr;
-				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/usr.py?q=fbUserId&fbid=" + fbId);
+				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/test.py?q=fbUserId&fbid=" + fbId);
 				JSONObject jsonObj = (JSONObject) jsonFbArr.get(0);
 				return jsonObj;
 			} catch (JSONException e) {
