@@ -122,7 +122,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					nameTxt.setText(firstName);
 					
 					distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
-					departmentTxt.setText("Studerer på "+department+" ved "+institution);
+					departmentTxt.setText("Studerer pï¿½ "+department+" ved "+institution);
 					return view;
 				}
 				return null;
@@ -169,7 +169,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		@Override
 	    protected void onPreExecute(){
 			Dialog.setMessage("Laster..");
-	       Dialog.show();
+			Dialog.show();
 	    }
 		
 		@Override

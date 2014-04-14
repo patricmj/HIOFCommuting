@@ -4,6 +4,10 @@ import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,13 +26,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.database.HandleLogin;
+import bachelor.database.JsonParser;
+import bachelor.objects.Department;
+import bachelor.objects.Institution;
+import bachelor.objects.Study;
 import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
+import bachelor.register.FinishProfileFragment.Read;
 import bachelor.util.Util;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -39,6 +51,7 @@ public class MainActivity extends FragmentActivity {
 	private MenuItem settings;
 	FragmentManager fm = getSupportFragmentManager();
 	WeakReference<Activity> weakActivity = new WeakReference<Activity>(this);
+	private String fbId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +165,11 @@ public class MainActivity extends FragmentActivity {
 				// If the session state is open:
 				// Show the authenticated fragment
 				//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
-				
 				//AUTHENTICATE USER IN OUR DATABASE
-				int facebookid = 1; //get facebook id
-				new AuthenticateUser().execute(facebookid, session);
+				//Session session;
+				//session = getFacebookSession();
+				makeMeRequest(session);
+				
 				/*Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 				intent.putExtra("FACEBOOK_SESSION", session);
 				startActivity(intent);
@@ -169,6 +183,28 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 	}
+	
+	public void makeMeRequest(final Session session) {
+		// Make an API call to get user data and define a
+		// new callback to handle the response.
+		Request request = Request.newMeRequest(session,
+				new Request.GraphUserCallback() {
+
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						// If the response is successful
+						if (session == Session.getActiveSession()) {
+							if (user != null) {
+								fbId = user.getId();
+								System.out.println("fbsession" + fbId);
+								new AuthenticateUser().execute(fbId, session);
+							}
+						}
+					}
+				});
+		request.executeAsync();
+	}
+	
 	
 	public Session getFacebookSession() {
 		Session session = Session.getActiveSession();
@@ -189,8 +225,7 @@ public class MainActivity extends FragmentActivity {
 			// if the session is already open,
 
 			//AUTHENTICATE USER IN OUR DATABASE
-			int facebookid = 1; //get facebook id
-			new AuthenticateUser().execute(facebookid, session);
+			makeMeRequest(session);
 			/*
 			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
 			intent.putExtra("SESSION", session);
@@ -214,32 +249,53 @@ public class MainActivity extends FragmentActivity {
 		}
 	};
 
-	private class AuthenticateUser extends AsyncTask<Object, Void, User> {
+	private class AuthenticateUser extends AsyncTask<Object, Void, JSONObject> {
 
-		private int facebookid;
-		private Session session;
-		
 		@Override
-		protected User doInBackground(Object... params) {
-			User userLoggedIn = null;
-			facebookid = (Integer)params[0];
-			session = (Session)params[1];
+		protected JSONObject doInBackground(Object... params) {
 			try{
-				userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(facebookid);
-				return userLoggedIn;
-			}catch(NullPointerException e){
-				//User not yet registerred in app (first time user)
-				return userLoggedIn;
+				JsonParser jp = new JsonParser();
+				JSONArray jsonFbArr;
+				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/usr.py?q=fbUserId&fbid=" + fbId);
+				JSONObject jsonObj = (JSONObject) jsonFbArr.get(0);
+				return jsonObj;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
 			}
 		}
 		
 		@Override
-		protected void onPostExecute(User result){
-			if(result==null){
+		protected void onPostExecute(JSONObject obj){
+			try {
+				if(obj.getString("user_id").equals("-100")){
+					System.out.println("User er ikke registrert i systemet fra fï¿½r");
+					Util.showFragment(FINISH, fm, fragments, "Fullfï¿½r profil", weakActivity);
+				}
+				else {
+					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(fbId, obj);
+					if(userLoggedIn == null) {
+						System.out.println(userLoggedIn + " er null");
+					}
+					Util.showFragment(FINISH, fm, fragments, "Fullfï¿½r profil", weakActivity);
+					/*System.out.println(userLoggedIn + " er null");
+					Session session = Session.getActiveSession();
+					Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
+					intent.putExtra("CURRENT_USER", userLoggedIn);
+					intent.putExtra("FACEBOOK_SESSION", session);
+					startActivity(intent);
+					finish();*/
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			/*if(result==null){
 				//user not yet registered
-				System.out.println("User er ikke registrert i systemet fra før");
-				// TODO: show FinishProfileFragment (hadde vært lettere om det var en activity?)
-				Util.showFragment(FINISH, fm, fragments, "Fullfør profil", weakActivity);
+				System.out.println("User er ikke registrert i systemet fra fï¿½r");
+				Util.showFragment(FINISH, fm, fragments, "Fullfï¿½r profil", weakActivity);
 			}else{
 				//user IS registered, send user to map
 				System.out.println("User ER registrert i systemet");
@@ -249,7 +305,8 @@ public class MainActivity extends FragmentActivity {
 				startActivity(intent);
 				finish();
 			}
-		}
-		
+		}*/
 	}
+
+	
 }

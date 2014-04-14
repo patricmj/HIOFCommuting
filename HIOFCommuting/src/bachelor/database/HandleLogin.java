@@ -2,6 +2,8 @@ package bachelor.database;
 
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import bachelor.objects.User;
 
 public class HandleLogin {
@@ -28,19 +30,23 @@ public class HandleLogin {
 		User userLoggedIn = null;
 		try{
 			//get user from database (email_user), where email = epost
-			userLoggedIn = new User(4, 2, "Patrick", "Jansen", 59.272950, 11.046229, 0, "HiØ", "Remmen", "IT", "Informatikk", 2011, true);
+			userLoggedIn = new User(4, 2, "Patrick", "Jansen", 59.272950, 11.046229, 0, "Hiï¿½", "Remmen", "IT", "Informatikk", 2011, true);
 		}catch(Exception e){
 			userLoggedIn = null;
 		}
 		return userLoggedIn;
 	}
 	
-	public static User getCurrentFacebookUserLoggedIn(int facebookid){
+	public static User getCurrentFacebookUserLoggedIn(String facebookid, JSONObject obj){
 		User userLoggedIn;
 		try{
+			System.out.println("facebookid " + facebookid);/*
+			public User(int userid, int studyid, String firstname, String surname, double lat, double lon, double distance,
+					String institution, String campus, String department,
+					String study, int startingYear, boolean car) {*/
 			///if get userid from database (facebook_user), where facebookid = facebookid
-			userLoggedIn = new User(4, 2, "Patrick", "Jansen", 59.272950, 11.046229, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true);
-			//userLoggedIn = new User(1, "Martin", 59.249620, 11.183409, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true);
+			userLoggedIn = new User(4, 2, "Patrick", "Jansen", 59.272950, 11.046229, 0, "Hï¿½gskolen i ï¿½stfold", "Remmen", "IT", "Informatikk", 2011, true);
+			//userLoggedIn = new User(1, "Martin", 59.249620, 11.183409, 0, "Hï¿½gskolen i ï¿½stfold", "Remmen", "IT", "Informatikk", 2011, true);
 			//else if there is no user in database (not yet registered), return null
 			userLoggedIn = null;
 			return userLoggedIn;
@@ -51,7 +57,7 @@ public class HandleLogin {
 
 	// SEND EPOST TIL BRUKEREN FOR TILBAKESTILLING AV PASSORD
 	public static boolean resetPassword(String str) {
-		// Random tall 0 eller 1 for å illustrere random feilmelding. Byttes ut
+		// Random tall 0 eller 1 for ï¿½ illustrere random feilmelding. Byttes ut
 		// med fail/false for sending av epost
 		Random r = new Random();
 		int error;
