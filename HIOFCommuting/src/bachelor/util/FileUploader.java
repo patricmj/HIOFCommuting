@@ -64,12 +64,7 @@ public class FileUploader {
 
             serverResponseCode = conn.getResponseCode();
             if (serverResponseCode == 200) {
-                fragment.getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(fragment.getActivity(), "Bildeopplasting fullført", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // Handle response if needed
             }
 
             fileInputStream.close();

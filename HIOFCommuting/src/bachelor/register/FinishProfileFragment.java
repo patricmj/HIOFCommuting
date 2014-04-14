@@ -241,7 +241,6 @@ public class FinishProfileFragment extends Fragment {
 		//FinishButton
 		finishButton.setOnClickListener(new OnClickListener() {
 
-//TODO: Clean
 			@Override
 			public void onClick(View v) {
                 address = addressEditText.getText().toString().trim();
