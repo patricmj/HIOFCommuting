@@ -256,7 +256,7 @@ public class MainActivity extends FragmentActivity {
 			try{
 				JsonParser jp = new JsonParser();
 				JSONArray jsonFbArr;
-				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/usr.py?q=fbUserId&fbid=" + fbId);
+				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/test.py?q=fbUserId&fbid=" + fbId);
 				JSONObject jsonObj = (JSONObject) jsonFbArr.get(0);
 				return jsonObj;
 			} catch (JSONException e) {
@@ -275,17 +275,13 @@ public class MainActivity extends FragmentActivity {
 				}
 				else {
 					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(fbId, obj);
-					if(userLoggedIn == null) {
-						System.out.println(userLoggedIn + " er null");
-					}
-					Util.showFragment(FINISH, fm, fragments, "Fullf�r profil", weakActivity);
-					/*System.out.println(userLoggedIn + " er null");
+					System.out.println(userLoggedIn + " er null");
 					Session session = Session.getActiveSession();
 					Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
 					intent.putExtra("CURRENT_USER", userLoggedIn);
 					intent.putExtra("FACEBOOK_SESSION", session);
 					startActivity(intent);
-					finish();*/
+					finish();
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
