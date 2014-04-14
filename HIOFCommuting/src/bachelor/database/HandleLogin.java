@@ -56,8 +56,8 @@ public class HandleLogin {
 			study = obj.getString("name_of_study");
 			String point = obj.getString("latlon").replace("POINT(", "").replace(")", "");
 			String[] latlon = point.split(" ");
-			lon = Double.parseDouble(latlon[0]);
-			lat = Double.parseDouble(latlon[1]);
+			lat = Double.parseDouble(latlon[0]);
+			lon = Double.parseDouble(latlon[1]);
 			System.out.println("lat2 : " + lat);
 			System.out.println("lon2 : " + lon);
 			distance = 0.0;
