@@ -44,13 +44,14 @@ public class HandleUsers {
 					int study_id = objectUser.getInt("study_id");
 					String firstname = objectUser.getString("firstname");
 					String surname = objectUser.getString("surname");
-					String point = objectUser.getString("lonlat").replace("POINT(", "").replace(")", "");
+					String point = objectUser.getString("latlon").replace("POINT(", "").replace(")", "");
 					String[] latlon = point.split(" ");
 					double lat = Double.parseDouble(latlon[0]);
 					double lon = Double.parseDouble(latlon[1]);
 					int iscar = objectUser.getInt("car");
 					boolean car = false;
 					if(iscar==1)car = true;
+					int startingYear = objectUser.getInt("starting_year");
 					//STUDY OBJECT
 					objectStudy = arrayStudy.getJSONObject(study_id);
 					String institution = objectStudy.getString("institution_name");
@@ -58,8 +59,7 @@ public class HandleUsers {
 					String department = objectStudy.getString("department_name");
 					String study = objectStudy.getString("name_of_study");
 					double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
-					int startingYear = objectStudy.getInt("starting_year");
-					
+			
 					//ADD USER OBJECT
 					userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
 				} catch (JSONException e) {
@@ -67,7 +67,7 @@ public class HandleUsers {
 				}
 			}
 		} else {
-			// Vurdere om lista b�r oppdateres
+			// Vurdere om lista bør oppdateres
 			System.out.println("userList allerede fylt opp, bruker gammel arraylist");
 		}
 		return userList;
