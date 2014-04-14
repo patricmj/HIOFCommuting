@@ -66,22 +66,6 @@ public class RegisterFragment extends Fragment implements OnClickListener {
                 email = emailEditText.getText().toString().trim();
                 password = passwordEditText.getText().toString().trim();
                 repeatPassword = repeatPasswordEditText.getText().toString().trim();
-/*
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), "Laster opp bilde", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                        FileUploader.upload(fragment, imagePath);
-                    }
-
-                });
-                t.start();
-*/
 
                 UserInputValidator validator = new UserInputValidator();
 
@@ -90,7 +74,9 @@ public class RegisterFragment extends Fragment implements OnClickListener {
                         && validator.isEmailValid(this, email, emailEditText)
                         && validator.isPasswordValid(this, password, passwordEditText)
                         && validator.isPasswordMatch(this, password, repeatPassword, repeatPasswordEditText)
-                        && validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)) {
+                        ) {
+
+                    //&& validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)
 
                     ((EmailLoginActivity) getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
                 }
@@ -122,4 +108,21 @@ public class RegisterFragment extends Fragment implements OnClickListener {
     public String getImagePath(){
         return imagePath;
     }
+
+    /*
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Laster opp bilde", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                        FileUploader.upload(fragment, imagePath);
+                    }
+
+                });
+                t.start();
+*/
 }
