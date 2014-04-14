@@ -275,17 +275,13 @@ public class MainActivity extends FragmentActivity {
 				}
 				else {
 					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(fbId, obj);
-					if(userLoggedIn == null) {
-						System.out.println(userLoggedIn + " er null");
-					}
-					Util.showFragment(FINISH, fm, fragments, "Fullf�r profil", weakActivity);
-					/*System.out.println(userLoggedIn + " er null");
+					System.out.println(userLoggedIn + " er null");
 					Session session = Session.getActiveSession();
 					Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
 					intent.putExtra("CURRENT_USER", userLoggedIn);
 					intent.putExtra("FACEBOOK_SESSION", session);
 					startActivity(intent);
-					finish();*/
+					finish();
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
