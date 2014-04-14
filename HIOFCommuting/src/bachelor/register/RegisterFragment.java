@@ -2,7 +2,6 @@ package bachelor.register;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,19 +14,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import bachelor.util.UserInputValidator;
+import android.widget.Toast;
+import bachelor.util.FileUploader;
 
+import bachelor.util.UserInputValidator;
 import com.bachelor.hiofcommuting.R;
 
 public class RegisterFragment extends Fragment implements OnClickListener {
-	
-	ImageView cameraLogo;
+
+    private Button next;
+    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, repeatPasswordEditText;
+    private String firstName, lastName, email, password, repeatPassword, imagePath;
+	private ImageView cameraLogo;
     private boolean logoIsChanged = false;
-	Button next;
 	private static final int LOAD_IMAGE_RESULTS = 1;
-	EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText, repeatPasswordEditText;
-	String firstName, lastName, email, password, repeatPassword;
-	//Bitmap rotatedBitmap;
+    private RegisterFragment fragment = this;
+
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
@@ -54,32 +56,47 @@ public class RegisterFragment extends Fragment implements OnClickListener {
 
 	public void onClick(View view) {
 		switch (view.getId()) {
-        case R.id.register_cameraLogo: 
-			Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-			startActivityForResult(intent, LOAD_IMAGE_RESULTS);
-        break;
-        
-        case R.id.register_next:
-        	firstName = firstNameEditText.getText().toString().trim();
-        	lastName = lastNameEditText.getText().toString().trim();
-        	email = emailEditText.getText().toString().trim();
-        	password = passwordEditText.getText().toString().trim();
-        	repeatPassword = repeatPasswordEditText.getText().toString().trim();
+            case R.id.register_cameraLogo:
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, LOAD_IMAGE_RESULTS);
+            break;
+            case R.id.register_next:
+                firstName = firstNameEditText.getText().toString().trim();
+                lastName = lastNameEditText.getText().toString().trim();
+                email = emailEditText.getText().toString().trim();
+                password = passwordEditText.getText().toString().trim();
+                repeatPassword = repeatPasswordEditText.getText().toString().trim();
+/*
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Laster opp bilde", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                        FileUploader.upload(fragment, imagePath);
+                    }
 
-            UserInputValidator validator = new UserInputValidator();
+                });
+                t.start();
+*/
 
-            /*if (validator.isFirstNameValid(this, firstName, firstNameEditText)
-                    && validator.isLastNameValid(this, lastName, lastNameEditText)
-                    && validator.isEmailValid(this, email, emailEditText)
-                    && validator.isPasswordValid(this, password, passwordEditText)
-                    && validator.isPasswordMatch(this, password, repeatPassword, repeatPasswordEditText)
-                    && validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)) {*/
+                UserInputValidator validator = new UserInputValidator();
 
-                ((EmailLoginActivity) getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
-            //}
-            //else
-              // return;
-        break;
+                if (validator.isFirstNameValid(this, firstName, firstNameEditText)
+                        && validator.isLastNameValid(this, lastName, lastNameEditText)
+                        && validator.isEmailValid(this, email, emailEditText)
+                        && validator.isPasswordValid(this, password, passwordEditText)
+                        && validator.isPasswordMatch(this, password, repeatPassword, repeatPasswordEditText)
+                        && validator.isProfilePictureChanged(this, logoIsChanged, cameraLogo)) {
+
+                    ((EmailLoginActivity) getActivity()).setRegistrationList(firstName, lastName, email, password, repeatPassword);
+                }
+                else
+                  return;
+            break;
 		}
 	}
 
@@ -93,14 +110,16 @@ public class RegisterFragment extends Fragment implements OnClickListener {
         	String[] filePath = { MediaStore.Images.Media.DATA };
         	Cursor cursor = getActivity().getContentResolver().query(pickedPicture, filePath, null, null ,null);
         	cursor.moveToFirst();
-        	String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-        	
-        	cameraLogo.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+        	imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            cameraLogo.setImageBitmap(BitmapFactory.decodeFile(imagePath));
             logoIsChanged = true;
         	
         	cursor.close();
-
-            //TODO: upload
         }
+    }
+
+    public String getImagePath(){
+        return imagePath;
     }
 }
