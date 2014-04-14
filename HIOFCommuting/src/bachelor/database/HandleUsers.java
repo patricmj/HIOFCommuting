@@ -72,6 +72,7 @@ public class HandleUsers {
 	  					return Double.compare(s1.getDistance(), s2.getDistance());
 	  				}
 	  			});
+				userList.remove(0); //remove yourself from list
 			}
 		} else {
 			// Vurdere om lista bør oppdateres

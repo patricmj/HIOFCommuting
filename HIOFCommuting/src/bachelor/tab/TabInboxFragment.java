@@ -102,7 +102,7 @@ public class TabInboxFragment extends Fragment {
 				inboxItems.setAdapter(adapter);
 				asyncTaskIsDone(result);
 			}else{
-				System.out.println("RETURNERER NULL?");
+				System.out.println("Inbox returnerer null i TabInboxFragment");
 			}
 			Dialog.dismiss();
 		}

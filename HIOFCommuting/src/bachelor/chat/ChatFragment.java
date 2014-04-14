@@ -30,6 +30,7 @@ public class ChatFragment extends Fragment{
 	private ListView chatView;
 	private User userLoggedIn;
 	private User userToChatWith;
+	private ChatArrayAdapter adapter;
 	
 	
 	@Override
@@ -85,7 +86,6 @@ public class ChatFragment extends Fragment{
 				chat = HandleMessages.getConversation(userLoggedIn, userToChatWith);
 				return chat;
 			} catch (Exception e) {
-				//Log.e("ITCRssReader", e.getMessage());
 				return null;
 			}
 		}
@@ -97,12 +97,12 @@ public class ChatFragment extends Fragment{
 				chatView = (ListView)getView().findViewById(R.id.listview_chat);
 				
 				// Create a list adapter
-				ChatArrayAdapter adapter = new ChatArrayAdapter(getActivity(), userLoggedIn, userToChatWith, result);
+				adapter = new ChatArrayAdapter(getActivity(), userLoggedIn, userToChatWith, result);
 				
 				// Set list adapter for the ListView
 				chatView.setAdapter(adapter);
 			}else{
-				System.out.println("null, har ikke chatta før");
+				System.out.println("har ikke chatta med denne brukeren før");
 			}
 			Dialog.dismiss();
 		}
