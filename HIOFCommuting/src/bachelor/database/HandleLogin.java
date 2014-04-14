@@ -37,7 +37,7 @@ public class HandleLogin {
 		return userLoggedIn;
 	}
 	
-	public static User getCurrentFacebookUserLoggedIn(String facebookid, JSONObject obj){
+	public static User getCurrentFacebookUserLoggedIn(JSONObject obj){
 		User userLoggedIn;
 		try{
 			System.out.println("lager user");

@@ -1,8 +1,6 @@
 package com.bachelor.hiofcommuting;
 
 import java.lang.ref.WeakReference;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,29 +8,19 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bachelor.database.HandleLogin;
 import bachelor.database.JsonParser;
-import bachelor.objects.Department;
-import bachelor.objects.Institution;
-import bachelor.objects.Study;
 import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
-import bachelor.register.FinishProfileFragment.Read;
 import bachelor.util.Util;
 
 import com.facebook.Request;
@@ -61,7 +49,6 @@ public class MainActivity extends FragmentActivity {
 		uiHelper.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		//FragmentManager fm = getSupportFragmentManager();
 		fragments[SPLASH] = fm.findFragmentById(R.id.splashFragment);
 		fragments[FINISH] = fm.findFragmentById(R.id.finishProfileFragment);
 
@@ -70,36 +57,6 @@ public class MainActivity extends FragmentActivity {
 			transaction.hide(fragments[i]);
 		}
 		transaction.commit();
-		
-		/*
-		//Add code to print out the key hash
-	    try {
-	        PackageInfo info = getPackageManager().getPackageInfo(
-	               getPackageName(), 
-	                PackageManager.GET_SIGNATURES);
-	        for (Signature signature : info.signatures) {
-	            MessageDigest md = MessageDigest.getInstance("SHA");
-	            md.update(signature.toByteArray());
-	            Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-	            }
-	    } catch (NameNotFoundException e) {
-	    	System.out.println("name not found: "+e);
-	    } catch (NoSuchAlgorithmException e) {
-	    	System.out.println("no such algorithm: "+e);
-	    }
-	    */
-	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		//only add the menu when the selection fragment is showing
-			if (menu.size() == 0) {
-				settings = menu.add(R.string.settings);
-			} else {
-				menu.clear();
-				settings = null;
-			}
-		return false;
 	}
 	
 	@Override
@@ -154,31 +111,12 @@ public class MainActivity extends FragmentActivity {
 			for (int i = 0; i < backStackSize; i++) {
 				manager.popBackStack();
 			}
-			System.out.println("Session: "+session + "\nState: "+state);
-			/*
-			//AUTHENTICATE USER IN OUR DATABASE
-			int facebookid = 1; //get facebook id
-			new AuthenticateUser().execute(facebookid);
-			*/
 			
 			if (state.isOpened()) {
 				// If the session state is open:
-				// Show the authenticated fragment
-				//Util.showFragment(SELECTION, fm, fragments, "", weakActivity);
-				//AUTHENTICATE USER IN OUR DATABASE
-				//Session session;
-				//session = getFacebookSession();
 				makeMeRequest(session);
-				
-				/*Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
-				intent.putExtra("FACEBOOK_SESSION", session);
-				startActivity(intent);
-				finish();
-				*/
 			} else if(state.isClosed()) {
 				// If the session state is closed:
-				// Show the login fragment
-				//showFragment(SPLASH, false);
 				Util.showFragment(SPLASH,fm,fragments, "HIOFCommuting" , weakActivity);
 			}
 		}
@@ -189,7 +127,6 @@ public class MainActivity extends FragmentActivity {
 		// new callback to handle the response.
 		Request request = Request.newMeRequest(session,
 				new Request.GraphUserCallback() {
-
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
 						// If the response is successful
@@ -223,19 +160,10 @@ public class MainActivity extends FragmentActivity {
 
 		if (session != null && session.isOpened()) {
 			// if the session is already open,
-
 			//AUTHENTICATE USER IN OUR DATABASE
 			makeMeRequest(session);
-			/*
-			Intent intent = new Intent(this, bachelor.tab.TabListenerActivity.class);
-			intent.putExtra("SESSION", session);
-			startActivity(intent);
-			*/
-			
 		} else {
 			// otherwise present the splash screen
-			// and ask the person to login.
-			//showFragment(SPLASH, false);
 			Util.showFragment(SPLASH, fm, fragments, "HIOFCommuting", weakActivity);
 		}
 	}
@@ -275,7 +203,7 @@ public class MainActivity extends FragmentActivity {
 				}
 				else {
 					System.out.println("User ER registrert i systemet fra før");
-					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(fbId, obj);
+					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(obj);
 					System.out.println(userLoggedIn + " er null");
 					Session session = Session.getActiveSession();
 					Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
@@ -289,21 +217,5 @@ public class MainActivity extends FragmentActivity {
 				e.printStackTrace();
 			}
 		}
-			/*if(result==null){
-				//user not yet registered
-				System.out.println("User er ikke registrert i systemet fra fï¿½r");
-				Util.showFragment(FINISH, fm, fragments, "Fullfï¿½r profil", weakActivity);
-			}else{
-				//user IS registered, send user to map
-				System.out.println("User ER registrert i systemet");
-				Intent intent = new Intent(MainActivity.this, bachelor.tab.TabListenerActivity.class);
-				intent.putExtra("CURRENT_USER", result);
-				intent.putExtra("FACEBOOK_SESSION", session);
-				startActivity(intent);
-				finish();
-			}
-		}*/
 	}
-
-	
 }
