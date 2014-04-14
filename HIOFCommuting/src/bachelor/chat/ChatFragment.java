@@ -85,7 +85,7 @@ public class ChatFragment extends Fragment{
 				chat = HandleMessages.getConversation(userLoggedIn, userToChatWith);
 				return chat;
 			} catch (Exception e) {
-				Log.e("ITCRssReader", e.getMessage());
+				//Log.e("ITCRssReader", e.getMessage());
 				return null;
 			}
 		}
@@ -101,6 +101,8 @@ public class ChatFragment extends Fragment{
 				
 				// Set list adapter for the ListView
 				chatView.setAdapter(adapter);
+			}else{
+				System.out.println("null, har ikke chatta før");
 			}
 			Dialog.dismiss();
 		}

@@ -94,7 +94,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		try{
 			new GetUsersFromDatabase(this).execute();
 		}catch(NullPointerException e){
-			System.out.println("ECEPITON"+e);
+			System.out.println("Exception i TabListenerActivity: onStart()");
 		}
 	}
 	
