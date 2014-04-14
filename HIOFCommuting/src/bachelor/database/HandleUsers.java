@@ -66,10 +66,18 @@ public class HandleUsers {
 					e.printStackTrace();
 				}
 			}
+			if(userList!=null){
+				Collections.sort(userList, new Comparator<User>() {
+	  				public int compare(User s1, User s2) {
+	  					return Double.compare(s1.getDistance(), s2.getDistance());
+	  				}
+	  			});
+			}
 		} else {
 			// Vurdere om lista bør oppdateres
 			System.out.println("userList allerede fylt opp, bruker gammel arraylist");
 		}
+		
 		return userList;
 	}
 
