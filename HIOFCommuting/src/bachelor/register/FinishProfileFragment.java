@@ -160,8 +160,8 @@ public class FinishProfileFragment extends Fragment {
 		int userid = 10;
 		int postalCode = Integer.parseInt(finishProfileData.get(1));
 		double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
-		double lat = latlon[0];
-		double lon = latlon[1];
+		double lon = latlon[0];
+		double lat = latlon[1];
 		double distance = 0.0;
 		String institution = finishProfileData.get(2);
 		String campus = finishProfileData.get(3);

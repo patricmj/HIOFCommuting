@@ -256,7 +256,7 @@ public class MainActivity extends FragmentActivity {
 			try{
 				JsonParser jp = new JsonParser();
 				JSONArray jsonFbArr;
-				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/test.py?q=fbUserId&fbid=" + fbId);
+				jsonFbArr = jp.getJsonArray("http://frigg.hiof.no/bo14-g23/py/usr.py?q=fbUserId&fbid=" + fbId);
 				JSONObject jsonObj = (JSONObject) jsonFbArr.get(0);
 				return jsonObj;
 			} catch (JSONException e) {
@@ -271,9 +271,10 @@ public class MainActivity extends FragmentActivity {
 			try {
 				if(obj.getString("user_id").equals("-100")){
 					System.out.println("User er ikke registrert i systemet fra fï¿½r");
-					Util.showFragment(FINISH, fm, fragments, "Fullfï¿½r profil", weakActivity);
+					Util.showFragment(FINISH, fm, fragments, "Fullfør profil", weakActivity);
 				}
 				else {
+					System.out.println("User ER registrert i systemet fra før");
 					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(fbId, obj);
 					System.out.println(userLoggedIn + " er null");
 					Session session = Session.getActiveSession();

@@ -40,15 +40,33 @@ public class HandleLogin {
 	public static User getCurrentFacebookUserLoggedIn(String facebookid, JSONObject obj){
 		User userLoggedIn;
 		try{
-			System.out.println("facebookid " + facebookid);/*
-			public User(int userid, int studyid, String firstname, String surname, double lat, double lon, double distance,
-					String institution, String campus, String department,
-					String study, int startingYear, boolean car) {*/
-			///if get userid from database (facebook_user), where facebookid = facebookid
-			userLoggedIn = new User(100, 7, "Patrick", "Jansen", 59.272950, 11.046229, 0, "Høgskolen i Østfold", "Remmen", "IT", "Informatikk", 2011, true);
-			//userLoggedIn = new User(1, "Martin", 59.249620, 11.183409, 0, "Hï¿½gskolen i ï¿½stfold", "Remmen", "IT", "Informatikk", 2011, true);
-			//else if there is no user in database (not yet registered), return null
-			//userLoggedIn = null;
+			System.out.println("lager user");
+			int userId, studyId, startingYear;
+			String firstname, surname, institution, campus, department, study;
+			double lat, lon, distance;
+			boolean car;
+			userId = Integer.parseInt(obj.getString("user_id"));
+			studyId = Integer.parseInt(obj.getString("study_id"));
+			startingYear = Integer.parseInt(obj.getString("starting_year"));
+			firstname = obj.getString("firstname");
+			surname = obj.getString("surname");
+			institution = obj.getString("institution_name");
+			campus = obj.getString("campus_name");
+			department = obj.getString("department_name");
+			study = obj.getString("name_of_study");
+			String point = obj.getString("latlon").replace("POINT(", "").replace(")", "");
+			String[] latlon = point.split(" ");
+			lon = Double.parseDouble(latlon[0]);
+			lat = Double.parseDouble(latlon[1]);
+			distance = 0.0;
+			String carString = obj.getString("car");
+			if(carString.equals("1")) {
+				car = true;
+			}
+			else {
+				car = false;
+			}
+			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car);
 			return userLoggedIn;
 		}catch(Exception e){
 			return null;
