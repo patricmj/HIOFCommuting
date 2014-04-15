@@ -75,8 +75,6 @@ public class EmailLoginActivity extends FragmentActivity {
 	*/
 	
 	@Override
-=======
->>>>>>> branch 'master' of https://github.com/patricmj/HIOFCommuting.git
 	public void onBackPressed() {
 	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
 	    	Util.showFragment(LOGIN, fm, fragments, "Logg inn", weakActivity);
