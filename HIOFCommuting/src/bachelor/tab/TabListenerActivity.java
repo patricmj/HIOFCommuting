@@ -1,15 +1,11 @@
 package bachelor.tab;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,24 +18,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 import bachelor.database.HandleUsers;
 import bachelor.objects.User;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
 import com.facebook.Session;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class TabListenerActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 	
 	private List<User> users;
 	private User userLoggedIn;
+	private boolean filterUserFragmentVisibility = false;
+	private FilterUsersFragment filterUserFragment;
+	
 	Session session = null;
 	//Bitmap profilePic;
 	
@@ -59,8 +53,6 @@ public class TabListenerActivity extends FragmentActivity implements
 		}catch(NullPointerException e){
 			System.out.println("Logget inn med epost");
 		}
-		
-		
 
 		System.out.println("User = "+getUserLoggedIn().getFirstName()+
 				"\nStudy = "+getUserLoggedIn().getStudy()+
@@ -128,8 +120,36 @@ public class TabListenerActivity extends FragmentActivity implements
 			System.out.println("Logger ut");
 			performLogout();
 			return true;
+		case R.id.filter_user:
+			showUserFilter();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	private void showUserFilter(){
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom);
+		if(filterUserFragment==null){
+			//Create fragment
+			filterUserFragment = new FilterUsersFragment();
+			fragmentTransaction.add(R.id.container, filterUserFragment);
+			fragmentTransaction.commit();
+		}else if(filterUserFragment.isHidden()){
+			//Show fragment
+			fragmentTransaction.show(filterUserFragment);
+			fragmentTransaction.commit();
+		}
+	}
+	public void commitAndHideUserFilter(View v){
+		if(filterUserFragment!=null && filterUserFragment.isVisible()){
+			//Hide fragment
+			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+			fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom);
+			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
+			fragmentTransaction.hide(filterUserFragment);
+			fragmentTransaction.commit();
 		}
 	}
 
@@ -176,24 +196,26 @@ public class TabListenerActivity extends FragmentActivity implements
 
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-
 		if (tab.getPosition() == 0){
 			Fragment tm = new TabMapFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tm).commit();
 			System.out.println("Map");
+			setTitle("Kart");
 		}
 		if (tab.getPosition() == 1) {
 			Fragment tl = new TabListFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tl).commit();
 			System.out.println("Liste");
+			setTitle("Liste");
 		}
 		if (tab.getPosition() == 2) {
 			Fragment ti = new TabInboxFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, ti).commit();
 			System.out.println("Inbox");
+			setTitle("Inbox");
 		}
 	}
 

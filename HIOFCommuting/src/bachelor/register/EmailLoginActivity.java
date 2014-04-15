@@ -55,6 +55,8 @@ public class EmailLoginActivity extends FragmentActivity {
 		}
 	}
 	
+	//Trenger vi meny med settings etc nÃ¥r man skal logge inn?
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -74,6 +76,7 @@ public class EmailLoginActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	*/
 	
 	@Override
 	public void onBackPressed() {
@@ -95,7 +98,7 @@ public class EmailLoginActivity extends FragmentActivity {
 		registerData.add(email);
 		registerData.add(password);
 		registerData.add(repeatPassword);
-		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
+		Util.showFragment(FINISH, fm,fragments, "Fullfï¿½r profil", weakActivity);
 	}
 	
 	public ArrayList<String> getRegistrationList() {
