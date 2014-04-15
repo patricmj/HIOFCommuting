@@ -241,7 +241,6 @@ public class FinishProfileFragment extends Fragment {
 		//FinishButton
 		finishButton.setOnClickListener(new OnClickListener() {
 
-//TODO: Clean
 			@Override
 			public void onClick(View v) {
                 address = addressEditText.getText().toString().trim();
@@ -250,6 +249,17 @@ public class FinishProfileFragment extends Fragment {
                 department = String.valueOf(departmentSpinner.getSelectedItem());
                 study = String.valueOf(studySpinner.getSelectedItem());
                 startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
+                String activity = getActivity().toString();
+
+                if(activity.startsWith("com.bachelor.hiofcommuting.MainActivity")){
+                    facebookUser = true;
+                    Session session;
+                    session = ((MainActivity)getActivity()).getFacebookSession();
+                    makeMeRequest(session);
+                }
+                if(activity.startsWith("bachelor.register.EmailLoginActivity")){
+                    registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
+                }
 
                 UserInputValidator validator = new UserInputValidator();
 
@@ -258,65 +268,9 @@ public class FinishProfileFragment extends Fragment {
                         && validator.isConditionsRead(fragment, readConditions, readConditionsToggleButton))
                     setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
 
-                /*if(!facebookUser){
+                if(!facebookUser)
                     navigateToMap();
-                }
-
-                else{*/
-					String car;
-					String conditions;
-					address = addressEditText.getText().toString().trim();
-					postalCode = postalCodeEditText.getText().toString().trim();
-					institution = String.valueOf(institutionSpinner.getSelectedItem());
-					department = String.valueOf(departmentSpinner.getSelectedItem());
-					study = String.valueOf(studySpinner.getSelectedItem());
-					startingYear = String.valueOf(startingyearSpinner.getSelectedItem());
-					String activity = getActivity().toString();
-					if(activity.startsWith("com.bachelor.hiofcommuting.MainActivity")){
-						Toast.makeText(getActivity(), "Facebook", Toast.LENGTH_LONG).show();
-						facebookUser = true;
-						Session session;
-						session = ((MainActivity)getActivity()).getFacebookSession();
-						makeMeRequest(session);
-					}
-					if(activity.startsWith("bachelor.register.EmailLoginActivity")){
-						registerData = ((EmailLoginActivity)getActivity()).getRegistrationList();
-						Toast.makeText(getActivity(), "Email", Toast.LENGTH_LONG).show();
-					}
-					if(userHaveCar){
-						car = "Ja";
-					}
-					else{
-						car = "Nei";
-					}
-					if(readConditions){
-						conditions = "Ja";
-					}
-					else {
-						conditions = "Nei";
-					}
-					
-					Toast.makeText(getActivity(), 
-							"OnClickListener : " + 
-							"\n Institusjon : " + institution +
-							"\n Studiested : " + campus + 
-							"\n Avdeling : " + department +
-							"\n Studie : " + study + 
-							"\n Kull : " + startingYear +
-							"\n Bil? : " + car +
-							"\n Betingelser godkjent? : " + conditions 
-							, Toast.LENGTH_SHORT).show();
-					if(readConditions) {
-
-						setFinishProfileList(address, postalCode, institution, campus, department, study, startingYear, userHaveCar);
-						if(!facebookUser){
-							navigateToMap();
-						}
-					}
-					else {
-						//Toast.makeText(getActivity().getApplicationContext(), "Du m� lese og godta betingelser for � fortsette", Toast.LENGTH_SHORT).show();
-					}
-				}
+            }
 		});
 	}
 	

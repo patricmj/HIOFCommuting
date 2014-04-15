@@ -60,6 +60,8 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 				false);
 		return rootView;
 	}
+
+
 	
 	
 	@Override

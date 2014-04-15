@@ -3,6 +3,10 @@ package bachelor.register;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleLogin;
+import bachelor.database.JsonParser;
 import bachelor.objects.User;
 
 import com.bachelor.hiofcommuting.R;
@@ -49,7 +54,7 @@ public class LoginFragment extends Fragment {
 	}
 
 	public void validateUserInput(String email, String password) {
-		// Forbereder toast-melding
+		//Forbereder toast-melding
 		CharSequence toastMessage = null;
 
 		// Sjekker om brukeren har fyllt inn data
@@ -97,29 +102,19 @@ public class LoginFragment extends Fragment {
 		@Override
 		protected Boolean doInBackground(String[]... params) {
 			String[] userInput = params[0];
-			String epost = userInput[0];
-			String passord = userInput[1];
+			String email = userInput[0];
+			String password = userInput[1];
 
-			// Sjekker om eposten ligger i systemet
-			if (HandleLogin.checkEmail(epost)) {
-				// Sjekker om passordet matcher eposten
-				if (HandleLogin.checkPassword(epost, passord)) {
-					try{
-						userLoggedIn = HandleLogin.getCurrentEmailUserLoggedIn(epost);
-						return true;
-					}catch(NullPointerException e){
-						errorMessage = "null pointer";
-					}	
-				} else {
-					errorMessage = "Feil brukernavn/passord. " + (--attempts)
-							+ " forsøk igjen.";
-				}
+			Boolean authenticated = HandleLogin.checkUnAndPw(email,password);
+			if (authenticated) {
+				userLoggedIn = HandleLogin.getCurrentEmailUserLoggedIn(email);
+				return true;
 			} else {
-				errorMessage = "Fant ingen bruker med angitt epost i systemet";
+				errorMessage = "Feil brukernavn eller passord. " + (--attempts) + " forsøk igjen.";
 			}
 			return false;
 		}
-
+		
 		@Override
 		protected void onPostExecute(Boolean result) {
 			//ValiderBrukerFerdig(result);
@@ -129,11 +124,9 @@ public class LoginFragment extends Fragment {
 				intent.putExtra("CURRENT_USER", userLoggedIn);
 				startActivity(intent);
 				getActivity().finish();
-			}else{
+			}else {
 				Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
 			}
-			
 		}
-
 	}
 }

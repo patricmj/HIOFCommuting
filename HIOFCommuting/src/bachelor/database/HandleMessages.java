@@ -43,6 +43,8 @@ public class HandleMessages {
 				String sent = obj.getString("sent");
 				chat.add(new Conversation(sendr, recvr, message, sent));
 
+                //TODO: Sjekk id mot receiver før melding settes til read
+
 				setMessageAsRead(user_id_sender, user_id_receiver);
 			}
 		} catch (JSONException e) {
