@@ -24,7 +24,7 @@ import com.bachelor.hiofcommuting.UserInformationActivity;
 
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
-	private List<User> userList = new ArrayList<User>();
+	private List<User> userList;
 	private User userLoggedIn;
 	
 	@Override
@@ -40,6 +40,7 @@ public class TabListFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
+		userList = ((TabListenerActivity)getActivity()).getUsers();
 	}
 
 	@Override
@@ -76,8 +77,8 @@ public class TabListFragment extends Fragment {
 			try {
 				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
 				return userList;
-			} catch (Exception e) {
-				Log.e("ITCRssReader", e.getMessage());
+			} catch (NullPointerException e) {
+				System.out.println("Returns null in doInBackground: TabListFragment.java");
 				return null;
 			}
 		}

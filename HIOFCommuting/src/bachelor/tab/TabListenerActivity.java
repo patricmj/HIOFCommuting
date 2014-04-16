@@ -3,6 +3,7 @@ package bachelor.tab;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import bachelor.database.HandleUsers;
 import bachelor.objects.User;
+import bachelor.util.HTTPClient;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -31,8 +33,7 @@ public class TabListenerActivity extends FragmentActivity implements
 	
 	private List<User> users;
 	private User userLoggedIn;
-	private boolean filterUserFragmentVisibility = false;
-	private FilterUsersFragment filterUserFragment;
+	private FilterUsersFragment filterUserFragment = null;
 	
 	Session session = null;
 	//Bitmap profilePic;
@@ -40,7 +41,7 @@ public class TabListenerActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Mottar valgt user-objekt fra forrige activity
+		//Receive current user logged in
 		setUserLoggedIn((User)getIntent().getSerializableExtra("CURRENT_USER"));
 		//profilePic = (Bitmap)getIntent().getParcelableExtra("PROFILE_PIC");
 		setContentView(R.layout.activity_tab_listener);
@@ -49,14 +50,12 @@ public class TabListenerActivity extends FragmentActivity implements
 		try{
 			session = (Session)getIntent().getSerializableExtra("FACEBOOK_SESSION");
 			System.out.println(session.getState());
-			System.out.println("Logget inn med facebook");
+			System.out.println("Logget in with Facebook");
 		}catch(NullPointerException e){
-			System.out.println("Logget inn med epost");
+			System.out.println("Logget in with email");
 		}
 
-		System.out.println("User = "+getUserLoggedIn().getFirstName()+
-				"\nStudy = "+getUserLoggedIn().getStudy()+
-				"\nInstitution = "+getUserLoggedIn().getInstitution());
+		System.out.println("User logged in is "+getUserLoggedIn().getFirstName());
 		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
@@ -78,16 +77,23 @@ public class TabListenerActivity extends FragmentActivity implements
 		actionBar.addTab(actionBar.newTab().setText(R.string.tab_inbox)
 				.setTabListener(this));
 		
+		//Get all users from database
+		Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	try {
+    				setUsers(HandleUsers.getAllUsers(getBaseContext(), getUserLoggedIn()));
+    			} catch (NullPointerException e) {
+    				Log.e("ITCRssReader", e.getMessage());
+    			}
+            }
+        });
+        t.start();	
 	}
 	
 	@Override
 	protected void onStart(){
 		super.onStart();
-		try{
-			new GetUsersFromDatabase(this).execute();
-		}catch(NullPointerException e){
-			System.out.println("Exception i TabListenerActivity: onStart()");
-		}
 	}
 	
 	@Override
@@ -114,10 +120,9 @@ public class TabListenerActivity extends FragmentActivity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch(item.getItemId()){
 		case R.id.action_settings:
-			System.out.println("Settings trykka");
 			return true;
 		case R.id.newActivity:
-			System.out.println("Logger ut");
+			System.out.println("Logging out");
 			performLogout();
 			return true;
 		case R.id.filter_user:
@@ -159,7 +164,7 @@ public class TabListenerActivity extends FragmentActivity implements
 				session = Session.getActiveSession();
 				session.closeAndClearTokenInformation();
 			}catch(NullPointerException e){
-				System.out.println("Wooops! Var ikke logga inn med facebook?");
+				System.out.println("performLogout(): User was logged in with email");
 			}
 		}
 		userLoggedIn = null;
@@ -231,42 +236,10 @@ public class TabListenerActivity extends FragmentActivity implements
 
 	}
 
-
-	//GETTER
 	public List<User> getUsers() {
 		return users;
 	}
-	//SETTER
 	public void setUsers(List<User> users) {
 		this.users = users;
-	}
-	
-	//PRIVATE CLASS TO GET ALL USERS IN DATABASE
-	private class GetUsersFromDatabase extends AsyncTask<Void, Void, List<User>> {
-		private Context mContext;
-	    public GetUsersFromDatabase (Context context){
-	         mContext = context;
-	    }
-		
-		@Override
-		protected List<User> doInBackground(Void... params) {
-			try {
-				List<User> users = HandleUsers.getAllUsers(mContext, getUserLoggedIn());
-				return users;
-			} catch (Exception e) {
-				Log.e("ITCRssReader", e.getMessage());
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(List<User> result) {
-			if(result != null){
-				setUsers(result);
-				System.out.println("Users initialized");
-			}else{
-				System.out.println("Users NOT initialized");
-			}
-		}
 	}
 }

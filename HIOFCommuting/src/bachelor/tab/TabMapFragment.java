@@ -49,7 +49,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	private MenuItem settings;
 	private LayoutInflater inflater;
 	private User userLoggedIn;
-	private List<User> user;
+	private List<User> userList;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,13 +61,12 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		return rootView;
 	}
 
-
-	
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
+		userList = ((TabListenerActivity)getActivity()).getUsers();
 	    if (fragment == null) {
 	    	FragmentManager fm = getChildFragmentManager();
 		    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
@@ -177,12 +176,10 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-				List<User> userList = new ArrayList<User>();
 				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
 				return userList;
 			} catch (NullPointerException e) {
-				//Log.e("ITCRssReader", e.getMessage());
-				System.out.println("FUNKA IKKE");
+				System.out.println("Returns null in doInBackground: TabMapFragment.java");
 				return null;
 			}
 		}
