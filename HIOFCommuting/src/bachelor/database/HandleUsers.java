@@ -1,19 +1,10 @@
 package bachelor.database;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,18 +12,17 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import bachelor.objects.Conversation;
 import bachelor.objects.User;
 import bachelor.util.HTTPClient;
 
 public class HandleUsers {
-	private static List<User> userList = new ArrayList<User>();
+	private static List<User> userList = new ArrayList<User>();;
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn) {
-		if (userList.isEmpty()) {
-			String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
-			String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
-			JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
+		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
+		String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
+		JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
+		if (userList.isEmpty() || userList.size() == arrayUser.length()) {
 			JSONArray arrayStudy = new JsonParser().getJsonArray(urlStudy);
 			for (int i = 0; i < arrayUser.length(); i++) {
 				JSONObject objectUser;
@@ -71,9 +61,16 @@ public class HandleUsers {
 					e.printStackTrace();
 				}
 			}
+			if(userList!=null){
+				//Sort the list on distance from userLoggedIn to other users
+				Collections.sort(userList, new Comparator<User>() {
+					public int compare(User s1, User s2) {
+						return Double.compare(s1.getDistance(), s2.getDistance());
+					}
+				});
+			}
 		} else {
-			// Vurdere om lista bør oppdateres
-			System.out.println("userList allerede fylt opp, bruker gammel arraylist");
+			System.out.println("ArrayList already contain all users");
 		}
 		
 		return userList;
