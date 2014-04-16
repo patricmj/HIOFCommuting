@@ -61,18 +61,15 @@ public class HandleUsers {
 					double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
 			
 					//ADD USER OBJECT
-					userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
+					if(user_id!=userLoggedIn.getUserid()){
+						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
+					}else{
+						//DO NOTHING
+						//We only want to add other users to the ArrayList
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
-			if(userList!=null){
-				Collections.sort(userList, new Comparator<User>() {
-	  				public int compare(User s1, User s2) {
-	  					return Double.compare(s1.getDistance(), s2.getDistance());
-	  				}
-	  			});
-				userList.remove(0); //remove yourself from list
 			}
 		} else {
 			// Vurdere om lista bør oppdateres
