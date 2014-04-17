@@ -28,7 +28,7 @@ public class TabInboxFragment extends Fragment {
 
 	private User userLoggedIn;
 	public ListView inboxItems;
-	private List<User> users;
+	private List<User> userList;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +43,7 @@ public class TabInboxFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
-		users = ((TabListenerActivity)getActivity()).getUsers();
+		userList = ((TabListenerActivity)getActivity()).getUserList();
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class TabInboxFragment extends Fragment {
 		@Override
 		protected List<Inbox> doInBackground(Void... params) {
 			try{
-				newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), users);
+				newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), userList);
 				return newMessage;
 			}catch(NullPointerException e){
 				return null;

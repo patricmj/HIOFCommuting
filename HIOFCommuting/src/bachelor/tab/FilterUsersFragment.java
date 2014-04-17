@@ -1,17 +1,14 @@
 package bachelor.tab;
 
-import com.bachelor.hiofcommuting.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
+import android.widget.NumberPicker;
+
+import com.bachelor.hiofcommuting.R;
 
 public class FilterUsersFragment extends Fragment {
 
@@ -26,5 +23,13 @@ public class FilterUsersFragment extends Fragment {
 		return view;
 	}
 	
-	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		NumberPicker np = (NumberPicker)getView().findViewById(R.id.numberpicker_filter_distance);
+		np.setMinValue(1);
+		np.setMaxValue(100);
+        np.setFocusable(true);
+        np.setFocusableInTouchMode(true);
+	}
 }

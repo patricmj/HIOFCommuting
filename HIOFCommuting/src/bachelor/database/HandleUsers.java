@@ -12,13 +12,14 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import bachelor.objects.Filter;
 import bachelor.objects.User;
 import bachelor.util.HTTPClient;
 
 public class HandleUsers {
-	private static List<User> userList = new ArrayList<User>();;
+	private static List<User> userList = new ArrayList<User>();
 
-	public static List<User> getAllUsers(Context context, User userLoggedIn) {
+	public static List<User> getAllUsers(Context context, User userLoggedIn, Filter filter) {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
 		String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
 		JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
@@ -50,13 +51,11 @@ public class HandleUsers {
 					String study = objectStudy.getString("name_of_study");
 					double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
 			
-					//ADD USER OBJECT
+					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
 						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
-					}else{
-						//DO NOTHING
-						//We only want to add other users to the ArrayList
 					}
+					
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -73,7 +72,66 @@ public class HandleUsers {
 			System.out.println("ArrayList already contain all users");
 		}
 		
-		return userList;
+		if(filter == null){
+			System.out.println("return userlist");
+			return userList;
+		}else{
+			System.out.println("return FILTERED userlist");
+			
+			return (filterList(userList, userLoggedIn, filter));
+		}
+	}
+
+	public static List<User> filterList(List<User> list, User userLoggedIn, Filter f){
+		List<User> userListFiltered = new ArrayList<User>();
+		
+		for(int i=0; i<list.size(); i++){
+			User usr = list.get(i);
+			boolean shouldWeAddUser = true;
+			
+			//If user only want people from same institution
+			if(f.isInstitution()){
+				if(!userLoggedIn.getInstitution().equals(usr.getInstitution()))
+						shouldWeAddUser = false;
+			}
+			//If user only want people from same campus
+			if(f.isCampus()){
+				if(!userLoggedIn.getCampus().equals(usr.getCampus()))
+					shouldWeAddUser = false;
+			}
+			//If user only want people from same department
+			if(f.isDepartment()){
+				if(!userLoggedIn.getDepartment().equals(usr.getDepartment()))
+					shouldWeAddUser = false;
+			}
+			//If user only want people from same institution
+			if(f.isStudy()){
+				if(userLoggedIn.getStudyid()!=usr.getStudyid())
+					shouldWeAddUser = false;
+			}
+			//If user started studying the same year
+			if(f.isStartingYear()){
+				if(userLoggedIn.getStartingYear()!=usr.getStartingYear())
+					shouldWeAddUser = false;
+			}
+			//If user only want people with car
+			if(f.isCar()){
+				if(!usr.hasCar())
+					shouldWeAddUser = false;
+			}
+			//If user only want people within a distance
+			if(f.getDistance()>0.0){
+				if(usr.getDistance()>f.getDistance())
+					shouldWeAddUser = false;
+			}
+				
+			//If user is within whats filtered, add to list
+			if(shouldWeAddUser){
+				userListFiltered.add(usr);
+			}
+		}
+		
+		return userListFiltered;
 	}
 
 	public static double[] getLatLon(Context context, String address,

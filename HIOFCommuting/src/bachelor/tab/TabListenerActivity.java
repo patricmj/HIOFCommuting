@@ -3,11 +3,8 @@ package bachelor.tab;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,10 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.NumberPicker;
 import bachelor.database.HandleUsers;
+import bachelor.objects.Filter;
 import bachelor.objects.User;
-import bachelor.util.HTTPClient;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -30,35 +28,41 @@ import com.facebook.Session;
 
 public class TabListenerActivity extends FragmentActivity implements
 		ActionBar.TabListener {
-	
-	private List<User> users;
+
+	private List<User> userList;
 	private User userLoggedIn;
+	private Filter filter;
+	
+
 	private FilterUsersFragment filterUserFragment = null;
-	
+
 	Session session = null;
-	//Bitmap profilePic;
-	
+
+	// Bitmap profilePic;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Receive current user logged in
-		setUserLoggedIn((User)getIntent().getSerializableExtra("CURRENT_USER"));
-		//profilePic = (Bitmap)getIntent().getParcelableExtra("PROFILE_PIC");
+		// Receive current user logged in
+		setUserLoggedIn((User) getIntent().getSerializableExtra("CURRENT_USER"));
+		// profilePic = (Bitmap)getIntent().getParcelableExtra("PROFILE_PIC");
 		setContentView(R.layout.activity_tab_listener);
-		
-		
-		try{
-			session = (Session)getIntent().getSerializableExtra("FACEBOOK_SESSION");
+
+		try {
+			session = (Session) getIntent().getSerializableExtra(
+					"FACEBOOK_SESSION");
 			System.out.println(session.getState());
 			System.out.println("Logget in with Facebook");
-		}catch(NullPointerException e){
+		} catch (NullPointerException e) {
 			System.out.println("Logget in with email");
 		}
 
-		System.out.println("User logged in is "+getUserLoggedIn().getFirstName());
-		
+		System.out.println("User logged in is "
+				+ getUserLoggedIn().getFirstName());
+
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, new PlaceholderFragment()).commit();
 			FragmentManager fm = getSupportFragmentManager();
 			FragmentTransaction transaction = fm.beginTransaction();
 			PlaceholderFragment pf = new PlaceholderFragment();
@@ -76,40 +80,45 @@ public class TabListenerActivity extends FragmentActivity implements
 				.setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText(R.string.tab_inbox)
 				.setTabListener(this));
-		
-		//Get all users from database
-		Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-            	try {
-    				setUsers(HandleUsers.getAllUsers(getBaseContext(), getUserLoggedIn()));
-    			} catch (NullPointerException e) {
-    				Log.e("ITCRssReader", e.getMessage());
-    			}
-            }
-        });
-        t.start();	
-	}
-	
-	@Override
-	protected void onStart(){
-		super.onStart();
-	}
-	
-	@Override
-	public void onBackPressed() {
-		//Do nothing
+
+		getUsersThread();
 	}
 
-	/*public Bitmap getProfilePic() {
-		return profilePic;
-	}*/
+	private void getUsersThread() {
+		// Get all users from database
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					setUserList(HandleUsers.getAllUsers(getBaseContext(),
+							getUserLoggedIn(), getFilter()));
+				} catch (NullPointerException e) {
+					Log.e("ITCRssReader", e.getMessage());
+				}
+			}
+		});
+		t.start();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onBackPressed() {
+		// Do nothing
+	}
+
+	/*
+	 * public Bitmap getProfilePic() { return profilePic; }
+	 */
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		//menu.add(R.string.settings);
+		// menu.add(R.string.settings);
 		return true;
 	}
 
@@ -118,7 +127,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		switch(item.getItemId()){
+		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
 		case R.id.newActivity:
@@ -132,47 +141,93 @@ public class TabListenerActivity extends FragmentActivity implements
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	private void showUserFilter(){
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom);
-		if(filterUserFragment==null){
-			//Create fragment
+
+	// Show filter fragment
+	private void showUserFilter() {
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+				.beginTransaction();
+		fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,
+				R.anim.exit_to_bottom);
+		if (filterUserFragment == null) {
+			// Create fragment
 			filterUserFragment = new FilterUsersFragment();
 			fragmentTransaction.add(R.id.container, filterUserFragment);
 			fragmentTransaction.commit();
-		}else if(filterUserFragment.isHidden()){
-			//Show fragment
+		} else if (filterUserFragment.isHidden()) {
+			// Show fragment
 			fragmentTransaction.show(filterUserFragment);
 			fragmentTransaction.commit();
 		}
 	}
-	public void commitAndHideUserFilter(View v){
-		if(filterUserFragment!=null && filterUserFragment.isVisible()){
-			//Hide fragment
-			FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-			fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom);
-			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
+
+	// Button commitAndHideUserFilter is clicked in filter fragment
+	public void commitAndHideUserFilter(View v) {
+		setFilter(null);
+		CheckBox cbinstitution = (CheckBox) findViewById(R.id.checkbox_filter_institution);
+		CheckBox cbcampus = (CheckBox) findViewById(R.id.checkbox_filter_campus);
+		CheckBox cbstudy = (CheckBox) findViewById(R.id.checkbox_filter_study);
+		CheckBox cbdepartment = (CheckBox) findViewById(R.id.checkbox_filter_department);
+		CheckBox cbstartingyear = (CheckBox) findViewById(R.id.checkbox_filter_startingyear);
+		CheckBox cbcar = (CheckBox) findViewById(R.id.checkbox_filter_car);
+		CheckBox cbdistance = (CheckBox) findViewById(R.id.checkbox_filter_distance);
+		NumberPicker npdistance = (NumberPicker) findViewById(R.id.numberpicker_filter_distance);
+
+		int studyId = userLoggedIn.getStudyid();
+		double distance = 0.0;
+		boolean institution = false;
+		boolean campus = false;
+		boolean department = false;
+		boolean study = false;
+		boolean startingyear = false;
+		boolean car = false;
+
+		if (cbinstitution.isChecked())
+			institution = true;
+		if (cbcampus.isChecked())
+			campus = true;
+		if (cbdepartment.isChecked())
+			department = true;
+		if (cbstudy.isChecked())
+			study = true;
+		if (cbstartingyear.isChecked())
+			startingyear = true;
+		if (cbcar.isChecked())
+			car = true;
+		if (cbdistance.isChecked())
+			distance = (double)npdistance.getValue();
+
+		setFilter(new Filter(studyId, distance, institution, campus, department,
+				study, startingyear, car));
+
+		if (filterUserFragment != null && filterUserFragment.isVisible()) {
+			// Hide fragment
+			FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+					.beginTransaction();
+			fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,
+					R.anim.exit_to_bottom);
+			fragmentTransaction
+					.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
 			fragmentTransaction.hide(filterUserFragment);
 			fragmentTransaction.commit();
 		}
 	}
 
 	private void performLogout() {
-		if(session != null){
-			try{
+		if (session != null) {
+			try {
 				session = Session.getActiveSession();
 				session.closeAndClearTokenInformation();
-			}catch(NullPointerException e){
-				System.out.println("performLogout(): User was logged in with email");
+			} catch (NullPointerException e) {
+				System.out
+						.println("performLogout(): User was logged in with email");
 			}
 		}
 		userLoggedIn = null;
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
-  	}
-	
+	}
+
 	public User getUserLoggedIn() {
 		return userLoggedIn;
 	}
@@ -181,7 +236,23 @@ public class TabListenerActivity extends FragmentActivity implements
 		this.userLoggedIn = userLoggedIn;
 	}
 	
+	public Filter getFilter() {
+		return filter;
+	}
 
+	public void setFilter(Filter filter) {
+		this.filter = filter;
+	}
+
+	public List<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<User> users) {
+		this.userList = users;
+	}
+	
+	
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -201,7 +272,7 @@ public class TabListenerActivity extends FragmentActivity implements
 
 	@Override
 	public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-		if (tab.getPosition() == 0){
+		if (tab.getPosition() == 0) {
 			Fragment tm = new TabMapFragment();
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.fragment_tab_container, tm).commit();
@@ -227,7 +298,6 @@ public class TabListenerActivity extends FragmentActivity implements
 	@Override
 	public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -236,10 +306,5 @@ public class TabListenerActivity extends FragmentActivity implements
 
 	}
 
-	public List<User> getUsers() {
-		return users;
-	}
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
+
 }

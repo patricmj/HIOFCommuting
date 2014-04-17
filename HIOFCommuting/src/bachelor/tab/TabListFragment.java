@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import bachelor.database.HandleUsers;
+import bachelor.objects.Filter;
 import bachelor.objects.User;
 
 import com.bachelor.hiofcommuting.R;
@@ -26,6 +27,7 @@ public class TabListFragment extends Fragment {
 	private ListView itcItems;
 	private List<User> userList;
 	private User userLoggedIn;
+	private Filter filter;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +42,8 @@ public class TabListFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
-		userList = ((TabListenerActivity)getActivity()).getUsers();
+		userList = ((TabListenerActivity)getActivity()).getUserList();
+		filter = ((TabListenerActivity)getActivity()).getFilter();
 	}
 
 	@Override
@@ -68,14 +71,14 @@ public class TabListFragment extends Fragment {
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		@Override
 	    protected void onPreExecute(){
-			Dialog.setMessage("Laster..");
+			Dialog.setMessage("Laster brukere..");
 	       Dialog.show();
 	    }
 		
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
+				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
 				return userList;
 			} catch (NullPointerException e) {
 				System.out.println("Returns null in doInBackground: TabListFragment.java");

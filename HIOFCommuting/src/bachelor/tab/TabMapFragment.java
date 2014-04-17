@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import bachelor.database.HandleUsers;
+import bachelor.objects.Filter;
 import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
 
@@ -50,6 +51,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	private LayoutInflater inflater;
 	private User userLoggedIn;
 	private List<User> userList;
+	private Filter filter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +68,8 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
-		userList = ((TabListenerActivity)getActivity()).getUsers();
+		userList = ((TabListenerActivity)getActivity()).getUserList();
+		filter = ((TabListenerActivity)getActivity()).getFilter();
 	    if (fragment == null) {
 	    	FragmentManager fm = getChildFragmentManager();
 		    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
@@ -139,14 +142,11 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		.position(user)
 		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 		hashMap.put(userLoggedInMarker.getId(), userLoggedIn);
-		
-		
+
+		//Fill map with users
 		new GetUsers().execute();
 		
-		
-		
-		// googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-		// check if map is created successfully or not hehe
+		// check if map is created successfully
 		if (googleMap == null) {
 			Toast.makeText(getActivity().getApplicationContext(),
 					"Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
@@ -169,14 +169,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		
 		@Override
 	    protected void onPreExecute(){
-			Dialog.setMessage("Laster..");
+			Dialog.setMessage("Laster brukere i kart..");
 			Dialog.show();
 	    }
 		
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn);
+				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
 				return userList;
 			} catch (NullPointerException e) {
 				System.out.println("Returns null in doInBackground: TabMapFragment.java");
@@ -187,6 +187,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		@Override
 		protected void onPostExecute(List<User> result) {
 			if(result!=null){
+				//Create hashmap containing markers as key and users as value
 				for(int i=0; i<result.size();i++){
 					String firstName = result.get(i).getFirstName();
 					double lat = result.get(i).getLat();

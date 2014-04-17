@@ -15,6 +15,6 @@
     	android:id="@+id/filter_user"
        	android:orderInCategory="100"
        	android:showAsAction="ifRoom"
-      	 android:title="Filtrer brukere"
+      	 android:title="Filtrering"
         />
 </menu>
