@@ -1,6 +1,7 @@
 package bachelor.tab;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,10 +88,11 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		if (googleMap == null){
 			googleMap = fragment.getMap();
 			initilizeMap();
+			System.out.println("Done, tabmap resumed");
 		}
 	}
-
-	private void initilizeMap() {
+	
+	public void initilizeMap() {
 		if (fragment == null) {
 			System.out.println("fragment er null");
 		}

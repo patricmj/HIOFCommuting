@@ -92,6 +92,7 @@ public class TabListenerActivity extends FragmentActivity implements
 				try {
 					setUserList(HandleUsers.getAllUsers(getBaseContext(),
 							getUserLoggedIn(), getFilter()));
+					System.out.println("Get users done");
 				} catch (NullPointerException e) {
 					Log.e("ITCRssReader", e.getMessage());
 				}
@@ -210,6 +211,15 @@ public class TabListenerActivity extends FragmentActivity implements
 			fragmentTransaction.hide(filterUserFragment);
 			fragmentTransaction.commit();
 		}
+		
+		//FragmentManager fm = getSupportFragmentManager();
+		//TabMapFragment fragment2 = (TabMapFragment)fm.findFragmentById(R.layout.fragment_tab_map);
+		//fragment2.onResume();
+		//fragment2.initilizeMap();
+		//Fragment tm = fm.findFragmentById(R.layout.fragment_tab_map);
+		//tm.onResume();
+		//Fragment tm = new TabMapFragment();
+		//tm.onResume();
 	}
 
 	private void performLogout() {
@@ -302,8 +312,9 @@ public class TabListenerActivity extends FragmentActivity implements
 
 	@Override
 	public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-		// TODO Auto-generated method stub
+		if (tab.getPosition() == 0) {
 
+		}
 	}
 
 
