@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -212,14 +213,21 @@ public class TabListenerActivity extends FragmentActivity implements
 			fragmentTransaction.commit();
 		}
 		
-		//FragmentManager fm = getSupportFragmentManager();
-		//TabMapFragment fragment2 = (TabMapFragment)fm.findFragmentById(R.layout.fragment_tab_map);
-		//fragment2.onResume();
-		//fragment2.initilizeMap();
-		//Fragment tm = fm.findFragmentById(R.layout.fragment_tab_map);
-		//tm.onResume();
-		//Fragment tm = new TabMapFragment();
-		//tm.onResume();
+		FragmentManager fm = getSupportFragmentManager();
+		int stackCount = fm.getBackStackEntryCount();
+		BackStackEntry previousFragment = fm.getBackStackEntryAt(stackCount-1);
+		if(previousFragment.getName().equalsIgnoreCase("Map")){
+			Fragment tm = new TabMapFragment();
+			fm.beginTransaction().replace(R.id.fragment_tab_container, tm).commit();
+		} 
+		else if(previousFragment.getName().equalsIgnoreCase("List")) {
+			Fragment tl = new TabListFragment();
+			fm.beginTransaction().replace(R.id.fragment_tab_container, tl).commit();
+		}
+		else {
+			Fragment ti = new TabInboxFragment();
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_tab_container, ti).addToBackStack("Chat").commit();
+		}
 	}
 
 	private void performLogout() {
@@ -285,21 +293,21 @@ public class TabListenerActivity extends FragmentActivity implements
 		if (tab.getPosition() == 0) {
 			Fragment tm = new TabMapFragment();
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.fragment_tab_container, tm).commit();
+					.replace(R.id.fragment_tab_container, tm).addToBackStack("Map").commit();
 			System.out.println("Map");
 			setTitle("Kart");
 		}
 		if (tab.getPosition() == 1) {
 			Fragment tl = new TabListFragment();
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.fragment_tab_container, tl).commit();
+					.replace(R.id.fragment_tab_container, tl).addToBackStack("List").commit();
 			System.out.println("Liste");
 			setTitle("Liste");
 		}
 		if (tab.getPosition() == 2) {
 			Fragment ti = new TabInboxFragment();
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.fragment_tab_container, ti).commit();
+					.replace(R.id.fragment_tab_container, ti).addToBackStack("Chat").commit();
 			System.out.println("Inbox");
 			setTitle("Inbox");
 		}
