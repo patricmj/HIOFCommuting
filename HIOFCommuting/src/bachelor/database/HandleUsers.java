@@ -23,9 +23,7 @@ public class HandleUsers {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
 		String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
 		JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
-		if (userList.isEmpty() || userList.size() != arrayUser.length()) {
-			if(!userList.isEmpty())
-				userList.clear();
+		if (userList.isEmpty() || userList.size() == arrayUser.length()) {
 			JSONArray arrayStudy = new JsonParser().getJsonArray(urlStudy);
 			for (int i = 0; i < arrayUser.length(); i++) {
 				JSONObject objectUser;
@@ -172,27 +170,35 @@ public class HandleUsers {
 		return (double) (dist * meterConversion) / 1000;
 	}
 	
-	public static void insertEmailUserToDb(final User user, final ArrayList<String> registerData) {
+	public static void insertEmailUserToDb(final int studyId,
+			final String firstName, final String surName, final double lat, final double lon,
+			final double distance, final String institution, final String campus,
+			final String department, final String study, final int startingYear, final boolean car, final ArrayList<String> registerData) {
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	HTTPClient.insertEmailUser(user, registerData);
+            	HTTPClient.insertEmailUser(studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car, registerData);
             }
         });
 
         t.start();
     }
 	
-	public static void insertFacebookUserToDb(final User user, final String fbId) {
+	public static void insertFacebookUserToDb(final int studyId,
+			final String firstName, final String surName, final double lat, final double lon,
+			final double distance, final String institution, final String campus,
+			final String department, final String study, final int startingYear, final boolean car,
+			final String fbId) {
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	HTTPClient.insertFacebookUser(user, fbId);
+            	HTTPClient.insertFacebookUser(studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car, fbId);
             }
         });
 
         t.start();
     }
+
 }
