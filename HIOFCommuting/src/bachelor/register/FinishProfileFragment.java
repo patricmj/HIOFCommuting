@@ -324,7 +324,6 @@ public class FinishProfileFragment extends Fragment {
         });
     }
 
-    //TODO: Insert facebook user_id
     private String saveScaledImage(Bitmap bitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
