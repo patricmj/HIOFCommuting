@@ -6,24 +6,20 @@ import android.os.Handler;
 import bachelor.database.HandleMessages;
 import bachelor.objects.Conversation;
 import bachelor.objects.User;
-import bachelor.tab.TabListenerActivity;
 
 import bachelor.util.HTTPClient;
 import com.bachelor.hiofcommuting.R;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ChatFragment extends Fragment{
 
@@ -48,12 +44,12 @@ public class ChatFragment extends Fragment{
 		userLoggedIn = ((ChatActivity)getActivity()).getUserLoggedIn();
 		userToChatWith = ((ChatActivity)getActivity()).getUserToChatWith();
 		new GetMessages().execute();
-		
+
 		Button sendMsg = (Button)getView().findViewById(R.id.button_chat_sendmessage);
 		sendMsg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
+                EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
 				String message = edittext.getText().toString();
 				new SendMessage().execute(message);
 
@@ -68,8 +64,6 @@ public class ChatFragment extends Fragment{
 		});
 	}
 	
-
-	
 	private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
 		
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
@@ -83,6 +77,8 @@ public class ChatFragment extends Fragment{
 		protected List<Conversation> doInBackground(Void... params) {
 			List<Conversation> chat;
 			try {
+                HandleMessages.myID = userLoggedIn.getUserid();
+                HandleMessages.partnerID = userToChatWith.getUserid();
 				chat = HandleMessages.getConversation(userLoggedIn, userToChatWith);
 				return chat;
 			} catch (Exception e) {

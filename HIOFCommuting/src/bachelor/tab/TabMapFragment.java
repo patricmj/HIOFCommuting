@@ -171,8 +171,8 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		
 		@Override
 	    protected void onPreExecute(){
-			Dialog.setMessage("Laster brukere i kart..");
-			Dialog.show();
+//			Dialog.setMessage("Laster brukere i kart..");
+//			Dialog.show();
 	    }
 		
 		@Override

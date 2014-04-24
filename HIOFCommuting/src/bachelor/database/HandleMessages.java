@@ -12,6 +12,9 @@ import bachelor.objects.User;
 
 public class HandleMessages {
 
+    public static int myID;
+    public static int partnerID;
+
 	public static List<Conversation> getConversation(User sender, User receiver) {
 		List<Conversation> chat = new ArrayList<Conversation>();
 		int user_id_sender = 0;
@@ -29,6 +32,13 @@ public class HandleMessages {
 				obj = chatArray.getJSONObject(i);
 				user_id_sender = obj.getInt("user_id_sender");
 				user_id_receiver = obj.getInt("user_id_receiver");
+                String message = obj.getString("message");
+                String sent = obj.getString("sent");
+
+                System.out.println("myID = " + myID);
+                System.out.println("user_id_sender = " + user_id_sender);
+                System.out.println("sender.getUserid() = " + sender.getUserid());
+
 				User sendr = null;
 				User recvr = null;
 				if (sender.getUserid() == user_id_sender
@@ -39,14 +49,12 @@ public class HandleMessages {
 					sendr = receiver;
 					recvr = sender;
 				}
-				String message = obj.getString("message");
-				String sent = obj.getString("sent");
-				chat.add(new Conversation(sendr, recvr, message, sent));
 
-                //TODO: Sjekk id mot receiver før melding settes til read
+                chat.add(new Conversation(sendr, recvr, message, sent));
 
-				setMessageAsRead(user_id_sender, user_id_receiver);
-			}
+                if (myID != user_id_sender) // If im not the sender..
+                    setMessageAsRead(user_id_sender, user_id_receiver);
+            }
 		} catch (JSONException e) {
 			return null;
 		}
@@ -66,8 +74,7 @@ public class HandleMessages {
 		t.start();
 	}
 
-	public static void sendMessage(final User sender, final User receiver,
-			final String message) {
+	public static void sendMessage(final User sender, final User receiver, final String message) {
 
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -105,7 +112,7 @@ public class HandleMessages {
 				// System.out.println(users.get(obj.getInt("user_id_sender")).getFirstName()+"");
 				String message = obj.getString("message");
 				String sent = obj.getString("sent");
-				inbox.add(new Inbox(sender, message, sent));
+                inbox.add(new Inbox(sender, message, sent));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

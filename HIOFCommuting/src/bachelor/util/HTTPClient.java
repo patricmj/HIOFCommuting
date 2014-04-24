@@ -1,9 +1,12 @@
 package bachelor.util;
 
+import android.util.Log;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -12,15 +15,17 @@ import com.google.android.gms.internal.fn;
 
 import bachelor.objects.User;
 import bachelor.register.EmailLoginActivity;
+import org.apache.http.params.BasicHttpParams;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HTTPClient {
 
     public static boolean sent = false;
+    public static boolean emailUserInserted = false;
+    public static boolean facebookUserInserted = false;
 
     public static void post(String operation, int sender, int receiver, String message){
     	final String URL = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=";
@@ -109,6 +114,7 @@ public class HTTPClient {
 
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
             	sent = true;
+                emailUserInserted = true;
             }
             System.out.println("sendt " + sent);
 
@@ -157,6 +163,7 @@ public class HTTPClient {
 
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
             	sent = true;
+                facebookUserInserted = true;
             }
             System.out.println("sendt " + sent);
 
@@ -165,5 +172,45 @@ public class HTTPClient {
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static String getJSONString(String URL) {
+        String result = null;
+        InputStream stream = null;
+
+        DefaultHttpClient client = new DefaultHttpClient(new BasicHttpParams());
+
+        HttpGet get = new HttpGet(URL);
+        get.setHeader("Content-Type", "application/json");
+
+        try {
+            HttpResponse response = client.execute(get);
+            HttpEntity entity = response.getEntity();
+            stream = entity.getContent();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8);
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line + "\n");
+            }
+
+            result = builder.toString();
+            System.out.println("result = " + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
 }

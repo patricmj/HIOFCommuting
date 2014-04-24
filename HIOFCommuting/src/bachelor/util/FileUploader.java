@@ -1,6 +1,8 @@
 package bachelor.util;
 
+import android.util.Log;
 import android.widget.Toast;
+import bachelor.register.FinishProfileFragment;
 import bachelor.register.RegisterFragment;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -10,10 +12,10 @@ import java.net.URL;
 
 public class FileUploader {
 
-    private static final String upLoadServerUri = "http://frigg.hiof.no/bo14-g23/upload/UploadToServer.php";
-    private static int serverResponseCode = 0;
+    private static final String upLoadServerUri = "http://www.frostbittmedia.com/upload/UploadToServer.php";
+    public static int serverResponseCode = 0;
 
-    public static void upload(final RegisterFragment fragment, String sourceFileUri) {
+    public static void upload(String sourceFileUri) {
 
         String fileName = sourceFileUri;
         HttpURLConnection conn = null;
@@ -63,8 +65,8 @@ public class FileUploader {
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
             serverResponseCode = conn.getResponseCode();
-            if (serverResponseCode == 200) {
-                // Handle response if needed
+            if (serverResponseCode != 200) {
+                Log.e(String.valueOf(serverResponseCode), "Response code");
             }
 
             fileInputStream.close();
