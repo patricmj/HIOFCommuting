@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import bachelor.util.UserInputValidator;
+import bachelor.util.Util;
+
 import com.bachelor.hiofcommuting.R;
 
 import java.io.*;
@@ -105,9 +107,10 @@ public class RegisterFragment extends Fragment implements OnClickListener {
             imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
             bitmap = BitmapFactory.decodeFile(imagePath);
-            bitmap = createDynamicScaledBitmap(bitmap);
+            Bitmap scaledBitmap = createDynamicScaledBitmap(bitmap);
+            Bitmap rotatedBitmap = Util.rotateBitmap(imagePath, scaledBitmap);
 
-            cameraLogo.setImageBitmap(createDynamicScaledBitmap(bitmap));
+            cameraLogo.setImageBitmap(createDynamicScaledBitmap(rotatedBitmap));
 
             logoIsChanged = true;
 
