@@ -50,9 +50,10 @@ public class ChatFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
                 EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
+                
 				String message = edittext.getText().toString();
 				new SendMessage().execute(message);
-
+				edittext.setText("");
                 Handler sleepHandler = new Handler();  // Sleeping thread so db can update, a callback should be implemented
                 sleepHandler.postDelayed(new Runnable() {
                     @Override
@@ -60,7 +61,9 @@ public class ChatFragment extends Fragment{
                         new GetMessages().execute();
                     }
                 }, 250);
+                
 			}
+			
 		});
 	}
 	

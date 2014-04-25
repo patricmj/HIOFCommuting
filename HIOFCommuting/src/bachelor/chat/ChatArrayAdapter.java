@@ -32,6 +32,7 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 		this.messages = messages;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		if (row == null) {
@@ -47,11 +48,11 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 		
 		wrapper = (LinearLayout) row.findViewById(R.id.container_chat_message);
 		if(messages.get(position).getReceiver().getUserid() == userLoggedIn.getUserid()){
-			message.setBackgroundResource(R.drawable.bubble_green);
-			wrapper.setGravity(Gravity.RIGHT);
-		}else if(messages.get(position).getSender().getUserid() == userToChatWith.getUserid()){
 			message.setBackgroundResource(R.drawable.bubble_yellow);
 			wrapper.setGravity(Gravity.LEFT);
+		}else{
+			message.setBackgroundResource(R.drawable.bubble_green);
+			wrapper.setGravity(Gravity.RIGHT);
 		}
 		
 		

@@ -20,14 +20,11 @@ public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn, Filter filter) {
-		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=usr";
-		String urlStudy = "http://frigg.hiof.no/bo14-g23/py/study.py?q=study";
+		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=allusrs";
 		JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
 		if (userList.isEmpty() || userList.size() == arrayUser.length()) {
-			JSONArray arrayStudy = new JsonParser().getJsonArray(urlStudy);
 			for (int i = 0; i < arrayUser.length(); i++) {
 				JSONObject objectUser;
-				JSONObject objectStudy;
 				try {
 					//USER OBJECT
 					objectUser = arrayUser.getJSONObject(i);
@@ -43,13 +40,12 @@ public class HandleUsers {
 					boolean car = false;
 					if(iscar==1)car = true;
 					int startingYear = objectUser.getInt("starting_year");
-					//STUDY OBJECT
-					objectStudy = arrayStudy.getJSONObject(study_id);
-					String institution = objectStudy.getString("institution_name");
-					String campus = objectStudy.getString("campus_name");
-					String department = objectStudy.getString("department_name");
-					String study = objectStudy.getString("name_of_study");
 					double distance = distFrom(userLoggedIn.getLat(), userLoggedIn.getLon(),lat, lon);
+					String institution = objectUser.getString("institution_name");
+					String campus = objectUser.getString("campus_name");
+					String department = objectUser.getString("department_name");
+					String study = objectUser.getString("name_of_study");
+					
 			
 					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
