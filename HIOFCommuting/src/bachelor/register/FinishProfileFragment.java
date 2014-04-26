@@ -2,10 +2,8 @@ package bachelor.register;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
-import bachelor.util.UserInputValidator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import bachelor.database.HandleUsers;
 import bachelor.database.JsonParser;
@@ -33,7 +30,7 @@ import bachelor.objects.Department;
 import bachelor.objects.Institution;
 import bachelor.objects.Study;
 import bachelor.objects.User;
-import bachelor.util.HTTPClient;
+import bachelor.util.UserInputValidator;
 
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
@@ -132,8 +129,6 @@ public class FinishProfileFragment extends Fragment {
 		
 		Intent intent = new Intent(getActivity(), bachelor.tab.TabListenerActivity.class);
 		intent.putExtra("CURRENT_USER", u);
-		//if(profilePic != null)
-			//intent.putExtra("PROFILE_PIC", profilePic);
 		if(facebookUser) {
 			Session session;
 			session = ((MainActivity)getActivity()).getFacebookSession();
@@ -146,10 +141,6 @@ public class FinishProfileFragment extends Fragment {
 	public void createUserObj(int studyId, String firstName, String surName, double lat, double lon, double distance, int startingYearInt, boolean car){
 		u = new User(nextAvailableUserId, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYearInt, car);
 	}
-	
-	//	public User(int userid, int studyid, String firstname, String surname, double lat, double lon, double distance,
-	//String institution, String campus, String department,
-	//String study, int startingYear, boolean car) {
 	
 	public void insertUserToDb() {
 		String firstName, surName;
@@ -194,7 +185,6 @@ public class FinishProfileFragment extends Fragment {
 			HandleUsers.insertEmailUserToDb(studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car, registerData);
 		} 
 		createUserObj(studyId, firstName, surName, lat, lon, distance, startingYear, car);
-		//return new User(userid, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car);
 	}
 
 	public void addDataToStartingYearSpinner() {
@@ -315,7 +305,6 @@ public class FinishProfileFragment extends Fragment {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 			}
 		});
 	}
@@ -353,7 +342,6 @@ public class FinishProfileFragment extends Fragment {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 			}
 		});
 	}
@@ -363,7 +351,6 @@ public class FinishProfileFragment extends Fragment {
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO Auto-generated method stub
 			try {
 				JsonParser jp = new JsonParser();
 				JSONArray jsonInstArr, jsonDepartmentArr, jsonStudArr, jsonUserArr;
@@ -389,7 +376,6 @@ public class FinishProfileFragment extends Fragment {
 				
 				return true;
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return false;
 			}
@@ -398,7 +384,6 @@ public class FinishProfileFragment extends Fragment {
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(result){
-				//TODO kj�r f�rste spinner herifra
 				addItemsOnSpinner();
 			}
 		}

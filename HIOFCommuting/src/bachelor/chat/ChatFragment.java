@@ -52,6 +52,7 @@ public class ChatFragment extends Fragment{
                 EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
                 
 				String message = edittext.getText().toString();
+				System.out.println("Melding : " + message);
 				new SendMessage().execute(message);
 				edittext.setText("");
                 Handler sleepHandler = new Handler();  // Sleeping thread so db can update, a callback should be implemented

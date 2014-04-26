@@ -39,7 +39,7 @@ public class CustomListListView extends ArrayAdapter<User>{
 		DecimalFormat df = new DecimalFormat("0.0");
 		String formattedDistance = df.format(userObjects.get(position).getDistance());
 		distanceTxt.setText("Bor "+formattedDistance+"km fra din adresse");
-		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" på "+userObjects.get(position).getInstitution());
+		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" pÃ¥ "+userObjects.get(position).getInstitution());
 	
 		return rowView;
 	}

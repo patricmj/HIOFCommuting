@@ -5,6 +5,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -34,7 +35,7 @@ public class HTTPClient {
             nameValuePairs.add(new BasicNameValuePair("user_id_receiver", String.valueOf(receiver)));
 
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
                 HttpResponse httpResponse = httpClient.execute(httpPost);
 
                 if (httpResponse.getStatusLine().getStatusCode() == 200)
@@ -47,6 +48,7 @@ public class HTTPClient {
             }
         }
         else{
+        	System.out.println("melding" + message);
             final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
             nameValuePairs.add(new BasicNameValuePair("q", operation));
             nameValuePairs.add(new BasicNameValuePair("user_id_sender", String.valueOf(sender)));
@@ -54,7 +56,7 @@ public class HTTPClient {
             nameValuePairs.add(new BasicNameValuePair("message", message));
 
             try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
                 HttpResponse httpResponse = httpClient.execute(httpPost);
 
                 if (httpResponse.getStatusLine().getStatusCode() == 200)
@@ -101,7 +103,7 @@ public class HTTPClient {
         nameValuePairs.add(new BasicNameValuePair("pw", String.valueOf(pw)));
         
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
@@ -146,7 +148,7 @@ public class HTTPClient {
         nameValuePairs.add(new BasicNameValuePair("fbid", String.valueOf(fbId)));
 
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
             HttpResponse httpResponse = httpClient.execute(httpPost);
 
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
