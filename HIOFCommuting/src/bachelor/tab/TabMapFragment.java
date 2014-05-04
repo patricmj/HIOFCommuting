@@ -73,6 +73,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		filter = ((TabListenerActivity)getActivity()).getFilter();
 	    if (fragment == null) {
 	    	FragmentManager fm = getChildFragmentManager();
+	    	//FragmentManager fm = getFragmentManager();
 		    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
 	        fragment = SupportMapFragment.newInstance();
 	        fm.beginTransaction().replace(R.id.map, fragment).commit();
