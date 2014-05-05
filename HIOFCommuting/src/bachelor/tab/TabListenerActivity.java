@@ -59,7 +59,7 @@ public class TabListenerActivity extends FragmentActivity implements
 		}
 
 		System.out.println("User logged in is "
-				+ getUserLoggedIn().getFirstName() + getUserLoggedIn().getUserid());
+				+ getUserLoggedIn().getUserid());
 
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()

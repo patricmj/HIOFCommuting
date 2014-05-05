@@ -27,8 +27,8 @@ public class ChatFragment extends Fragment{
 	private User userLoggedIn;
 	private User userToChatWith;
 	private ChatArrayAdapter adapter;
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class ChatFragment extends Fragment{
                 EditText edittext = (EditText)getView().findViewById(R.id.edittext_chat_input);
                 
 				String message = edittext.getText().toString();
-				System.out.println("Melding : " + message);
 				new SendMessage().execute(message);
 				edittext.setText("");
                 Handler sleepHandler = new Handler();  // Sleeping thread so db can update, a callback should be implemented
@@ -64,19 +63,19 @@ public class ChatFragment extends Fragment{
                 }, 250);
                 
 			}
-			
+
 		});
 	}
-	
+
 	private class GetMessages extends AsyncTask<Void, Void, List<Conversation>> {
-		
+
 		private ProgressDialog Dialog = new ProgressDialog(getActivity());
 		@Override
 	    protected void onPreExecute(){
 			Dialog.setMessage("Laster..");
 	       Dialog.show();
 	    }
-		
+
 		@Override
 		protected List<Conversation> doInBackground(Void... params) {
 			List<Conversation> chat;
@@ -95,21 +94,21 @@ public class ChatFragment extends Fragment{
 			if(result!=null){
 				// Get a ListView from main view
 				chatView = (ListView)getView().findViewById(R.id.listview_chat);
-				
+
 				// Create a list adapter
 				adapter = new ChatArrayAdapter(getActivity(), userLoggedIn, userToChatWith, result);
-				
+
 				// Set list adapter for the ListView
 				chatView.setAdapter(adapter);
 			}else{
-				System.out.println("har ikke chatta med denne brukeren f√∏r");
+				System.out.println("har ikke chatta med denne brukeren før");
 			}
 			Dialog.dismiss();
 		}
 	}
-	
+
 	private class SendMessage extends AsyncTask<String, Void, Boolean> {
-		
+
 		@Override
 		protected Boolean doInBackground(String... params) {
 			String message = params[0].toString();
@@ -125,7 +124,7 @@ public class ChatFragment extends Fragment{
 				return false;
 			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(result){

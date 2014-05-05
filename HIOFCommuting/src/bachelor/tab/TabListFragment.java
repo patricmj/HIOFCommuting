@@ -72,7 +72,7 @@ public class TabListFragment extends Fragment {
 		@Override
 	    protected void onPreExecute(){
 			Dialog.setMessage("Laster brukere..");
-			Dialog.show();
+	       Dialog.show();
 	    }
 		
 		@Override

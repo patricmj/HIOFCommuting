@@ -39,13 +39,13 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.chat_customrow, parent, false);
 		}
-		
+
 		TextView message = (TextView) row.findViewById(R.id.textview_chat_message);
 		//TextView date  = (TextView) row.findViewById(R.id.textview_chat_sent);
-		
+
 		message.setText(messages.get(position).getMessage());
 		//date.setText(messages.get(position).getSent());
-		
+
 		wrapper = (LinearLayout) row.findViewById(R.id.container_chat_message);
 		if(messages.get(position).getReceiver().getUserid() == userLoggedIn.getUserid()){
 			message.setBackgroundResource(R.drawable.bubble_yellow);
@@ -54,8 +54,8 @@ public class ChatArrayAdapter extends ArrayAdapter<Conversation> {
 			message.setBackgroundResource(R.drawable.bubble_green);
 			wrapper.setGravity(Gravity.RIGHT);
 		}
-		
-		
+
+
 		return row;
 	}
 }

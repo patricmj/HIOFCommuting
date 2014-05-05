@@ -58,4 +58,32 @@ public class Util {
 		}
 		return rotatedBitmap;
 	}	
+	
+	public static void makeMeRequest(final Session session) {
+		// Make an API call to get user data and define a
+		// new callback to handle the response.
+		Request request = Request.newMeRequest(session,
+				new Request.GraphUserCallback() {
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						// If the response is successful
+						if (session == Session.getActiveSession()) {
+							if (user != null) {
+								// Set the id for the ProfilePictureView
+								// view that in turn displays the profile
+								// picture.
+								//profilePictureView.setProfileId(user.getId());
+							}
+						}
+						if (response.getError() != null) {
+							// Handle errors, will do so later.
+						}
+					}
+				});
+		request.executeAsync();
+	}
+	
+	public static void uploadImageToServer() {
+		//http://sunil-android.blogspot.no/2013/03/image-upload-on-server.html
+	}
 }

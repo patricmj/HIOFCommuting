@@ -66,6 +66,7 @@ public class FileUploader {
 
             serverResponseCode = conn.getResponseCode();
             if (serverResponseCode != 200) {
+            	System.out.println("Response er ikke 200");
                 Log.e(String.valueOf(serverResponseCode), "Response code");
             }
 

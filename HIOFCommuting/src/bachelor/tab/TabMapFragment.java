@@ -73,7 +73,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 		filter = ((TabListenerActivity)getActivity()).getFilter();
 	    if (fragment == null) {
 	    	FragmentManager fm = getChildFragmentManager();
-	    	//FragmentManager fm = getFragmentManager();
 		    fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
 	        fragment = SupportMapFragment.newInstance();
 	        fm.beginTransaction().replace(R.id.map, fragment).commit();
@@ -122,12 +121,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
 					TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
 					TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
-
+					
+					//Bitmap pp = ((TabListenerActivity)getActivity()).getProfilePic();
+					//profilePic.setImageBitmap(pp);
 					profilePic.setImageResource(R.drawable.profile_picture_test);
 					nameTxt.setText(firstName);
 					
 					distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
-					departmentTxt.setText("Studerer på "+department+" ved "+institution);
+					departmentTxt.setText("Studerer p� "+department+" ved "+institution);
 					return view;
 				}
 				return null;

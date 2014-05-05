@@ -45,13 +45,13 @@ public class HandleUsers {
 					String campus = objectUser.getString("campus_name");
 					String department = objectUser.getString("department_name");
 					String study = objectUser.getString("name_of_study");
-					
-			
+
+
 					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
 						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
 					}
-					
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -67,24 +67,24 @@ public class HandleUsers {
 		} else {
 			System.out.println("ArrayList already contain all users");
 		}
-		
+
 		if(filter == null){
 			System.out.println("return userlist");
 			return userList;
 		}else{
 			System.out.println("return FILTERED userlist");
-			
+
 			return (filterList(userList, userLoggedIn, filter));
 		}
 	}
 
 	public static List<User> filterList(List<User> list, User userLoggedIn, Filter f){
 		List<User> userListFiltered = new ArrayList<User>();
-		
+
 		for(int i=0; i<list.size(); i++){
 			User usr = list.get(i);
 			boolean shouldWeAddUser = true;
-			
+
 			//If user only want people from same institution
 			if(f.isInstitution()){
 				if(!userLoggedIn.getInstitution().equals(usr.getInstitution()))
@@ -120,13 +120,13 @@ public class HandleUsers {
 				if(usr.getDistance()>f.getDistance())
 					shouldWeAddUser = false;
 			}
-				
+
 			//If user is within whats filtered, add to list
 			if(shouldWeAddUser){
 				userListFiltered.add(usr);
 			}
 		}
-		
+
 		return userListFiltered;
 	}
 
@@ -165,7 +165,7 @@ public class HandleUsers {
 
 		return (double) (dist * meterConversion) / 1000;
 	}
-	
+
 	public static void insertEmailUserToDb(final int studyId,
 			final String firstName, final String surName, final double lat, final double lon,
 			final double distance, final String institution, final String campus,
@@ -180,7 +180,7 @@ public class HandleUsers {
 
         t.start();
     }
-	
+
 	public static void insertFacebookUserToDb(final int studyId,
 			final String firstName, final String surName, final double lat, final double lon,
 			final double distance, final String institution, final String campus,

@@ -107,10 +107,10 @@ public class RegisterFragment extends Fragment implements OnClickListener {
             imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
             bitmap = BitmapFactory.decodeFile(imagePath);
-            Bitmap scaledBitmap = createDynamicScaledBitmap(bitmap);
-            Bitmap rotatedBitmap = Util.rotateBitmap(imagePath, scaledBitmap);
+            bitmap = createDynamicScaledBitmap(bitmap);
+            bitmap = Util.rotateBitmap(imagePath, bitmap);
 
-            cameraLogo.setImageBitmap(createDynamicScaledBitmap(rotatedBitmap));
+            cameraLogo.setImageBitmap(Util.rotateBitmap(imagePath, bitmap));
 
             logoIsChanged = true;
 
