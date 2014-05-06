@@ -1,24 +1,16 @@
 package bachelor.tab;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,7 +19,6 @@ import android.widget.Toast;
 import bachelor.database.HandleUsers;
 import bachelor.objects.Filter;
 import bachelor.objects.User;
-import bachelor.register.EmailLoginActivity;
 
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
@@ -35,7 +26,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -48,7 +38,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 	private GoogleMap googleMap;
 	private SupportMapFragment fragment;
 	private HashMap <String, User> hashMap = new HashMap <String, User>();
-	private MenuItem settings;
 	private LayoutInflater inflater;
 	private User userLoggedIn;
 	private List<User> userList;

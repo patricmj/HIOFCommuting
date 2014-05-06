@@ -23,6 +23,8 @@ public class HandleUsers {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=allusrs";
 		JSONArray arrayUser = new JsonParser().getJsonArray(urlUser);
 		if (userList.isEmpty() || userList.size() == arrayUser.length()) {
+			if(userList.isEmpty())
+				userList.clear();
 			for (int i = 0; i < arrayUser.length(); i++) {
 				JSONObject objectUser;
 				try {
