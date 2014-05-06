@@ -61,6 +61,34 @@ public class HandleMessages {
 
 		return chat;
 	}
+	
+	public static boolean newMessage(User userLoggedIn) {
+
+		String url = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=newMessages&user_id_receiver="
+				+ userLoggedIn.getUserid();
+
+		//try {
+			JSONArray newMessages = new JsonParser().getJsonArray(url);
+			if(newMessages == null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+			
+			/*
+			for (int i = 0; i < newMessages.length(); i++) {
+				JSONObject obj;
+				obj = newMessages.getJSONObject(i);
+				int user_id_sender = obj.getInt("user_id_sender");
+				int user_id_receiver = obj.getInt("user_id_receiver");
+                String message = obj.getString("message");
+                String sent = obj.getString("sent");
+            }
+		} catch (JSONException e) {
+			return null;
+		}*/
+	}
 
 	private static void setMessageAsRead(final int sender, final int receiver) {
 

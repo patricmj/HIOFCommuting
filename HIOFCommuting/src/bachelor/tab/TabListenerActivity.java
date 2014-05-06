@@ -23,6 +23,7 @@ import bachelor.database.HandleUsers;
 import bachelor.objects.Filter;
 import bachelor.objects.User;
 
+import com.bachelor.hiofcommuting.ChatService;
 import com.bachelor.hiofcommuting.MainActivity;
 import com.bachelor.hiofcommuting.R;
 import com.facebook.Session;
@@ -57,7 +58,14 @@ public class TabListenerActivity extends FragmentActivity implements
 		} catch (NullPointerException e) {
 			System.out.println("Logget in with email");
 		}
-
+		
+		String not = getIntent().getStringExtra("SERVICE");
+		System.out.println("Service : " + not);
+		System.out.println("Starter service");
+		Intent chatServiceIntent = new Intent(this, ChatService.class);
+		chatServiceIntent.putExtra("CURRENT_USER", userLoggedIn);
+		startService(chatServiceIntent);
+		//String notification = 
 		System.out.println("User logged in is "
 				+ getUserLoggedIn().getUserid());
 
