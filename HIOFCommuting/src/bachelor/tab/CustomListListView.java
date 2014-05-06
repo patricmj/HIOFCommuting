@@ -5,8 +5,10 @@ import java.util.List;
 
 import com.bachelor.hiofcommuting.R;
 
+import bachelor.database.HandleUsers;
 import bachelor.objects.User;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,16 @@ public class CustomListListView extends ArrayAdapter<User>{
 		TextView distanceTxt = (TextView) rowView.findViewById(R.id.textView_tabList_distance);
 		TextView departmentTxt = (TextView) rowView.findViewById(R.id.textView_tabList_department);
 		
-		profilePic.setImageResource(R.drawable.profile_picture_test);
+		//String urlExtension = userObjects.get(position).getFirstName() + userObjects.get(position).getLat() + userObjects.get(position).getLon();
+		String urlExtension = userObjects.get(position).getPhotoUrl();
+		System.out.println("Extension : " + urlExtension);
+		Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
+		if(profilePicture != null)
+			profilePic.setImageBitmap(profilePicture);
+		else {
+			profilePic.setImageResource(R.drawable.profile_picture_test);
+		}
+		
 		nameTxt.setText(userObjects.get(position).getFirstName());
 		DecimalFormat df = new DecimalFormat("0.0");
 		String formattedDistance = df.format(userObjects.get(position).getDistance());

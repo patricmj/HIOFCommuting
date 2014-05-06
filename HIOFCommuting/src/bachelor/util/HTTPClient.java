@@ -1,7 +1,12 @@
 package bachelor.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,147 +18,243 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 public class HTTPClient {
 
-    public static boolean sent = false;
+	public static boolean sent = false;
 
-    public static void post(String operation, int sender, int receiver, String message){
-    	final String URL = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=";
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(URL);
+	public static void post(String operation, int sender, int receiver,
+			String message) {
+		final String URL = "http://frigg.hiof.no/bo14-g23/py/hcserv.py?q=";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(URL);
 
-        if (operation.equals("read")){
-            final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-            nameValuePairs.add(new BasicNameValuePair("q", operation));
-            nameValuePairs.add(new BasicNameValuePair("user_id_sender", String.valueOf(sender)));
-            nameValuePairs.add(new BasicNameValuePair("user_id_receiver", String.valueOf(receiver)));
+		if (operation.equals("read")) {
+			final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+					3);
+			nameValuePairs.add(new BasicNameValuePair("q", operation));
+			nameValuePairs.add(new BasicNameValuePair("user_id_sender", String
+					.valueOf(sender)));
+			nameValuePairs.add(new BasicNameValuePair("user_id_receiver",
+					String.valueOf(receiver)));
 
-            try {
-            	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
+			try {
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse httpResponse = httpClient.execute(httpPost);
 
-                if (httpResponse.getStatusLine().getStatusCode() == 200)
-                    sent = true;
+				if (httpResponse.getStatusLine().getStatusCode() == 200)
+					sent = true;
 
-            }catch (UnsupportedEncodingException e){
-                e.printStackTrace();
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-        	System.out.println("melding" + message);
-            final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-            nameValuePairs.add(new BasicNameValuePair("q", operation));
-            nameValuePairs.add(new BasicNameValuePair("user_id_sender", String.valueOf(sender)));
-            nameValuePairs.add(new BasicNameValuePair("user_id_receiver", String.valueOf(receiver)));
-            nameValuePairs.add(new BasicNameValuePair("message", message));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("melding" + message);
+			final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+					4);
+			nameValuePairs.add(new BasicNameValuePair("q", operation));
+			nameValuePairs.add(new BasicNameValuePair("user_id_sender", String
+					.valueOf(sender)));
+			nameValuePairs.add(new BasicNameValuePair("user_id_receiver",
+					String.valueOf(receiver)));
+			nameValuePairs.add(new BasicNameValuePair("message", message));
 
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-                HttpResponse httpResponse = httpClient.execute(httpPost);
+			try {
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+						"utf-8"));
+				HttpResponse httpResponse = httpClient.execute(httpPost);
 
-                if (httpResponse.getStatusLine().getStatusCode() == 200)
-                    sent = true;
+				if (httpResponse.getStatusLine().getStatusCode() == 200)
+					sent = true;
 
-            }catch (UnsupportedEncodingException e){
-                e.printStackTrace();
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    public static void insertEmailUser(final int studyId,
-			final String firstName, final String surName, final double lat, final double lon,
-			final double distance, final String institution, final String campus,
-			final String department, final String study, final int startingYear, final boolean car, ArrayList<String> registerData) {
-    	final String URL = "http://frigg.hiof.no/bo14-g23/py/regusr.py?q=";
-    	HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(URL);
-                
-        String q = "emailUser";
-    	String email = registerData.get(2);
-    	//TODO : Hash password
-    	String pw = registerData.get(3);
-    	String carString;
-        if(car){
-        	carString = "true";
-        }
-        else {
-        	carString = "false";
-        }
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
-        nameValuePairs.add(new BasicNameValuePair("q", q));
-        nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(studyId)));
-        nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(firstName)));
-        nameValuePairs.add(new BasicNameValuePair("sname", String.valueOf(surName)));
-        nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
-        nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
-        nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(carString)));
-        nameValuePairs.add(new BasicNameValuePair("starting_year", String.valueOf(startingYear)));
-        nameValuePairs.add(new BasicNameValuePair("email", String.valueOf(email)));
-        nameValuePairs.add(new BasicNameValuePair("pw", String.valueOf(pw)));
-        
-        try {
-        	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
+	public static void insertEmailUser(final int studyId,
+			final String firstName, final String surName, final double lat,
+			final double lon, final double distance, final String institution,
+			final String campus, final String department, final String study,
+			final int startingYear, final boolean car,
+			ArrayList<String> registerData) {
+		final String URL = "http://frigg.hiof.no/bo14-g23/py/regusr.py?q=";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(URL);
 
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-            	sent = true;
-            }
-            System.out.println("sendt " + sent);
+		String q = "emailUser";
+		String email = registerData.get(2);
+		// TODO : Hash password
+		String pw = registerData.get(3);
+		String carString;
+		if (car) {
+			carString = "true";
+		} else {
+			carString = "false";
+		}
 
-        }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public static void insertFacebookUser(final int studyId,
-			final String firstName, final String surName, final double lat, final double lon,
-			final double distance, final String institution, final String campus,
-			final String department, final String study, final int startingYear, final boolean car,
-			final String fbId) {
-    	final String URL = "http://frigg.hiof.no/bo14-g23/py/regfbusr.py?q=";
-    	HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(URL);
-                
-        String q = "facebookUser";
-        String carString;
-        if(car){
-        	carString = "true";
-        }
-        else {
-        	carString = "false";
-        }
-        System.out.println("parameters : q=" + q + "&sid=" + studyId + "&fname=" + firstName + "&sname=" + surName + "&lon=" + lon + "&lat=" + lat + "&car=" + car + "&starting_year=" + startingYear + "&fbid=" + fbId);
-        final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(9);
-        nameValuePairs.add(new BasicNameValuePair("q", q));
-        nameValuePairs.add(new BasicNameValuePair("sid", String.valueOf(studyId)));
-        nameValuePairs.add(new BasicNameValuePair("fname", String.valueOf(firstName)));
-        nameValuePairs.add(new BasicNameValuePair("sname", String.valueOf(surName)));
-        nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
-        nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
-        nameValuePairs.add(new BasicNameValuePair("car", String.valueOf(carString)));
-        nameValuePairs.add(new BasicNameValuePair("starting_year", String.valueOf(startingYear)));
-        nameValuePairs.add(new BasicNameValuePair("fbid", String.valueOf(fbId)));
+		final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+				10);
+		nameValuePairs.add(new BasicNameValuePair("q", q));
+		nameValuePairs.add(new BasicNameValuePair("sid", String
+				.valueOf(studyId)));
+		nameValuePairs.add(new BasicNameValuePair("fname", String
+				.valueOf(firstName)));
+		nameValuePairs.add(new BasicNameValuePair("sname", String
+				.valueOf(surName)));
+		nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
+		nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
+		nameValuePairs.add(new BasicNameValuePair("car", String
+				.valueOf(carString)));
+		nameValuePairs.add(new BasicNameValuePair("starting_year", String
+				.valueOf(startingYear)));
+		nameValuePairs.add(new BasicNameValuePair("email", String
+				.valueOf(email)));
+		nameValuePairs.add(new BasicNameValuePair("pw", String.valueOf(pw)));
 
-        try {
-        	httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
-            HttpResponse httpResponse = httpClient.execute(httpPost);
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+			HttpResponse httpResponse = httpClient.execute(httpPost);
 
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-            	sent = true;
-            }
-            System.out.println("sendt " + sent);
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				sent = true;
+			}
+			System.out.println("sendt " + sent);
 
-        }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void insertFacebookUser(final int studyId,
+			final String firstName, final String surName, final double lat,
+			final double lon, final double distance, final String institution,
+			final String campus, final String department, final String study,
+			final int startingYear, final boolean car, final String fbId) {
+		final String URL = "http://frigg.hiof.no/bo14-g23/py/regfbusr.py?q=";
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(URL);
+
+		String q = "facebookUser";
+		String carString;
+		if (car) {
+			carString = "true";
+		} else {
+			carString = "false";
+		}
+		System.out.println("parameters : q=" + q + "&sid=" + studyId
+				+ "&fname=" + firstName + "&sname=" + surName + "&lon=" + lon
+				+ "&lat=" + lat + "&car=" + car + "&starting_year="
+				+ startingYear + "&fbid=" + fbId);
+		final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+				9);
+		nameValuePairs.add(new BasicNameValuePair("q", q));
+		nameValuePairs.add(new BasicNameValuePair("sid", String
+				.valueOf(studyId)));
+		nameValuePairs.add(new BasicNameValuePair("fname", String
+				.valueOf(firstName)));
+		nameValuePairs.add(new BasicNameValuePair("sname", String
+				.valueOf(surName)));
+		nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lon)));
+		nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lat)));
+		nameValuePairs.add(new BasicNameValuePair("car", String
+				.valueOf(carString)));
+		nameValuePairs.add(new BasicNameValuePair("starting_year", String
+				.valueOf(startingYear)));
+		nameValuePairs
+				.add(new BasicNameValuePair("fbid", String.valueOf(fbId)));
+
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				sent = true;
+			}
+			System.out.println("sendt " + sent);
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Bitmap getProfilePicturesFromServer(String urlExtension) {
+		//String URLString = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";
+		String urlString = "http://www.frostbittmedia.com/upload/files/" + urlExtension + ".jpg";
+		System.out.println("Url " + urlString);
+		
+		InputStream in = null;
+		int response = -1;
+		URLConnection urLConn = null;
+		Bitmap bitmap = null;
+		URL url;
+		try {
+			url = new URL(urlString);
+			urLConn = url.openConnection();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (!(urLConn instanceof HttpURLConnection))
+			return null;
+		try {
+			HttpURLConnection httpConn = (HttpURLConnection) urLConn;
+			httpConn.setAllowUserInteraction(false);
+			httpConn.setInstanceFollowRedirects(true);
+			httpConn.setRequestMethod("GET");
+			httpConn.connect();
+
+			response = httpConn.getResponseCode();
+			if (response == HttpURLConnection.HTTP_OK) {
+				in = httpConn.getInputStream();
+			}
+			bitmap = BitmapFactory.decodeStream(in);
+			in.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+
+		return bitmap;
+	}
+	
+	/*public static Bitmap getProfilePicturesFromServer() {
+		String URL = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";
+		
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(URL);
+		
+		final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+				3);
+		nameValuePairs.add(new BasicNameValuePair("q", "p"));
+		nameValuePairs.add(new BasicNameValuePair("lon", "59.470109711"));
+		nameValuePairs.add(new BasicNameValuePair("lat", "6660454"));
+		
+		try {
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+					"utf-8"));
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+
+			if (httpResponse.getStatusLine().getStatusCode() == 200)
+				sent = true;
+
+		
+		return null;
+	}*/
 }

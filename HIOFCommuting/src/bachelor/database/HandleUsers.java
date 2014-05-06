@@ -1,5 +1,6 @@
 package bachelor.database;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import bachelor.objects.Filter;
@@ -18,6 +20,7 @@ import bachelor.util.HTTPClient;
 
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
+	static Bitmap b;
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn, Filter filter) {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=allusrs";
@@ -47,11 +50,11 @@ public class HandleUsers {
 					String campus = objectUser.getString("campus_name");
 					String department = objectUser.getString("department_name");
 					String study = objectUser.getString("name_of_study");
-
+					String photoUrl = firstname + lat + lon;
 
 					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
-						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car));
+						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car, photoUrl));
 					}
 
 				} catch (JSONException e) {
@@ -138,7 +141,8 @@ public class HandleUsers {
 		List<Address> addressList;
 
 		try {
-			addressList = coder.getFromLocationName(address, 1);
+			//addressList = coder.getFromLocationName(address, 1);
+			addressList = coder.getFromLocationName(address + " " + postalCode, 1);
 			if (address == null) {
 				return null;
 			}
@@ -198,5 +202,25 @@ public class HandleUsers {
 
         t.start();
     }
+	
+	public static Bitmap getProfilePicture(final String urlExtension) {
+
+		Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	b = HTTPClient.getProfilePicturesFromServer(urlExtension);
+            }
+        });
+
+        t.start();
+        
+        if (b != null) {
+        	return b;
+        }
+        else {
+        	return null;
+        }
+
+	}
 
 }

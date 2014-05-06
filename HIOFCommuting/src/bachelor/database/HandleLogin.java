@@ -60,6 +60,7 @@ public class HandleLogin {
 			String[] latlon = point.split(" ");
 			lat = Double.parseDouble(latlon[0]);
 			lon = Double.parseDouble(latlon[1]);
+			String photoUrl = firstname + lat + lon;
 			System.out.println("lat2 : " + lat);
 			System.out.println("lon2 : " + lon);
 			distance = 0.0;
@@ -70,7 +71,7 @@ public class HandleLogin {
 			else {
 				car = false;
 			}
-			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car);
+			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl);
 			return userLoggedIn;
 		} catch(JSONException e){
 			e.printStackTrace();
@@ -99,6 +100,7 @@ public class HandleLogin {
 			String[] latlon = point.split(" ");
 			lat = Double.parseDouble(latlon[0]);
 			lon = Double.parseDouble(latlon[1]);
+			String photoUrl = firstname + lat + lon;
 			System.out.println("lat2 : " + lat);
 			System.out.println("lon2 : " + lon);
 			distance = 0.0;
@@ -109,7 +111,7 @@ public class HandleLogin {
 			else {
 				car = false;
 			}
-			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car);
+			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl);
 			return userLoggedIn;
 		}catch(Exception e){
 			return null;

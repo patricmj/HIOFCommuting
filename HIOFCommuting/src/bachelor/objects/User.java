@@ -16,10 +16,11 @@ public class User implements Serializable{
 	private String study;
 	private int startingYear;
 	private boolean car;
+	private String photoUrl;
 	
 	public User(int userid, int studyid, String firstname, String surname, double lat, double lon, double distance,
 			String institution, String campus, String department,
-			String study, int startingYear, boolean car) {
+			String study, int startingYear, boolean car, String photoUrl) {
 		this.userId = userid;
 		this.studyId = studyid;
 		this.firstname = firstname;
@@ -33,8 +34,17 @@ public class User implements Serializable{
 		this.study = study;
 		this.startingYear = startingYear;
 		this.car = car;
+		this.photoUrl = photoUrl;
 	}
 	
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
 	public int getStudyid() {
 		return studyId;
 	}

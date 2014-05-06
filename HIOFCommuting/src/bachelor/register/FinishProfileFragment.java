@@ -152,17 +152,21 @@ public class FinishProfileFragment extends Fragment {
     
     private void insertUserToDb() {
     	String firstName, surName;
-        if (!facebookUser) {
-            firstName = registerData.get(0);
-            surName = registerData.get(1);
-        } else {
-            firstName = fbFirstName;
-            surName = fbSurName;
-        }
+        String photoUrl;
         int postalCode = Integer.parseInt(finishProfileData.get(1));
         double[] latlon = HandleUsers.getLatLon(getActivity().getApplicationContext(), finishProfileData.get(0), postalCode);
         double lat = latlon[0];
         double lon = latlon[1];
+        if (!facebookUser) {
+            firstName = registerData.get(0);
+            surName = registerData.get(1);
+            photoUrl = firstName + lat + lon;
+        } else {
+            firstName = fbFirstName;
+            surName = fbSurName;
+            //TODO: FIX photoUrl
+            photoUrl = "";
+        }
         System.out.println("lat1 : " + lat);
         System.out.println("lon1 : " + lon);
         double distance = 0.0;
@@ -191,11 +195,11 @@ public class FinishProfileFragment extends Fragment {
         else {
         	HandleUsers.insertEmailUserToDb(studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYear, car, registerData);
         } 
-        createUserObj(studyId, firstName, surName, lat, lon, distance, startingYear, car);
+        createUserObj(studyId, firstName, surName, lat, lon, distance, startingYear, car, photoUrl);
     }
 
-    public void createUserObj(int studyId, String firstName, String surName, double lat, double lon, double distance, int startingYearInt, boolean car){
-    	u = new User(nextAvailableUserId, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYearInt, car);
+    public void createUserObj(int studyId, String firstName, String surName, double lat, double lon, double distance, int startingYearInt, boolean car, String photoUrl){
+    	u = new User(nextAvailableUserId, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYearInt, car, photoUrl);
     }
 
     public void addDataToStartingYearSpinner() {

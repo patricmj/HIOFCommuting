@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -111,8 +112,15 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
 					TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
 					
-					//Bitmap pp = ((TabListenerActivity)getActivity()).getProfilePic();
-					//profilePic.setImageBitmap(pp);
+					String urlExtension = hashMap.get(arg0.getId()).getPhotoUrl();
+					System.out.println("Extension : " + urlExtension);
+					Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
+					if(profilePicture != null)
+						profilePic.setImageBitmap(profilePicture);
+					else {
+						profilePic.setImageResource(R.drawable.profile_picture_test);
+					}
+					
 					profilePic.setImageResource(R.drawable.profile_picture_test);
 					nameTxt.setText(firstName);
 					
