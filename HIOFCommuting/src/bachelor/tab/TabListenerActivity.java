@@ -241,6 +241,7 @@ public class TabListenerActivity extends FragmentActivity implements
 			}
 		}
 		userLoggedIn = null;
+		setUserList(null); //reset users in map/list because distance is related to the users logged in
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
