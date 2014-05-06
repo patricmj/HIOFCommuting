@@ -71,7 +71,8 @@ public class HandleLogin {
 			else {
 				car = false;
 			}
-			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl);
+			String fbId = "";
+			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl, fbId);
 			return userLoggedIn;
 		} catch(JSONException e){
 			e.printStackTrace();
@@ -111,7 +112,8 @@ public class HandleLogin {
 			else {
 				car = false;
 			}
-			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl);
+			String fbId = "";
+			userLoggedIn = new User(userId, studyId, firstname, surname, lat, lon, distance, institution, campus, department, study, startingYear, car, photoUrl, fbId);
 			return userLoggedIn;
 		}catch(Exception e){
 			return null;

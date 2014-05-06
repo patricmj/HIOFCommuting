@@ -20,7 +20,7 @@ import bachelor.util.HTTPClient;
 
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
-	static Bitmap b;
+	private static Bitmap b, b2;
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn, Filter filter) {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=allusrs";
@@ -51,10 +51,10 @@ public class HandleUsers {
 					String department = objectUser.getString("department_name");
 					String study = objectUser.getString("name_of_study");
 					String photoUrl = firstname + lat + lon;
-
+					String fbId = "";
 					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
-						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car, photoUrl));
+						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car, photoUrl, fbId));
 					}
 
 				} catch (JSONException e) {
@@ -208,7 +208,27 @@ public class HandleUsers {
 		Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	b = HTTPClient.getProfilePicturesFromServer(urlExtension);
+            	b = HTTPClient.getProfilePicturesFromServer("email" ,urlExtension);
+            }
+        });
+
+        t.start();
+        
+        if (b != null) {
+        	return b;
+        }
+        else {
+        	return null;
+        }
+
+	}
+	
+	public static Bitmap getProfilePicFromFb(final String urlExtension) {
+		Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+            	b2 = HTTPClient.getProfilePicturesFromServer("facebook" ,urlExtension);
+            	//b2 = HTTPClient.getUserPic(urlExtension);
             }
         });
 

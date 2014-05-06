@@ -4,6 +4,12 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import com.bachelor.hiofcommuting.R;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
 
 import bachelor.database.HandleUsers;
 import bachelor.objects.User;
@@ -19,6 +25,8 @@ import android.widget.TextView;
 public class CustomListListView extends ArrayAdapter<User>{
 	private final Context context;
 	private final List<User> userObjects;
+	Session session = null;
+	private String fbId = "";
 
 	public CustomListListView(Context context, List<User> userObjects) {
 		super(context, R.layout.tab_list_customrow, userObjects);
@@ -43,6 +51,12 @@ public class CustomListListView extends ArrayAdapter<User>{
 		if(profilePicture != null)
 			profilePic.setImageBitmap(profilePicture);
 		else {
+			//urlExtension = userObjects.get(position).getFbId();
+			urlExtension = "730075401";
+			profilePicture = HandleUsers.getProfilePicFromFb(urlExtension);
+			profilePic.setImageBitmap(profilePicture);
+		}
+		if (profilePicture == null) {
 			profilePic.setImageResource(R.drawable.profile_picture_test);
 		}
 		
@@ -54,5 +68,4 @@ public class CustomListListView extends ArrayAdapter<User>{
 	
 		return rowView;
 	}
-
 }

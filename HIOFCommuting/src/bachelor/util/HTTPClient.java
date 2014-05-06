@@ -190,10 +190,24 @@ public class HTTPClient {
 		}
 	}
 
-	public static Bitmap getProfilePicturesFromServer(String urlExtension) {
+	//fb - https://graph.facebook.com/730075401/picture?type=square
+	public static Bitmap getProfilePicturesFromServer(String source, String urlExtension) {
 		//String URLString = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";
-		String urlString = "http://www.frostbittmedia.com/upload/files/" + urlExtension + ".jpg";
-		System.out.println("Url " + urlString);
+		String urlString = null;
+		if(source.equalsIgnoreCase("email")) {
+			urlString = "http://www.frostbittmedia.com/upload/files/" + urlExtension + ".jpg";
+			System.out.println("Url " + urlString);
+		}
+		else if(source.equalsIgnoreCase("facebook")) {
+			//urlString = "https://graph.facebook.com/" + urlExtension + "/picture?type=square";
+			//System.out.println("facebook Url " + urlString);
+			urlString = "https://graph.facebook.com/730075401/picture?type=square";
+			System.out.println("Url " + urlString);
+		}
+		else if(source.equalsIgnoreCase("callback")) {
+			urlString = urlExtension;
+			System.out.println("Callback :" + urlString);
+		}
 		
 		InputStream in = null;
 		int response = -1;
@@ -211,28 +225,42 @@ public class HTTPClient {
 			return null;
 		}
 
-		if (!(urLConn instanceof HttpURLConnection))
+		if (!(urLConn instanceof HttpURLConnection)) {
 			return null;
+		}
 		try {
 			HttpURLConnection httpConn = (HttpURLConnection) urLConn;
 			httpConn.setAllowUserInteraction(false);
-			httpConn.setInstanceFollowRedirects(true);
+			httpConn.setInstanceFollowRedirects(false);
 			httpConn.setRequestMethod("GET");
 			httpConn.connect();
 
 			response = httpConn.getResponseCode();
+			System.out.println("Response : " +response + httpConn.getHeaderField("Location"));
 			if (response == HttpURLConnection.HTTP_OK) {
 				in = httpConn.getInputStream();
+				bitmap = BitmapFactory.decodeStream(in);
+				in.close();
+				return bitmap;
 			}
-			bitmap = BitmapFactory.decodeStream(in);
-			in.close();
+			//If we got redirected from the page
+			else if (response == 302) {
+				String newLocationUrl = httpConn.getHeaderField("Location");
+				URLConnection con = new URL(newLocationUrl).openConnection();
+				HttpURLConnection httpC = (HttpURLConnection) con;
+				httpC.connect();
+				InputStream is = httpC.getInputStream();
+				bitmap = BitmapFactory.decodeStream(is);
+				is.close();
+				return bitmap;
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
 		}
-
-		return bitmap;
+		return null;
 	}
+
 	
 	/*public static Bitmap getProfilePicturesFromServer() {
 		String URL = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";

@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class UserInformationActivity extends Activity {
 	private TextView lv;
-	private User valgtBruker;
+	private User selectedUser;
 	private User userLoggedIn;
 	private ImageView profilePic;
 	
@@ -34,7 +34,7 @@ public class UserInformationActivity extends Activity {
 		userLoggedIn = (User)getIntent().getSerializableExtra("CURRENT_USER");
 		
 		//Mottar valgt user-objekt fra forrige activity
-		valgtBruker = (User)getIntent().getSerializableExtra("SELECTED_USER");
+		selectedUser = (User)getIntent().getSerializableExtra("SELECTED_USER");
 		
 		String urlExtension = userLoggedIn.getPhotoUrl();
 		System.out.println("Extension : " + urlExtension);
@@ -46,29 +46,29 @@ public class UserInformationActivity extends Activity {
 		}
 		
 		//Setter tittel på activity til navnet på user-objekt
-		setTitle(valgtBruker.getFirstName());
+		setTitle(selectedUser.getFirstName());
 		
 		//Setter avstand til brukeren
 		lv = (TextView)findViewById(R.id.textView_distance);
 		DecimalFormat df = new DecimalFormat("0.0");
-		String avstand = df.format(valgtBruker.getDistance());
+		String avstand = df.format(selectedUser.getDistance());
 		lv.setText("Avstand: "+avstand+"km");
 		
 		//Setter avdeling til brukeren
 		lv = (TextView)findViewById(R.id.textView_department);
-		lv.setText("Avdeling: "+valgtBruker.getDepartment());
+		lv.setText("Avdeling: "+selectedUser.getDepartment());
 	
 		//Setter studie til brukeren
 		lv = (TextView)findViewById(R.id.textView_study);
-		lv.setText("Studie: "+valgtBruker.getStudy());
+		lv.setText("Studie: "+selectedUser.getStudy());
 		
 		//Setter kull til brukeren
 		lv = (TextView)findViewById(R.id.textView_startingYear);
-		lv.setText("Kull: "+valgtBruker.getStartingYear());
+		lv.setText("Kull: "+selectedUser.getStartingYear());
 		
 		//Setter om brukeren har bil
 		lv = (TextView)findViewById(R.id.textView_car);
-		if(valgtBruker.hasCar()){
+		if(selectedUser.hasCar()){
 			lv.setText("Bil: Ja");
 		}else{
 			lv.setText("Bil: Nei");
@@ -96,7 +96,7 @@ public class UserInformationActivity extends Activity {
 	
 	public void startChatClick(View view){
 		Intent intent = new Intent(this, ChatActivity.class);
-		intent.putExtra("SELECTED_USER", valgtBruker);
+		intent.putExtra("SELECTED_USER", selectedUser);
 		intent.putExtra("CURRENT_USER", userLoggedIn);
 		startActivity(intent);
 	}

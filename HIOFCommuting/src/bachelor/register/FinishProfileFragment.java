@@ -161,6 +161,7 @@ public class FinishProfileFragment extends Fragment {
             firstName = registerData.get(0);
             surName = registerData.get(1);
             photoUrl = firstName + lat + lon;
+            fbId = "";
         } else {
             firstName = fbFirstName;
             surName = fbSurName;
@@ -199,7 +200,7 @@ public class FinishProfileFragment extends Fragment {
     }
 
     public void createUserObj(int studyId, String firstName, String surName, double lat, double lon, double distance, int startingYearInt, boolean car, String photoUrl){
-    	u = new User(nextAvailableUserId, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYearInt, car, photoUrl);
+    	u = new User(nextAvailableUserId, studyId, firstName, surName, lat, lon, distance, institution, campus, department, study, startingYearInt, car, photoUrl, fbId);
     }
 
     public void addDataToStartingYearSpinner() {
