@@ -27,8 +27,8 @@ public class ChatFragment extends Fragment{
 	private User userLoggedIn;
 	private User userToChatWith;
 	private ChatArrayAdapter adapter;
-
-
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
