@@ -121,11 +121,10 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 						profilePic.setImageResource(R.drawable.profile_picture_test);
 					}
 					
-					profilePic.setImageResource(R.drawable.profile_picture_test);
 					nameTxt.setText(firstName);
 					
 					distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
-					departmentTxt.setText("Studerer pï¿½ "+department+" ved "+institution);
+					departmentTxt.setText("Studerer på "+department+" ved "+institution);
 					return view;
 				}
 				return null;

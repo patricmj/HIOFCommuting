@@ -3,14 +3,17 @@ package com.bachelor.hiofcommuting;
 import java.text.DecimalFormat;
 
 import bachelor.chat.ChatActivity;
+import bachelor.database.HandleUsers;
 import bachelor.objects.User;
 import bachelor.tab.TabListenerActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,16 +22,28 @@ public class UserInformationActivity extends Activity {
 	private TextView lv;
 	private User valgtBruker;
 	private User userLoggedIn;
+	private ImageView profilePic;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_information);
+		
+		profilePic = (ImageView) findViewById(R.id.imageView_profilePicture);
 
 		userLoggedIn = (User)getIntent().getSerializableExtra("CURRENT_USER");
 		
 		//Mottar valgt user-objekt fra forrige activity
 		valgtBruker = (User)getIntent().getSerializableExtra("SELECTED_USER");
+		
+		String urlExtension = userLoggedIn.getPhotoUrl();
+		System.out.println("Extension : " + urlExtension);
+		Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
+		if(profilePicture != null)
+			profilePic.setImageBitmap(profilePicture);
+		else {
+			profilePic.setImageResource(R.drawable.profile_picture_test);
+		}
 		
 		//Setter tittel på activity til navnet på user-objekt
 		setTitle(valgtBruker.getFirstName());
