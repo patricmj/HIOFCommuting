@@ -211,32 +211,20 @@ public class HTTPClient {
 		
 		InputStream in = null;
 		int response = -1;
-		URLConnection urLConn = null;
-		Bitmap bitmap = null;
-		URL url;
-		try {
-			url = new URL(urlString);
-			urLConn = url.openConnection();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 
-		if (!(urLConn instanceof HttpURLConnection)) {
-			return null;
-		}
+		Bitmap bitmap = null;
 		try {
+			URLConnection urLConn = new URL(urlString).openConnection();
 			HttpURLConnection httpConn = (HttpURLConnection) urLConn;
 			httpConn.setAllowUserInteraction(false);
 			httpConn.setInstanceFollowRedirects(false);
 			httpConn.setRequestMethod("GET");
 			httpConn.connect();
-
+			if (!(urLConn instanceof HttpURLConnection)) {
+				return null;
+			}
 			response = httpConn.getResponseCode();
-			System.out.println("Response : " +response + httpConn.getHeaderField("Location"));
+			System.out.println("Response : " +response + httpConn.getResponseCode() + httpConn.getURL() + HttpURLConnection.getFollowRedirects() + httpConn.getHeaderField("Location"));
 			if (response == HttpURLConnection.HTTP_OK) {
 				in = httpConn.getInputStream();
 				bitmap = BitmapFactory.decodeStream(in);
@@ -248,14 +236,21 @@ public class HTTPClient {
 				String newLocationUrl = httpConn.getHeaderField("Location");
 				URLConnection con = new URL(newLocationUrl).openConnection();
 				HttpURLConnection httpC = (HttpURLConnection) con;
+				httpC.setAllowUserInteraction(false);
+				httpC.setInstanceFollowRedirects(false);
+				httpC.setRequestMethod("GET");
 				httpC.connect();
 				InputStream is = httpC.getInputStream();
 				bitmap = BitmapFactory.decodeStream(is);
+				is.read();
 				is.close();
 				return bitmap;
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 		return null;
