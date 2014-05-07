@@ -106,22 +106,14 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					String distance = df.format(hashMap.get(arg0.getId()).getDistance());
 					String department = hashMap.get(arg0.getId()).getDepartment();
 					String institution = hashMap.get(arg0.getId()).getInstitution();
-					
+
 					ImageView profilePic = (ImageView) view.findViewById(R.id.imageView_tabMap_profilePic);
 					TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
 					TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
 					TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
 
-                    //TODO: Use setProfilePicture()
-					
-					String urlExtension = hashMap.get(arg0.getId()).getPhotoUrl();
-					System.out.println("Extension : " + urlExtension);
-					Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
-					if(profilePicture != null)
-						profilePic.setImageBitmap(profilePicture);
-					else {
-						profilePic.setImageResource(R.drawable.profile_picture_test);
-					}
+                    final User user = hashMap.get(arg0.getId());
+                    setProfilePicture(profilePic, user);
 					
 					nameTxt.setText(firstName);
 					
