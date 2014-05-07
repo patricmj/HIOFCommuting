@@ -41,6 +41,9 @@ public class LoginFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Button login = (Button)getView().findViewById(R.id.loginButton);
+
+        (getView().findViewById(R.id.login_editText_email)).requestFocus();
+
 		login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	// Henter brukerinput
@@ -59,7 +62,7 @@ public class LoginFragment extends Fragment {
 
 		// Sjekker om brukeren har fyllt inn data
 		if (!email.isEmpty() && !password.isEmpty()) {
-			// Sjekker om brukeren har prøvd å logge inn med feil passord for
+			// Sjekker om brukeren har prÃ¸vd Ã¥ logge inn med feil passord for
 			// mange ganger
 			if (attempts > 0) {
 				String[] userInput = {email, password};
@@ -81,7 +84,7 @@ public class LoginFragment extends Fragment {
 	
 	/**
 	 * 
-	 * @author Martin Validerer brukerinput opp mot database. Kjøres i AsyncTask
+	 * @author Martin Validerer brukerinput opp mot database. KjÃ¸res i AsyncTask
 	 *         da dette er en tyngre oppgave.
 	 */
 
@@ -110,7 +113,7 @@ public class LoginFragment extends Fragment {
 				userLoggedIn = HandleLogin.getCurrentEmailUserLoggedIn(email);
 				return true;
 			} else {
-				errorMessage = "Feil brukernavn eller passord. " + (--attempts) + " forsøk igjen.";
+				errorMessage = "Feil brukernavn eller passord. " + (--attempts) + " forsÃ¸k igjen.";
 			}
 			return false;
 		}

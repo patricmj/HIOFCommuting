@@ -43,29 +43,41 @@ public class CustomListListView extends ArrayAdapter<User>{
 		TextView nameTxt = (TextView) rowView.findViewById(R.id.textView_tabList_name);
 		TextView distanceTxt = (TextView) rowView.findViewById(R.id.textView_tabList_distance);
 		TextView departmentTxt = (TextView) rowView.findViewById(R.id.textView_tabList_department);
-		
-		//String urlExtension = userObjects.get(position).getFirstName() + userObjects.get(position).getLat() + userObjects.get(position).getLon();
-		String urlExtension = userObjects.get(position).getPhotoUrl();
-		System.out.println("Extension : " + urlExtension);
-		Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
-		if(profilePicture != null)
-			profilePic.setImageBitmap(profilePicture);
-		else {
-			//urlExtension = userObjects.get(position).getFbId();
-			urlExtension = "730075401";
-			profilePicture = HandleUsers.getProfilePicFromFb(urlExtension);
-			profilePic.setImageBitmap(profilePicture);
-		}
-		if (profilePicture == null) {
-			profilePic.setImageResource(R.drawable.profile_picture_test);
-		}
+
+        final User currentUser = userObjects.get(position);
+
+        setProfilePicture(profilePic, currentUser);
 		
 		nameTxt.setText(userObjects.get(position).getFirstName());
 		DecimalFormat df = new DecimalFormat("0.0");
 		String formattedDistance = df.format(userObjects.get(position).getDistance());
 		distanceTxt.setText("Bor "+formattedDistance+"km fra din adresse");
-		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" på "+userObjects.get(position).getInstitution());
+		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" ved "+userObjects.get(position).getInstitution());
 	
 		return rowView;
 	}
+
+    private void setProfilePicture(ImageView imageView, User user){
+        Bitmap bitmapImage = null;
+        String imageID = "";
+
+        // Checking if the selected user is a facebook user
+
+        if (user.getFbId().equals("None")){
+            imageID = user.getPhotoUrl();
+            bitmapImage = HandleUsers.getProfilePicture(imageID);
+        }
+        else{
+            imageID = user.getFbId();
+            bitmapImage = HandleUsers.getProfilePicFromFb(imageID, false);
+        }
+
+        // Assigning a profile picture if it exists
+
+        if(bitmapImage != null)
+            imageView.setImageBitmap(bitmapImage);
+        else {
+            imageView.setImageResource(R.drawable.profile_picture_test);
+        }
+    }
 }

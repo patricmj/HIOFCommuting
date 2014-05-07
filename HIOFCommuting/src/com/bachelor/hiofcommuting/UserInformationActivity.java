@@ -35,17 +35,30 @@ public class UserInformationActivity extends Activity {
 		
 		//Mottar valgt user-objekt fra forrige activity
 		selectedUser = (User)getIntent().getSerializableExtra("SELECTED_USER");
-		
-		String urlExtension = userLoggedIn.getPhotoUrl();
-		System.out.println("Extension : " + urlExtension);
-		Bitmap profilePicture = HandleUsers.getProfilePicture(urlExtension);
-		if(profilePicture != null)
-			profilePic.setImageBitmap(profilePicture);
+
+        Bitmap bitmapImage = null;
+        String imageID = "";
+
+        // Checking if the selected user is a facebook user
+
+        if (selectedUser.getFbId().equals("None")){
+            imageID = selectedUser.getPhotoUrl();
+            bitmapImage = HandleUsers.getProfilePicture(imageID);
+        }
+        else{
+            imageID = selectedUser.getFbId();
+            bitmapImage = HandleUsers.getProfilePicFromFb(imageID, true);
+        }
+
+        // Assigning a profile picture if it exists
+
+		if(bitmapImage != null)
+			profilePic.setImageBitmap(bitmapImage);
 		else {
 			profilePic.setImageResource(R.drawable.profile_picture_test);
 		}
 		
-		//Setter tittel på activity til navnet på user-objekt
+		//Setter tittel pÃ¥ activity til navnet pÃ¥ user-objekt
 		setTitle(selectedUser.getFirstName());
 		
 		//Setter avstand til brukeren

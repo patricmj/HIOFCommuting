@@ -1,6 +1,5 @@
 package bachelor.database;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,7 +19,8 @@ import bachelor.util.HTTPClient;
 
 public class HandleUsers {
 	private static List<User> userList = new ArrayList<User>();
-	private static Bitmap b, b2;
+	private static Bitmap bitmapImageFromServer;
+    private static Bitmap bitmapImageFromFacebook;
 
 	public static List<User> getAllUsers(Context context, User userLoggedIn, Filter filter) {
 		String urlUser = "http://frigg.hiof.no/bo14-g23/py/usr.py?q=allusrs";
@@ -51,7 +51,7 @@ public class HandleUsers {
 					String department = objectUser.getString("department_name");
 					String study = objectUser.getString("name_of_study");
 					String photoUrl = firstname + lat + lon;
-					String fbId = "";
+					String fbId = objectUser.getString("facebook_id");
 					//ADD USER OBJECT TO USERLIST
 					if(user_id!=userLoggedIn.getUserid()){
 						userList.add(new User(user_id, study_id, firstname, surname, lat, lon, distance, institution,campus,department,study,startingYear, car, photoUrl, fbId));
@@ -208,14 +208,14 @@ public class HandleUsers {
 		Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	b = HTTPClient.getProfilePicturesFromServer("email" ,urlExtension);
+            	bitmapImageFromServer = HTTPClient.getProfilePicturesFromServer("email" ,urlExtension, false);
             }
         });
 
         t.start();
         
-        if (b != null) {
-        	return b;
+        if (bitmapImageFromServer != null) {
+        	return bitmapImageFromServer;
         }
         else {
         	return null;
@@ -223,19 +223,21 @@ public class HandleUsers {
 
 	}
 	
-	public static Bitmap getProfilePicFromFb(final String urlExtension) {
+	public static Bitmap getProfilePicFromFb(final String urlExtension, final boolean showLarge) {
 		Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-            	b2 = HTTPClient.getProfilePicturesFromServer("facebook" ,urlExtension);
-            	//b2 = HTTPClient.getUserPic(urlExtension);
+                if (showLarge)
+            	    bitmapImageFromFacebook = HTTPClient.getProfilePicturesFromServer("facebook" ,urlExtension, true);
+                else
+                    bitmapImageFromFacebook = HTTPClient.getProfilePicturesFromServer("facebook" ,urlExtension, false);
             }
         });
 
         t.start();
         
-        if (b != null) {
-        	return b;
+        if (bitmapImageFromFacebook != null) {
+        	return bitmapImageFromFacebook;
         }
         else {
         	return null;

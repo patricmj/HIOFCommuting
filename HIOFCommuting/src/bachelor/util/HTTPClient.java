@@ -190,23 +190,21 @@ public class HTTPClient {
 		}
 	}
 
-	//fb - https://graph.facebook.com/730075401/picture?type=square
-	public static Bitmap getProfilePicturesFromServer(String source, String urlExtension) {
-		//String URLString = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";
-		String urlString = null;
+	public static Bitmap getProfilePicturesFromServer(String source, String urlExtension, boolean showLarge) {
+		String urlString = "";
+        String pictureSize = "small";
+
+        if (showLarge)
+            pictureSize = "large";
+
 		if(source.equalsIgnoreCase("email")) {
 			urlString = "http://www.frostbittmedia.com/upload/files/" + urlExtension + ".jpg";
-			System.out.println("Url " + urlString);
 		}
 		else if(source.equalsIgnoreCase("facebook")) {
-			//urlString = "https://graph.facebook.com/" + urlExtension + "/picture?type=square";
-			//System.out.println("facebook Url " + urlString);
-			urlString = "https://graph.facebook.com/730075401/picture?type=square";
-			System.out.println("Url " + urlString);
+            urlString = "https://graph.facebook.com/" + urlExtension + "/picture?type=" + pictureSize;
 		}
 		else if(source.equalsIgnoreCase("callback")) {
 			urlString = urlExtension;
-			System.out.println("Callback :" + urlString);
 		}
 		
 		InputStream in = null;

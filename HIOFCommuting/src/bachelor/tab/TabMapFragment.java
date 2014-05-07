@@ -111,6 +111,8 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					TextView nameTxt = (TextView)view.findViewById(R.id.textView_tabMap_name);
 					TextView distanceTxt = (TextView)view.findViewById(R.id.textView_tabMap_distance);
 					TextView departmentTxt = (TextView)view.findViewById(R.id.textView_tabMap_department);
+
+                    //TODO: Use setProfilePicture()
 					
 					String urlExtension = hashMap.get(arg0.getId()).getPhotoUrl();
 					System.out.println("Extension : " + urlExtension);
@@ -124,7 +126,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 					nameTxt.setText(firstName);
 					
 					distanceTxt.setText("Bor "+distance+"km vekk fra din adresse");
-					departmentTxt.setText("Studerer på "+department+" ved "+institution);
+					departmentTxt.setText("Studerer pÃ¥ "+department+" ved "+institution);
 					return view;
 				}
 				return null;
@@ -207,4 +209,28 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
 			Dialog.dismiss();
 		}
 	}
+
+    private void setProfilePicture(ImageView imageView, User user){
+        Bitmap bitmapImage = null;
+        String imageID = "";
+
+        // Checking if the selected user is a facebook user
+
+        if (user.getFbId().equals("None")){
+            imageID = user.getPhotoUrl();
+            bitmapImage = HandleUsers.getProfilePicture(imageID);
+        }
+        else{
+            imageID = user.getFbId();
+            bitmapImage = HandleUsers.getProfilePicFromFb(imageID, false);
+        }
+
+        // Assigning a profile picture if it exists
+
+        if(bitmapImage != null)
+            imageView.setImageBitmap(bitmapImage);
+        else {
+            imageView.setImageResource(R.drawable.profile_picture_test);
+        }
+    }
 }

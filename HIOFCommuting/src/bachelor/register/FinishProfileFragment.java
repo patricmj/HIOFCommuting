@@ -481,7 +481,7 @@ public class FinishProfileFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                //TODO kj�r f�rste spinner herifra
+                //TODO kjør første spinner herifra
                 addItemsOnSpinner();
             }
         }
