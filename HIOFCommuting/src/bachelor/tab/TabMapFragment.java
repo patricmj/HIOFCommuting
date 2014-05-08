@@ -118,7 +118,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
                     nameTxt.setText(firstName);
 
                     distanceTxt.setText("Bor " + distance + " unna din adresse");
-                    departmentTxt.setText("Studerer på " + department);
+                    departmentTxt.setText("Studerer " + department);
                     return view;
                 }
                 return null;
