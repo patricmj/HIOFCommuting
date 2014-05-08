@@ -227,6 +227,7 @@ public class HTTPClient {
 				in = httpConn.getInputStream();
 				bitmap = BitmapFactory.decodeStream(in);
 				in.close();
+				bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
 				return bitmap;
 			}
 			//If we got redirected from the page
@@ -242,6 +243,7 @@ public class HTTPClient {
 				bitmap = BitmapFactory.decodeStream(is);
 				is.read();
 				is.close();
+				bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, false);
 				return bitmap;
 			}
 		} catch (MalformedURLException e) {

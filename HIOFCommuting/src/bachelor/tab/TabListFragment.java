@@ -88,10 +88,12 @@ public class TabListFragment extends Fragment {
 
                     Bitmap bitmap;
 
-                    if (user.getFbId().equals("None"))
+                    if (user.getFbId().equals("None")) {
                         bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
-                    else
+                    }
+                    else {
                         bitmap = HTTPClient.getProfilePicturesFromServer("facebook" ,user.getFbId(), true);
+                    }
 
                     String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
                     user.setImagePath(imagePath);
