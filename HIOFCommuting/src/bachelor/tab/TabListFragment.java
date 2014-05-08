@@ -96,6 +96,7 @@ public class TabListFragment extends Fragment {
                     }
 
                     String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
+
                     user.setImagePath(imagePath);
                 }
 				return userList;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,8 @@ import bachelor.objects.Inbox;
 import bachelor.objects.User;
 
 
+import bachelor.util.HTTPClient;
+import bachelor.util.ImageHandler;
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
 
@@ -81,6 +84,22 @@ public class TabInboxFragment extends Fragment {
 		protected List<Inbox> doInBackground(Void... params) {
 			try{
 				newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), userList);
+
+                // Saving images to cache, setting path to user objects
+                for (final User user : userList) {
+
+                    Bitmap bitmap;
+
+                    if (user.getFbId().equals("None")) {
+                        bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
+                    } else {
+                        bitmap = HTTPClient.getProfilePicturesFromServer("facebook", user.getFbId(), true);
+                    }
+
+                    String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
+
+                    user.setImagePath(imagePath);
+                }
 				return newMessage;
 			}catch(NullPointerException e){
 				return null;

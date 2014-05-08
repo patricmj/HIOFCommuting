@@ -2,6 +2,7 @@ package bachelor.tab;
 
 import java.util.List;
 
+import bachelor.util.ImageHandler;
 import com.bachelor.hiofcommuting.R;
 
 import android.content.Context;
@@ -35,8 +36,10 @@ public class CustomInboxListView extends ArrayAdapter<Inbox>{
 		TextView name = (TextView) rowView.findViewById(R.id.textView_inbox_name);
 		TextView message = (TextView) rowView.findViewById(R.id.textView_inbox_message);
 		TextView date = (TextView) rowView.findViewById(R.id.textView_inbox_date);
-		
-		profilePic.setImageResource(R.drawable.profile_picture_test);
+
+        final User sender = objects.get(position).getSender();
+
+        ImageHandler.setBitmapFromPath(profilePic, sender.getImagePath());
 		name.setText(objects.get(position).getSender().getFirstName());
 		message.setText(objects.get(position).getMessage());
 		date.setText(objects.get(position).getSent());
