@@ -195,16 +195,13 @@ public class HTTPClient {
         String pictureSize = "small";
 
         if (showLarge)
-            pictureSize = "large";
+            pictureSize = "400";
 
 		if(source.equalsIgnoreCase("email")) {
 			urlString = "http://www.frostbittmedia.com/upload/files/" + urlExtension + ".jpg";
 		}
 		else if(source.equalsIgnoreCase("facebook")) {
-            urlString = "https://graph.facebook.com/" + urlExtension + "/picture?type=" + pictureSize;
-		}
-		else if(source.equalsIgnoreCase("callback")) {
-			urlString = urlExtension;
+            urlString = "https://graph.facebook.com/" + urlExtension + "/picture?width=" + pictureSize + "&height=" + pictureSize;
 		}
 		
 		InputStream in = null;
