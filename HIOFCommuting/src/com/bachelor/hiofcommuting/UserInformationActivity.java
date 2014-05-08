@@ -1,7 +1,9 @@
 package com.bachelor.hiofcommuting;
 
+import java.io.*;
 import java.text.DecimalFormat;
 
+import android.graphics.BitmapFactory;
 import bachelor.chat.ChatActivity;
 import bachelor.database.HandleUsers;
 import bachelor.objects.User;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import bachelor.util.ImageHandler;
 
 
 public class UserInformationActivity extends Activity {
@@ -36,27 +39,7 @@ public class UserInformationActivity extends Activity {
 		//Mottar valgt user-objekt fra forrige activity
 		selectedUser = (User)getIntent().getSerializableExtra("SELECTED_USER");
 
-        Bitmap bitmapImage = null;
-        String imageID = "";
-
-        // Checking if the selected user is a facebook user
-
-        if (selectedUser.getFbId().equals("None")){
-            imageID = selectedUser.getPhotoUrl();
-            bitmapImage = HandleUsers.getProfilePicture(imageID);
-        }
-        else{
-            imageID = selectedUser.getFbId();
-            bitmapImage = HandleUsers.getProfilePicFromFb(imageID, true);
-        }
-
-        // Assigning a profile picture if it exists
-
-		if(bitmapImage != null)
-			profilePic.setImageBitmap(bitmapImage);
-		else {
-			profilePic.setImageResource(R.drawable.profile_picture_test);
-		}
+        ImageHandler.setBitmapFromPath(profilePic, selectedUser.getImagePath());
 		
 		//Setter tittel på activity til navnet på user-objekt
 		setTitle(selectedUser.getFirstName());

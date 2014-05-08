@@ -1,8 +1,13 @@
 package bachelor.tab;
 
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Objects;
 
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import bachelor.util.ImageHandler;
 import com.bachelor.hiofcommuting.R;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -34,8 +39,6 @@ public class CustomListListView extends ArrayAdapter<User>{
 		this.userObjects = userObjects;
 	}
 
-
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,38 +51,17 @@ public class CustomListListView extends ArrayAdapter<User>{
 
         final User currentUser = userObjects.get(position);
 
-        setProfilePicture(profilePic, currentUser);
-		
-		nameTxt.setText(userObjects.get(position).getFirstName());
+        ImageHandler.setBitmapFromPath(profilePic, currentUser.getImagePath());
+
+		nameTxt.setText(currentUser.getFirstName());
 		DecimalFormat df = new DecimalFormat("0.0");
-		String formattedDistance = df.format(userObjects.get(position).getDistance());
-		distanceTxt.setText("Bor "+formattedDistance+"km fra din adresse");
-		departmentTxt.setText("Studerer "+userObjects.get(position).getDepartment()+" ved "+userObjects.get(position).getInstitution());
-	
+		String formattedDistance = df.format(currentUser.getDistance());
+		distanceTxt.setText("Bor " + formattedDistance + "km fra din adresse");
+		departmentTxt.setText("Studerer " + currentUser.getDepartment() + " ved " + currentUser.getInstitution());
+
 		return rowView;
 	}
 
-    private void setProfilePicture(ImageView imageView, User user){
-        Bitmap bitmapImage = null;
-        String imageID = "";
 
-        // Checking if the selected user is a facebook user
 
-        if (user.getFbId().equals("None")){
-            imageID = user.getPhotoUrl();
-            bitmapImage = HandleUsers.getProfilePicture(imageID);
-        }
-        else{
-            imageID = user.getFbId();
-            bitmapImage = HandleUsers.getProfilePicFromFb(imageID, false);
-        }
-
-        // Assigning a profile picture if it exists
-
-        if(bitmapImage != null)
-            imageView.setImageBitmap(bitmapImage);
-        else {
-            imageView.setImageResource(R.drawable.profile_picture_test);
-        }
-    }
 }

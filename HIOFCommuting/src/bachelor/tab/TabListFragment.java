@@ -1,34 +1,37 @@
 package bachelor.tab;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import bachelor.database.HandleUsers;
 import bachelor.objects.Filter;
 import bachelor.objects.User;
 
+import bachelor.util.HTTPClient;
+import bachelor.util.ImageHandler;
 import com.bachelor.hiofcommuting.R;
 import com.bachelor.hiofcommuting.UserInformationActivity;
 
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
-	private List<User> userList;
+    private List<User> userList;
 	private User userLoggedIn;
 	private Filter filter;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -51,8 +54,8 @@ public class TabListFragment extends Fragment {
 		super.onResume();
 		new getUsers().execute();
 	}
-	
-	private void asyncTaskIsDone(final List<User> result) {
+
+	private void setOnItemClickOnList(final List<User> result) {
 		itcItems.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -65,20 +68,34 @@ public class TabListFragment extends Fragment {
 			}
 		});
 	}
-	
-	
+
+
 	private class getUsers extends AsyncTask<Void, Void, List<User>> {
-		private ProgressDialog Dialog = new ProgressDialog(getActivity());
+		private ProgressDialog dialog = new ProgressDialog(getActivity());
 		@Override
 	    protected void onPreExecute(){
-			Dialog.setMessage("Laster brukere..");
-	       Dialog.show();
+		    dialog.setMessage("Laster brukere..");
+	        dialog.show();
 	    }
-		
+
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
 				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
+
+                // Saving images to cache, setting path to user objects
+                for (final User user : userList){
+
+                    Bitmap bitmap;
+
+                    if (user.getFbId().equals("None"))
+                        bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
+                    else
+                        bitmap = HTTPClient.getProfilePicturesFromServer("facebook" ,user.getFbId(), true);
+
+                    String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
+                    user.setImagePath(imagePath);
+                }
 				return userList;
 			} catch (NullPointerException e) {
 				System.out.println("Returns null in doInBackground: TabListFragment.java");
@@ -91,16 +108,26 @@ public class TabListFragment extends Fragment {
 			if(result!=null){
 				// Get a ListView from main view
 				itcItems = (ListView) getView().findViewById(R.id.listview_list_users);
-				
+
 				// Create a list adapter
-				CustomListListView adapter = new CustomListListView(getActivity(), result);
-				
+				final CustomListListView adapter = new CustomListListView(getActivity(), result);
+
 				// Set list adapter for the ListView
 				itcItems.setAdapter(adapter);
-				asyncTaskIsDone(result);
+				setOnItemClickOnList(result);
+                update(adapter);
 			}
-			Dialog.dismiss();
+			dialog.dismiss();
 		}
 	}
+
+    private void update(final CustomListListView adapter) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        }, 2000);
+    }
 
 }

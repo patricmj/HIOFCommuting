@@ -17,7 +17,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -38,7 +38,7 @@
         android:ems="10"
         android:gravity="center"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"/>
 
     <TextView
         android:id="@+id/newUserTxtBtn"
