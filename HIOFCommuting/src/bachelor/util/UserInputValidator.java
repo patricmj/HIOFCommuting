@@ -34,7 +34,6 @@ public class UserInputValidator {
         }
     }
 
-    // Thanks to stackoverflow.com
     public boolean isEmailValid(RegisterFragment fragment, String email, EditText emailText) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         CharSequence inputStr = email;
@@ -65,7 +64,7 @@ public class UserInputValidator {
         if (!(pw.length() < 7))
             isPwLengthOk = true;
         else{
-            Toast.makeText(fragment.getActivity().getApplicationContext(), "Passordet mÃ¥ bestÃ¥ av minst 7 tegn" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(fragment.getActivity().getApplicationContext(), "Passordet må bestå av minst 7 tegn" , Toast.LENGTH_SHORT).show();
             pwText.requestFocus();
         }
 
@@ -119,7 +118,7 @@ public class UserInputValidator {
         if (readConditions)
             return true;
         else{
-            Toast.makeText(fragment.getActivity().getApplicationContext(), "Du mÃ¥ godkjenne betingelser for Ã¥ fortsette" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(fragment.getActivity().getApplicationContext(), "Du må godkjenne betingelser for å fortsette" , Toast.LENGTH_SHORT).show();
             button.requestFocus();
             return false;
         }

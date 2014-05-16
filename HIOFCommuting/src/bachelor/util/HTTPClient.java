@@ -252,29 +252,4 @@ public class HTTPClient {
 		}
 		return null;
 	}
-
-	
-	/*public static Bitmap getProfilePicturesFromServer() {
-		String URL = "http://www.frostbittmedia.com/upload/files/p59.470109711.6660454.jpg";
-		
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(URL);
-		
-		final List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-				3);
-		nameValuePairs.add(new BasicNameValuePair("q", "p"));
-		nameValuePairs.add(new BasicNameValuePair("lon", "59.470109711"));
-		nameValuePairs.add(new BasicNameValuePair("lat", "6660454"));
-		
-		try {
-			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-					"utf-8"));
-			HttpResponse httpResponse = httpClient.execute(httpPost);
-
-			if (httpResponse.getStatusLine().getStatusCode() == 200)
-				sent = true;
-
-		
-		return null;
-	}*/
 }

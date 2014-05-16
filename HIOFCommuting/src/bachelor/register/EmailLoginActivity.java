@@ -50,30 +50,6 @@ public class EmailLoginActivity extends FragmentActivity {
 		}
 	}
 	
-	//Trenger vi meny med settings etc når man skal logge inn?
-	/*
-	@Override
-<<<<<<< HEAD
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			System.out.print("Settings clicked");
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	*/
-	
 	@Override
 	public void onBackPressed() {
 	    if(fragments[REGISTER].isVisible() || fragments[FORGOTPW].isVisible() ) {
@@ -93,7 +69,7 @@ public class EmailLoginActivity extends FragmentActivity {
 		registerData.add(email);
 		registerData.add(password);
 		registerData.add(repeatPassword);
-		Util.showFragment(FINISH, fm,fragments, "Fullfør profil", weakActivity);
+		Util.showFragment(FINISH, fm,fragments, "Fullf�r profil", weakActivity);
 	}
 	
 	public ArrayList<String> getRegistrationList() {
