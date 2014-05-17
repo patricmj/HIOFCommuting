@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import android.widget.Toast;
 import bachelor.util.UserInputValidator;
 import bachelor.util.Util;
 
@@ -93,7 +94,6 @@ public class RegisterFragment extends Fragment implements OnClickListener {
         }
     }
 
-    //TODO: Debug img size, clean path strings
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -106,15 +106,21 @@ public class RegisterFragment extends Fragment implements OnClickListener {
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
-            bitmap = BitmapFactory.decodeFile(imagePath);
-            bitmap = createDynamicScaledBitmap(bitmap);
-            bitmap = Util.rotateBitmap(imagePath, bitmap);
+            if (imagePath != null) {
+                bitmap = BitmapFactory.decodeFile(imagePath);
+                bitmap = createDynamicScaledBitmap(bitmap);
+                bitmap = Util.rotateBitmap(imagePath, bitmap);
 
-            cameraLogo.setImageBitmap(Util.rotateBitmap(imagePath, bitmap));
+                cameraLogo.setImageBitmap(Util.rotateBitmap(imagePath, bitmap));
 
-            logoIsChanged = true;
+                logoIsChanged = true;
 
-            cursor.close();
+                cursor.close();
+            }
+            else {
+                Toast.makeText(getActivity().getApplicationContext(), "Vennligst velg et bilde fra galleriet", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
     }
 

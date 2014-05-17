@@ -31,7 +31,6 @@ import com.facebook.Session;
 public class TabListenerActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
-	private List<User> userList;
 	private User userLoggedIn;
 	private Filter filter;
 	
@@ -272,11 +271,11 @@ public class TabListenerActivity extends FragmentActivity implements
 	}
 
 	public List<User> getUserList() {
-		return userList;
+		return User.userList;
 	}
 
 	public void setUserList(List<User> users) {
-		this.userList = users;
+        User.userList = users;
 	}
 	
 	

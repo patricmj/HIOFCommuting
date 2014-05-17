@@ -1,7 +1,5 @@
 package bachelor.tab;
 
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ProgressDialog;
@@ -17,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import bachelor.database.HandleUsers;
 import bachelor.objects.Filter;
 import bachelor.objects.User;
@@ -28,7 +27,6 @@ import com.bachelor.hiofcommuting.UserInformationActivity;
 
 public class TabListFragment extends Fragment {
 	private ListView itcItems;
-    private List<User> userList;
 	private User userLoggedIn;
 	private Filter filter;
 
@@ -45,7 +43,6 @@ public class TabListFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		userLoggedIn = ((TabListenerActivity)getActivity()).getUserLoggedIn();
-		userList = ((TabListenerActivity)getActivity()).getUserList();
 		filter = ((TabListenerActivity)getActivity()).getFilter();
 	}
 
@@ -81,25 +78,26 @@ public class TabListFragment extends Fragment {
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-				userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
+                if (User.userList != null && ImageHandler.isUserProfilePictureSet())
+                    return User.userList;
+                else {
+                    User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
 
-                // Saving images to cache, setting path to user objects
-                for (final User user : userList){
+                    // Saving images to cache, setting path to user objects
+                    for (final User user : User.userList) {
 
-                    Bitmap bitmap;
+                        Bitmap bitmap;
 
-                    if (user.getFbId().equals("None")) {
-                        bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
+                        if (user.getFbId().equals("None"))
+                            bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
+                        else
+                            bitmap = HTTPClient.getProfilePicturesFromServer("facebook", user.getFbId(), true);
+
+                        String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
+                        user.setImagePath(imagePath);
                     }
-                    else {
-                        bitmap = HTTPClient.getProfilePicturesFromServer("facebook" ,user.getFbId(), true);
-                    }
-
-                    String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
-
-                    user.setImagePath(imagePath);
+                    return User.userList;
                 }
-				return userList;
 			} catch (NullPointerException e) {
 				System.out.println("Returns null in doInBackground: TabListFragment.java");
 				return null;
@@ -108,19 +106,24 @@ public class TabListFragment extends Fragment {
 
 		@Override
 		protected void onPostExecute(List<User> result) {
-			if(result!=null){
-				// Get a ListView from main view
-				itcItems = (ListView) getView().findViewById(R.id.listview_list_users);
+			if(result != null){
+                // Get a ListView from main view
+                if (getView() != null) {
+                    itcItems = (ListView) getView().findViewById(R.id.listview_list_users);
 
-				// Create a list adapter
-				final CustomListListView adapter = new CustomListListView(getActivity(), result);
+                    // Create a list adapter
+                    final CustomListListView adapter = new CustomListListView(getActivity(), result);
 
-				// Set list adapter for the ListView
-				itcItems.setAdapter(adapter);
-				setOnItemClickOnList(result);
-                update(adapter);
+                    // Set list adapter for the ListView
+                    itcItems.setAdapter(adapter);
+                    setOnItemClickOnList(result);
+                    update(adapter);
+                    dialog.dismiss();
+                }
 			}
-			dialog.dismiss();
+            else {
+                Toast.makeText(getActivity().getApplicationContext(), "Fant ingen brukere", Toast.LENGTH_SHORT).show();
+            }
 		}
 	}
 

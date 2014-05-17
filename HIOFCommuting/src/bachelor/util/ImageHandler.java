@@ -64,4 +64,14 @@ public class ImageHandler {
             imageView.setImageResource(R.drawable.profile_picture_test);
         }
     }
+
+    public static boolean isUserProfilePictureSet(){
+        for (User user : User.userList){
+            if (user.getImagePath().isEmpty())
+                return false;
+            else
+                return true;
+        }
+        return false;
+    }
 }

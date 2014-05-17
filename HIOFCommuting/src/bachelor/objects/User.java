@@ -1,6 +1,7 @@
 package bachelor.objects;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
     private boolean car;
@@ -19,6 +20,7 @@ public class User implements Serializable{
     private String photoUrl;
     private String imagePath;
 	private String fbId;
+    public static List<User> userList;
 
     // When creating ListView
     public User(String firstname, String department, String institution, double distance, String imagePath, String fbId){

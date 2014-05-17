@@ -43,7 +43,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
     private HashMap<String, User> hashMap = new HashMap<String, User>();
     private LayoutInflater inflater;
     private User userLoggedIn;
-    private List<User> userList;
     private Filter filter;
 
     @Override
@@ -61,7 +60,6 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userLoggedIn = ((TabListenerActivity) getActivity()).getUserLoggedIn();
-        userList = ((TabListenerActivity) getActivity()).getUserList();
         filter = ((TabListenerActivity) getActivity()).getFilter();
         if (fragment == null) {
             FragmentManager fm = getChildFragmentManager();
@@ -168,23 +166,26 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
         @Override
         protected List<User> doInBackground(Void... params) {
             try {
-                userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
+                if (User.userList != null && ImageHandler.isUserProfilePictureSet())
+                    return User.userList;
+                else {
+                    User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
 
-                // Saving images to cache, setting path to user objects
-                for (final User user : userList) {
+                    // Saving images to cache, setting path to user objects
+                    for (final User user : User.userList) {
 
-                    Bitmap bitmap;
+                        Bitmap bitmap;
 
-                    if (user.getFbId().equals("None"))
-                        bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
-                    else
-                        bitmap = HTTPClient.getProfilePicturesFromServer("facebook", user.getFbId(), true);
+                        if (user.getFbId().equals("None"))
+                            bitmap = HTTPClient.getProfilePicturesFromServer("email", user.getPhotoUrl(), false);
+                        else
+                            bitmap = HTTPClient.getProfilePicturesFromServer("facebook", user.getFbId(), true);
 
-                    String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
-                    user.setImagePath(imagePath);
+                        String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
+                        user.setImagePath(imagePath);
+                    }
+                    return User.userList;
                 }
-
-                return userList;
             } catch (NullPointerException e) {
                 System.out.println("Returns null in doInBackground: TabMapFragment.java");
                 return null;
