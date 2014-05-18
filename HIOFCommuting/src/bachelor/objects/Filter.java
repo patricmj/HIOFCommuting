@@ -4,6 +4,7 @@ public class Filter {
 	private int studyId;
 	private double distance;
 	private boolean institution, campus, department, study, startingYear, car;
+    public static boolean isFilterSet;
 	
 	public Filter(int studyId, double distance, boolean institution,
 			boolean campus, boolean department, boolean study,

@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="commitAndHideUserFilter"
-        android:text="DONE!" />
+        android:text="@string/button_ok" />
 
     <CheckBox
         android:id="@+id/checkbox_filter_institution"

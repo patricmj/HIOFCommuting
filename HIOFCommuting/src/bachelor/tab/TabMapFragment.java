@@ -166,7 +166,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
         @Override
         protected List<User> doInBackground(Void... params) {
             try {
-                if (User.userList != null && ImageHandler.isUserProfilePictureSet())
+                if (User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet)
                     return User.userList;
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);

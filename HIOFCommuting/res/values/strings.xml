@@ -45,5 +45,6 @@
     <string name="title_activity_user_information">UserInformationActivity</string>
     <string name="profilepic">Profile picture</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="button_ok">Ok</string>
 
 </resources>

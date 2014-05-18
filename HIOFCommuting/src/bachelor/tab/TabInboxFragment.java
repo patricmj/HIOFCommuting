@@ -83,7 +83,7 @@ public class TabInboxFragment extends Fragment {
 		@Override
 		protected List<Inbox> doInBackground(Void... params) {
 			try{
-                if (User.userList != null && ImageHandler.isUserProfilePictureSet())
+                if (User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet)
 				    newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);

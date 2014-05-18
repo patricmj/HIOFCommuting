@@ -235,6 +235,8 @@ public class TabListenerActivity extends FragmentActivity implements
 			Fragment ti = new TabInboxFragment();
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_tab_container, ti).addToBackStack("Chat").commit();
 		}
+
+        Filter.isFilterSet = true;
 	}
 
 	private void performLogout() {
