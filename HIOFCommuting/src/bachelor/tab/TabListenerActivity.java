@@ -219,6 +219,11 @@ public class TabListenerActivity extends FragmentActivity implements
 			fragmentTransaction.hide(filterUserFragment);
 			fragmentTransaction.commit();
 		}
+
+        if (institution || campus || department || study || startingyear || car || cbdistance.isChecked())
+            Filter.isFilterSet = true;
+        else
+            Filter.isFilterSet = false;
 		
 		FragmentManager fm = getSupportFragmentManager();
 		int stackCount = fm.getBackStackEntryCount();
@@ -235,8 +240,6 @@ public class TabListenerActivity extends FragmentActivity implements
 			Fragment ti = new TabInboxFragment();
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_tab_container, ti).addToBackStack("Chat").commit();
 		}
-
-        Filter.isFilterSet = true;
 	}
 
 	private void performLogout() {
