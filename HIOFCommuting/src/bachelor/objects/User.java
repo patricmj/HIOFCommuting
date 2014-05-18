@@ -21,6 +21,7 @@ public class User implements Serializable{
     private String imagePath;
 	private String fbId;
     public static List<User> userList;
+    public static boolean isUserListFiltered;
 
     // When creating ListView
     public User(String firstname, String department, String institution, double distance, String imagePath, String fbId){

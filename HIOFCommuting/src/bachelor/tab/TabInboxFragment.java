@@ -83,8 +83,9 @@ public class TabInboxFragment extends Fragment {
 		@Override
 		protected List<Inbox> doInBackground(Void... params) {
 			try{
-                if (User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet)
-				    newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
+                if ((User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet) ||
+                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered))
+				            newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
 
@@ -103,7 +104,11 @@ public class TabInboxFragment extends Fragment {
                     }
                     newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
                 }
-				return newMessage;
+
+                if (Filter.isFilterSet)
+                    User.isUserListFiltered = true;
+
+                return newMessage;
 			}catch(NullPointerException e){
 				return null;
 			}

@@ -78,7 +78,8 @@ public class TabListFragment extends Fragment {
 		@Override
 		protected List<User> doInBackground(Void... params) {
 			try {
-                if (User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet)
+                if ((User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet) ||
+                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered))
                     return User.userList;
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
@@ -96,6 +97,10 @@ public class TabListFragment extends Fragment {
                         String imagePath = ImageHandler.saveBitmapToCache(getActivity(), bitmap, user.getUserid());
                         user.setImagePath(imagePath);
                     }
+
+                    if (Filter.isFilterSet)
+                        User.isUserListFiltered = true;
+
                     return User.userList;
                 }
 			} catch (NullPointerException e) {
