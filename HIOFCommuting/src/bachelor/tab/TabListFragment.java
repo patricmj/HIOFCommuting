@@ -98,8 +98,10 @@ public class TabListFragment extends Fragment {
                         user.setImagePath(imagePath);
                     }
 
-                    if (Filter.isFilterSet)
+                    if (Filter.isFilterSet) {
                         User.isUserListFiltered = true;
+                        Filter.currentFilter = filter;
+                    }
                     if (User.isUserListFiltered && !Filter.isFilterSet)
                         User.isUserListFiltered = false;
 
