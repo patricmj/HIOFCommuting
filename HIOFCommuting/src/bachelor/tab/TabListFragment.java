@@ -79,7 +79,7 @@ public class TabListFragment extends Fragment {
 		protected List<User> doInBackground(Void... params) {
 			try {
                 if ((User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet && !User.isUserListFiltered) ||
-                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered))
+                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered && Filter.currentFilter == filter))
                     return User.userList;
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);

@@ -205,8 +205,9 @@ public class TabListenerActivity extends FragmentActivity implements
 		if (cbdistance.isChecked())
 			distance = (double)npdistance.getValue();
 
-		setFilter(new Filter(studyId, distance, institution, campus, department,
-				study, startingyear, car));
+        Filter.isFilterSet = institution || campus || department || study || startingyear || car || cbdistance.isChecked();
+
+		setFilter(new Filter(studyId, distance, institution, campus, department, study, startingyear, car));
 
 		if (filterUserFragment != null && filterUserFragment.isVisible()) {
 			// Hide fragment
@@ -220,11 +221,6 @@ public class TabListenerActivity extends FragmentActivity implements
 			fragmentTransaction.commit();
 		}
 
-        if (institution || campus || department || study || startingyear || car || cbdistance.isChecked())
-            Filter.isFilterSet = true;
-        else
-            Filter.isFilterSet = false;
-		
 		FragmentManager fm = getSupportFragmentManager();
 		int stackCount = fm.getBackStackEntryCount();
 		BackStackEntry previousFragment = fm.getBackStackEntryAt(stackCount-1);

@@ -45,6 +45,7 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
     private User userLoggedIn;
     private Filter filter;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -166,8 +167,9 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
         @Override
         protected List<User> doInBackground(Void... params) {
             try {
+
                 if ((User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet && !User.isUserListFiltered) ||
-                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered))
+                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered && Filter.currentFilter == filter))
                     return User.userList;
                 else {
                     User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
@@ -186,8 +188,10 @@ public class TabMapFragment extends Fragment implements OnInfoWindowClickListene
                         user.setImagePath(imagePath);
                     }
 
-                    if (Filter.isFilterSet)
+                    if (Filter.isFilterSet) {
                         User.isUserListFiltered = true;
+                        Filter.currentFilter = filter;
+                    }
                     if (User.isUserListFiltered && !Filter.isFilterSet)
                         User.isUserListFiltered = false;
 
