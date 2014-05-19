@@ -77,18 +77,22 @@ public class TabInboxFragment extends Fragment {
 		@Override
 	    protected void onPreExecute(){
 			Dialog.setMessage("Laster..");
-	       Dialog.show();
+			Dialog.show();
 	    }
 		
 		@Override
 		protected List<Inbox> doInBackground(Void... params) {
 			try{
                 if ((User.userList != null && ImageHandler.isUserProfilePictureSet() && !Filter.isFilterSet && !User.isUserListFiltered) ||
-                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered))
-				            newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
+                        (User.userList != null && ImageHandler.isUserProfilePictureSet() && Filter.isFilterSet && User.isUserListFiltered)) {
+                	Filter f = null;
+                    User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, f);        
+                	newMessage = HandleMessages.getInbox(userLoggedIn.getUserid(), User.userList);
+                }
                 else {
-                    User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
-
+                	Filter f = null;
+                    User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, f);
+                    
                     // Saving images to cache, setting path to user objects
                     for (final User user : User.userList) {
 
@@ -109,7 +113,8 @@ public class TabInboxFragment extends Fragment {
                     User.isUserListFiltered = true;
                 if (User.isUserListFiltered && !Filter.isFilterSet)
                     User.isUserListFiltered = false;
-
+                resetFilter();
+                
                 return newMessage;
 			}catch(NullPointerException e){
 				return null;
@@ -136,6 +141,17 @@ public class TabInboxFragment extends Fragment {
             else {
                 Toast.makeText(getActivity().getApplicationContext(), "Tom innboks", Toast.LENGTH_SHORT).show();
             }
+		}
+
+		private void resetFilter() {
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					User.userList = HandleUsers.getAllUsers(getActivity(), userLoggedIn, filter);
+				}
+			});
+
+			t.start();
 		}
 	}
 

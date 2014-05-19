@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import bachelor.objects.Inbox;
 import bachelor.objects.User;
 
@@ -38,11 +39,17 @@ public class CustomInboxListView extends ArrayAdapter<Inbox>{
 		TextView date = (TextView) rowView.findViewById(R.id.textView_inbox_date);
 
         final User sender = objects.get(position).getSender();
-
-        ImageHandler.setBitmapFromPath(profilePic, sender.getImagePath());
-		name.setText(objects.get(position).getSender().getFirstName());
-		message.setText(objects.get(position).getMessage());
-		date.setText(objects.get(position).getSent());
+        if(sender != null) {
+	        System.out.println("name " + sender.getFirstName());
+	        
+	        ImageHandler.setBitmapFromPath(profilePic, sender.getImagePath());
+	
+			name.setText(objects.get(position).getSender().getFirstName());
+			message.setText(objects.get(position).getMessage());
+			date.setText(objects.get(position).getSent());
+        }
+        else 
+        	System.out.println("Sender er null");
 		
 		return rowView;
 	}
