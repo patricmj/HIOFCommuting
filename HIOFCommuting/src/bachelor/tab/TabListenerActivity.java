@@ -248,8 +248,10 @@ public class TabListenerActivity extends FragmentActivity implements
 						.println("performLogout(): User was logged in with email");
 			}
 		}
-		userLoggedIn = null;
-		setUserList(null); //reset users in map/list because distance is related to the users logged in
+		setUserLoggedIn(null);
+		//userLoggedIn = null;
+		User.userList.clear();
+		//setUserList(null); //reset users in map/list because distance is related to the users logged in
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();

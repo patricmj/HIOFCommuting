@@ -198,11 +198,11 @@ public class MainActivity extends FragmentActivity {
 		protected void onPostExecute(JSONObject obj){
 			try {
 				if(obj.getString("user_id").equals("-100")){
-					System.out.println("User er ikke registrert i systemet fra f√∏r");
-					Util.showFragment(FINISH, fm, fragments, "Fullf√∏r profil", weakActivity);
+					System.out.println("User er ikke registrert i systemet fra før");
+					Util.showFragment(FINISH, fm, fragments, "Fullfør profil", weakActivity);
 				}
 				else {
-					System.out.println("User ER registrert i systemet fra f√∏r");
+					System.out.println("User ER registrert i systemet fra før");
 					User userLoggedIn = HandleLogin.getCurrentFacebookUserLoggedIn(obj);
 					System.out.println(userLoggedIn + " er null");
 					Session session = Session.getActiveSession();
